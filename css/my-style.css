@@ -92,3 +92,18 @@
 #board {
     position: relative;
 }
+
+main {
+    padding-bottom: 100px;
+}
+
+.login-link {
+    font-weight: bold;
+    text-decoration: none;     /* no underline normally */
+    color: black;
+}
+
+.login-link:hover {
+    text-decoration: underline; /* underline on hover */
+    color: black;
+}
