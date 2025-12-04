@@ -104,13 +104,26 @@ class User
         return null;
     }
 
-    /**
-     *  Check if the current user is logged in and has an 'owner' role
-     *
-     * @return bool True if user is logged in and had owner role, false otherwise
-     */
-    public function isOwner()
+    public function register($username, $email, $password)
     {
-        return $this->isLoggedIn() && $this->getCurrentUser()->getUserRole() === 'owner';
+        $sql = "INSERT INTO users (username, email, password_hash) 
+            VALUES (:username, :email, :password_hash)";
+        $statement = $this->_dbHandle->prepare($sql);
+
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        try {
+            $statement->execute([
+                ':username'      => $username,
+                ':email'         => $email,
+                ':password_hash' => $passwordHash
+            ]);
+
+            return true;
+        } catch (PDOException $e) {
+            return false; // Duplicate username/email or other DB error
+        }
     }
+
+
 }
