@@ -34,4 +34,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-require_once('Views/survey.phtml');
+require_once('Views/survey_stepbystep.phtml');
