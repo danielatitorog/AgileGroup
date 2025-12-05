@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($userDataSet->register($username, $email, $password)) {
             // Automatically log in after registration
             if ($view->user->login($username, $password)) {
-                header("Location: index.php"); // change this to the location of the questions
+                header("Location: survey.php"); // change this to the location of the questions
                 exit;
             }
         } else {
