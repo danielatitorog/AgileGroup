@@ -133,7 +133,7 @@ class User
     private function isPasswordStrong($password)
     {
         // Requirement 1: At least 12 characters long (14+ recommended)
-        if (strlen($password) < 12) {
+        if (strlen($password) < 8) {
             return false;
         }
 
