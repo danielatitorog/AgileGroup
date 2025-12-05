@@ -26,13 +26,65 @@
                     </div>
                 </div>
 
+                <!-- Progress Indicator with Question Navigation -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0 text-danger fw-bold">
+                                <i class="bi bi-graph-up"></i> Survey Progress
+                            </h6>
+                            <span class="badge bg-danger fs-6" id="progressPercentage">0%</span>
+                        </div>
+
+                        <!-- Main Progress Bar -->
+                        <div class="progress mb-3" style="height: 12px; border-radius: 6px;">
+                            <div class="progress-bar bg-danger" role="progressbar"
+                                 style="width: 0%;"
+                                 id="progressBar"
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+                        <!-- Question Navigation Dots -->
+                        <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+                            <?php foreach ($view->questions as $index => $question): ?>
+                                <div class="text-center">
+                                    <div class="question-dot mx-auto mb-1
+                                    <?= $index === 0 ? 'active-dot' : '' ?>"
+                                         data-question="<?= $index + 1 ?>"
+                                         title="Question <?= $index + 1 ?>">
+                                        <?= $index + 1 ?>
+                                    </div>
+                                    <small class="text-muted d-none d-sm-block">Q<?= $index + 1 ?></small>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <!-- Progress Text -->
+                        <div class="text-center mt-3">
+                            <small class="text-muted" id="progressText">
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                                <span id="answeredCount">0</span> of <?= $view->totalQuestions ?> questions answered
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Survey Form -->
                 <div class="card shadow">
                     <div class="card-body">
                         <form method="POST" action="survey.php" id="surveyForm">
 
                             <?php foreach ($view->questions as $index => $question): ?>
-                                <div class="survey-question mb-4 p-3 border rounded" id="question-<?= $question['id'] ?>">
+                                <div class="survey-question mb-4 p-3 border rounded position-relative
+                                    <?= $index === 0 ? 'active-question' : '' ?>"
+                                     id="question-<?= $question['id'] ?>"
+                                     data-question-id="<?= $index + 1 ?>">
+
+                                    <!-- Question Status Indicator -->
+                                    <div class="question-status position-absolute top-0 end-0 m-2">
+                                        <span class="badge bg-secondary question-badge">Not answered</span>
+                                    </div>
+
                                     <h5 class="question-text mb-3">
                                         <span class="badge bg-danger me-2">Q<?= $index + 1 ?></span>
                                         <?= htmlspecialchars($question['question']) ?>
@@ -68,95 +120,277 @@
                                             <?php endforeach; ?>
                                         </div>
                                     <?php endif; ?>
+
+                                    <!-- Navigation Buttons for Mobile -->
+                                    <div class="d-flex justify-content-between mt-3 d-md-none">
+                                        <?php if ($index > 0): ?>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm prev-question">
+                                                <i class="bi bi-arrow-up"></i> Previous
+                                            </button>
+                                        <?php endif; ?>
+
+                                        <?php if ($index < $view->totalQuestions - 1): ?>
+                                            <button type="button" class="btn btn-outline-danger btn-sm next-question ms-auto">
+                                                Next <i class="bi bi-arrow-down"></i>
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             <?php endforeach; ?>
 
                             <!-- Form Buttons -->
-                            <div class="d-flex justify-content-between mt-4">
+                            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
                                 <a href="index.php" class="btn btn-outline-secondary">
                                     <i class="bi bi-arrow-left"></i> Back to Home
                                 </a>
-                                <button type="submit" class="btn btn-success btn-lg px-4" name="submitSurvey">
-                                    <i class="bi bi-check-circle"></i> Complete Survey
-                                </button>
+                                <div>
+                                    <button type="button" class="btn btn-outline-danger me-2" id="scrollToTopBtn">
+                                        <i class="bi bi-arrow-up"></i> Top
+                                    </button>
+                                    <button type="submit" class="btn btn-success btn-lg px-4" name="submitSurvey" id="submitBtn">
+                                        <i class="bi bi-check-circle"></i> Complete Survey
+                                    </button>
+                                </div>
                             </div>
                         </form>
-                    </div>
-                </div>
-
-                <!-- Progress Indicator -->
-                <div class="mt-3">
-                    <div class="progress" style="height: 8px;">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;"
-                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="d-flex justify-content-between mt-1">
-                        <small class="text-muted">Start</small>
-                        <small class="text-muted">Complete Survey to Continue</small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- some JavaScript for better UX -->
+    <!-- JavaScript for Enhanced UX -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Add some interactivity
-            const form = document.getElementById('surveyForm');
+            const totalQuestions = <?= $view->totalQuestions ?>;
+            const progressBar = document.getElementById('progressBar');
+            const progressPercentage = document.getElementById('progressPercentage');
+            const progressText = document.getElementById('progressText');
+            const answeredCountElement = document.getElementById('answeredCount');
+            const questionDots = document.querySelectorAll('.question-dot');
             const questions = document.querySelectorAll('.survey-question');
+            const submitBtn = document.getElementById('submitBtn');
+            let currentQuestion = 1;
+            let answeredQuestions = new Set();
 
-            // Add click effect to questions
-            questions.forEach(question => {
-                question.addEventListener('click', function(e) {
-                    if (!e.target.closest('.form-check-input')) {
-                        this.style.backgroundColor = '#f8f9fa';
+            // Initialize first question
+            updateActiveQuestion(1);
+
+            // Function to update progress
+            function updateProgress() {
+                // Count answered questions
+                answeredQuestions.clear();
+
+                questions.forEach((question, index) => {
+                    const questionId = index + 1;
+                    const radios = question.querySelectorAll('input[type="radio"]:checked');
+                    const checkboxes = question.querySelectorAll('input[type="checkbox"]:checked');
+                    const questionBadge = question.querySelector('.question-badge');
+
+                    if (radios.length > 0 || checkboxes.length > 0) {
+                        answeredQuestions.add(questionId);
+                        question.classList.add('answered');
+                        question.classList.remove('unanswered');
+                        if (questionBadge) {
+                            questionBadge.textContent = 'Answered';
+                            questionBadge.className = 'badge bg-success question-badge';
+                        }
+                        questionDots[index].classList.add('answered-dot');
+                        questionDots[index].classList.remove('unanswered-dot');
+                    } else {
+                        question.classList.add('unanswered');
+                        question.classList.remove('answered');
+                        if (questionBadge) {
+                            questionBadge.textContent = 'Not answered';
+                            questionBadge.className = 'badge bg-secondary question-badge';
+                        }
+                        questionDots[index].classList.add('unanswered-dot');
+                        questionDots[index].classList.remove('answered-dot');
+                    }
+                });
+
+                const answeredCount = answeredQuestions.size;
+                const percentage = Math.round((answeredCount / totalQuestions) * 100);
+
+                // Update progress bar
+                progressBar.style.width = percentage + '%';
+                progressBar.setAttribute('aria-valuenow', percentage);
+                progressPercentage.textContent = percentage + '%';
+                answeredCountElement.textContent = answeredCount;
+
+                // Update progress bar color
+                if (percentage === 100) {
+                    progressBar.classList.remove('bg-danger', 'bg-warning');
+                    progressBar.classList.add('bg-success');
+                    submitBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Ready to Submit!';
+                    submitBtn.classList.remove('btn-success');
+                    submitBtn.classList.add('btn-success', 'pulse-animation');
+                } else if (percentage >= 70) {
+                    progressBar.classList.remove('bg-danger', 'bg-success');
+                    progressBar.classList.add('bg-warning');
+                    submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Complete Survey';
+                    submitBtn.classList.remove('pulse-animation');
+                } else {
+                    progressBar.classList.remove('bg-warning', 'bg-success');
+                    progressBar.classList.add('bg-danger');
+                    submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Complete Survey';
+                    submitBtn.classList.remove('pulse-animation');
+                }
+
+                // Find current unanswered question
+                for (let i = 0; i < questions.length; i++) {
+                    if (!answeredQuestions.has(i + 1)) {
+                        currentQuestion = i + 1;
+                        updateActiveQuestion(currentQuestion);
+                        break;
+                    }
+                }
+
+                // If all answered, make last question active
+                if (answeredCount === totalQuestions) {
+                    currentQuestion = totalQuestions;
+                    updateActiveQuestion(currentQuestion);
+                }
+            }
+
+            // Function to update active question
+            function updateActiveQuestion(questionNum) {
+                // Remove active class from all questions and dots
+                questions.forEach(q => {
+                    q.classList.remove('active-question');
+                });
+                questionDots.forEach(dot => {
+                    dot.classList.remove('active-dot');
+                });
+
+                // Add active class to current question and dot
+                if (questionNum >= 1 && questionNum <= totalQuestions) {
+                    const questionIndex = questionNum - 1;
+                    questions[questionIndex].classList.add('active-question');
+                    questionDots[questionIndex].classList.add('active-dot');
+
+                    // Scroll to active question (smoothly)
+                    setTimeout(() => {
+                        questions[questionIndex].scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }, 100);
+                }
+            }
+
+            // Add event listeners to all inputs
+            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+                input.addEventListener('change', function() {
+                    updateProgress();
+                    // Auto-advance to next question on radio selection
+                    if (this.type === 'radio' && currentQuestion < totalQuestions) {
                         setTimeout(() => {
-                            this.style.backgroundColor = '';
-                        }, 300);
+                            updateActiveQuestion(currentQuestion + 1);
+                        }, 500);
                     }
                 });
             });
 
-            // Form validation
-            form.addEventListener('submit', function(e) {
-                let allAnswered = true;
+            // Add click events to question dots for navigation
+            questionDots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    currentQuestion = index + 1;
+                    updateActiveQuestion(currentQuestion);
+                });
+            });
 
-                questions.forEach(question => {
-                    const radios = question.querySelectorAll('input[type="radio"]');
-                    const checkboxes = question.querySelectorAll('input[type="checkbox"]');
-
-                    if (radios.length > 0) {
-                        const checked = Array.from(radios).some(radio => radio.checked);
-                        if (!checked) {
-                            allAnswered = false;
-                            question.classList.add('border-danger');
-                        } else {
-                            question.classList.remove('border-danger');
-                        }
+            // Next/Previous buttons for mobile
+            document.querySelectorAll('.next-question').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const questionDiv = this.closest('.survey-question');
+                    const questionId = parseInt(questionDiv.dataset.questionId);
+                    if (questionId < totalQuestions) {
+                        currentQuestion = questionId + 1;
+                        updateActiveQuestion(currentQuestion);
                     }
                 });
+            });
 
-                if (!allAnswered) {
+            document.querySelectorAll('.prev-question').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const questionDiv = this.closest('.survey-question');
+                    const questionId = parseInt(questionDiv.dataset.questionId);
+                    if (questionId > 1) {
+                        currentQuestion = questionId - 1;
+                        updateActiveQuestion(currentQuestion);
+                    }
+                });
+            });
+
+            // Scroll to top button
+            document.getElementById('scrollToTopBtn').addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
                     e.preventDefault();
-                    alert('Please answer all questions before submitting.');
+                    currentQuestion = Math.min(currentQuestion + 1, totalQuestions);
+                    updateActiveQuestion(currentQuestion);
+                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    currentQuestion = Math.max(currentQuestion - 1, 1);
+                    updateActiveQuestion(currentQuestion);
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    currentQuestion = 1;
+                    updateActiveQuestion(currentQuestion);
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    currentQuestion = totalQuestions;
+                    updateActiveQuestion(currentQuestion);
+                }
+            });
+
+            // Form validation
+            document.getElementById('surveyForm').addEventListener('submit', function(e) {
+                if (answeredQuestions.size < totalQuestions) {
+                    e.preventDefault();
+                    const unanswered = totalQuestions - answeredQuestions.size;
+                    alert(`Please answer all questions before submitting.\n\nYou have ${unanswered} unanswered question${unanswered > 1 ? 's' : ''}.`);
+
+                    // Scroll to first unanswered question
+                    for (let i = 0; i < questions.length; i++) {
+                        if (!answeredQuestions.has(i + 1)) {
+                            questions[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            break;
+                        }
+                    }
                 } else {
                     // Show loading state
-                    const submitBtn = form.querySelector('[type="submit"]');
                     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
                     submitBtn.disabled = true;
                 }
             });
+
+            // Initial progress update
+            updateProgress();
         });
     </script>
 
     <style>
         .survey-question {
             transition: all 0.3s ease;
+            background-color: #fff;
         }
-        .survey-question:hover {
+        .survey-question.active-question {
             border-color: #dc3545 !important;
-            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+            border-width: 2px !important;
+            box-shadow: 0 0 15px rgba(220, 53, 69, 0.15);
+            transform: translateY(-2px);
+        }
+        .survey-question.answered {
+            border-left: 4px solid #28a745 !important;
+        }
+        .survey-question.unanswered {
+            border-left: 4px solid #ffc107 !important;
         }
         .question-text {
             color: #333;
@@ -166,7 +400,77 @@
             background-color: #dc3545;
             border-color: #dc3545;
         }
+
+        /* Question Dots Styling */
+        .question-dot {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .question-dot.active-dot {
+            background-color: #dc3545 !important;
+            color: white !important;
+            border-color: #dc3545;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+        }
+        .question-dot.answered-dot {
+            background-color: #28a745 !important;
+            color: white !important;
+        }
+        .question-dot.unanswered-dot {
+            background-color: #ffc107 !important;
+            color: #212529 !important;
+        }
+        .question-dot:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+
+        /* Progress bar animation */
+        .progress-bar {
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+
+        /* Pulse animation for complete button */
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .question-dot {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+            .survey-question {
+                padding: 1rem !important;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 
 <?php require('template/footer.phtml'); ?>
-<!-- Error detecting -->
