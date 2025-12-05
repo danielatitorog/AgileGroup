@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($password !== $confirm) {
         $view->errorMessage = "Passwords do not match!";
     } else {
-        $userDataSet = new User();
+        $result = $view->user->register($username, $email, $password);
 
-        if ($userDataSet->register($username, $email, $password)) {
+        if ($result === true) {
             // Automatically log in after registration
             if ($view->user->login($username, $password)) {
                 header("Location: survey.php"); // change this to the location of the questions

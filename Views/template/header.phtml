@@ -46,6 +46,7 @@
                         <!-- Home page link -->
                         <a class="nav-link active fw-semibold" aria-current="page" href="index.php">Home</a>
                     </li>
+                    <?php if ($view->user->isLoggedIn()) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="roadmap.php">Roadmap</a>
                     </li>
@@ -59,7 +60,6 @@
 
                 <!-- Right side of the menu -->
                 <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                    <?php if ($view->user->isLoggedIn()) { ?>
                         <!-- Logout button -->
                         <li class="nav-item">
                             <form action="index.php" method="POST" class="d-inline">
