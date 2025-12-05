@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             $view->errorMessage = "Username or email already exists.";
+            //test
         }
     }
 }
