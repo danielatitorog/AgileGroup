@@ -1,0 +1,26 @@
+<?php require('template/header.phtml') ?>
+
+<div class="container py-5">
+    <h1 class="mb-4">Your YouthInvest Result</h1>
+
+    <div class="card p-4 mb-4">
+        <p><strong>Goal:</strong> <?= htmlspecialchars($view->goal) ?></p>
+        <p><strong>Retirement Age:</strong> <?= (int)$view->retirementAge ?></p>
+        <p><strong>Target Amount:</strong> £<?= number_format($view->targetAmount, 2) ?></p>
+        <p><strong>Your Final Pot:</strong> £<?= number_format($view->finalPot, 2) ?></p>
+        <p><strong>Goal Achieved:</strong> <?= (int)$view->scorePercent ?>%</p>
+    </div>
+
+    <div class="card p-4 mb-4">
+        <h2 class="h5">Feedback</h2>
+        <p><?= htmlspecialchars($view->resultMessage) ?></p>
+    </div>
+
+    <a href="roadmap.php" class="btn btn-primary me-2">Play Again (Demo)</a>
+
+    <form action="index.php" method="post" class="d-inline">
+        <button type="submit" name="logoutBtn" class="btn btn-outline-secondary">Logout</button>
+    </form>
+</div>
+
+<?php require('template/footer.phtml') ?>
