@@ -106,10 +106,6 @@ class User
 
     public function register($username, $email, $password)
     {
-        // Validate password
-        if (!$this->isPasswordStrong($password)) {
-            return "Password does not meet the security requirements.";
-        }
 
         $sql = "INSERT INTO users (username, email, password_hash) 
             VALUES (:username, :email, :password_hash)";
@@ -130,35 +126,35 @@ class User
         }
     }
 
-    private function isPasswordStrong($password)
+    public function validatePassword($password)
     {
-        // Requirement 1: At least 12 characters long (14+ recommended)
+        // Length requirement
         if (strlen($password) < 8) {
-            return false;
+            return "Password must be at least 8 characters long.";
         }
 
-        // Requirement 2: Combination of uppercase, lowercase, numbers, and symbols
-        $hasUpper = preg_match('/[A-Z]/', $password);
-        $hasLower = preg_match('/[a-z]/', $password);
-        $hasNumber = preg_match('/[0-9]/', $password);
-        $hasSymbol = preg_match('/[\W_]/', $password);
-
-        if (!$hasUpper || !$hasLower || !$hasNumber || !$hasSymbol) {
-            return false;
+        // Character mix requirement: uppercase, lowercase, number, symbol
+        if (
+            !preg_match('/[A-Z]/', $password) ||
+            !preg_match('/[a-z]/', $password) ||
+            !preg_match('/[0-9]/', $password) ||
+            !preg_match('/[\W_]/', $password) // symbols & underscore
+        ) {
+            return "Password must include uppercase, lowercase, numbers, and symbols.";
         }
 
-        // Requirement 3: Not dictionary-like or a common name (basic check)
-        // You can expand this list if needed
-        $weakWords = ['password', 'qwerty', 'letmein', 'admin', 'welcome', 'dragon', 'football'];
-        foreach ($weakWords as $word) {
+        // Basic dictionary word / name protection
+        // This prevents users from using common words
+        $commonWords = ['password', 'qwerty', 'letmein', 'welcome', 'admin', 'user'];
+
+        foreach ($commonWords as $word) {
             if (stripos($password, $word) !== false) {
-                return false;
+                return "Password cannot contain common dictionary words.";
             }
         }
 
-        // Prevent passwords containing the username or the email local-part
-        // (you can pass these into the function if needed)
-        return true;
+        return true; // Passed validation
     }
+
 
 }

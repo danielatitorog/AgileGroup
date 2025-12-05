@@ -16,20 +16,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($password !== $confirm) {
         $view->errorMessage = "Passwords do not match!";
     } else {
-        $result = $view->user->register($username, $email, $password);
 
-        if ($result === true) {
-            // Automatically log in after registration
-            if ($view->user->login($username, $password)) {
-                header("Location: survey.php"); // change this to the location of the questions
-                exit;
-            }
+        // Validate password strength
+        $validation = $view->user->validatePassword($password);
+
+        if ($validation !== true) {
+            $view->errorMessage = $validation;
         } else {
-            $view->errorMessage = "Username or email already exists.";
-            //test
+            // Create user object for registering
+            $userDataSet = new User();
+
+            if ($userDataSet->register($username, $email, $password)) {
+
+                // Auto-login
+                if ($view->user->login($username, $password)) {
+                    header("Location: survey.php");
+                    exit;
+                }
+
+            } else {
+                $view->errorMessage = "Username or email already exists.";
+            }
         }
     }
 }
 
 require_once('Views/register.phtml');
+
+
 
