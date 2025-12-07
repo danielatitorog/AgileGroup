@@ -112,3 +112,9 @@ main {
     width: 100%;
     box-sizing: border-box;
 }
+
+.profile-card {
+    border-radius: 20px !important;
+    overflow: hidden;
+}
+
