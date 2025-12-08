@@ -6,10 +6,10 @@ const nextBtn = document.getElementById("nextSlide");
 let currentSlide = 0;
 let isTransitioning = false;
 
-function updateProgress() {
-    progressBar.style.width = ((currentSlide + 1) / slides.length) * 100 + "%";
-    prevBtn.disabled = currentSlide === 0;
-    nextBtn.disabled = currentSlide === slides.length - 1;
+function updateProgress(index = currentSlide) {
+    progressBar.style.width = ((index + 1) / slides.length) * 100 + "%";
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === slides.length - 1;
 }
 
 function showSlide(index) {
@@ -19,25 +19,26 @@ function showSlide(index) {
     const current = slides[currentSlide];
     const next = slides[index];
 
-    currentSlide = index;
-    updateProgress();
-
     current.classList.add("fade-out");
-    current.classList.remove("active");
 
     setTimeout(() => {
-        current.classList.remove("fade-out");
+        current.classList.remove("active", "fade-out");
+        current.style.zIndex = 1;
 
+        next.style.zIndex = 2;
         next.classList.add("active", "fade-in");
 
         setTimeout(() => {
             next.classList.remove("fade-in");
+            next.style.zIndex = 1;
+
+            currentSlide = index;
+            updateProgress(currentSlide);
 
             if (currentSlide === 1) alignPlayer();
 
             isTransitioning = false;
         }, 500);
-
     }, 500);
 }
 
@@ -45,8 +46,8 @@ function showSlide(index) {
 prevBtn.addEventListener("click", () => showSlide(currentSlide - 1));
 nextBtn.addEventListener("click", () => showSlide(currentSlide + 1));
 
-updateProgress();
 slides[currentSlide].classList.add("active");
+updateProgress();
 
 const ageButton = document.getElementById("ageButton");
 const player = document.querySelector(".player-container");
@@ -73,7 +74,7 @@ function movePlayerTo(index) {
     const playerWidth = player.offsetWidth;
     const playerHeight = player.offsetHeight;
 
-    const offsetX = rectTarget.left - rectParent.left + rectTarget.width/2 - playerWidth/2;
+    const offsetX = rectTarget.left - rectParent.left + rectTarget.width / 2 - playerWidth / 2;
     const offsetY = rectTarget.top - rectParent.top - playerHeight - 10;
 
     player.style.left = offsetX + "px";
@@ -141,6 +142,15 @@ window.addEventListener('DOMContentLoaded', () => {
     movePlayerTo(0);
     updatePortfolioUI();
     const infoModalEl = document.getElementById('infoModal');
-    const infoModal = new bootstrap.Modal(infoModalEl);
-    infoModal.show();
+    if(infoModalEl){
+        const infoModal = new bootstrap.Modal(infoModalEl);
+        infoModal.show();
+    }
+});
+
+document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const target = parseInt(btn.dataset.slide);
+        showSlide(target);
+    });
 });
