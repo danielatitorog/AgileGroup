@@ -12,9 +12,7 @@ $view->authMessage = '';   // Default authentication message
 $view->currentUser = $view->user->getCurrentUser();
 $view->userName = $view->currentUser ? $view->currentUser->getUserName() : null;
 
-if ($view->user->isLoggedIn()) {
-    $view->authMessage = "You are logged in.";
-} else {
+if (!$view->user->isLoggedIn()) {
     $view->authMessage = "You are not logged in.";
 }
 
