@@ -1,153 +1,237 @@
-<?php require('template/header.phtml') ?> <!-- Include the header template -->
-<div class="login-page d-flex flex-column justify-content-center align-items-center min-vh-100">
+<?php require('template/header.phtml') ?>
 
+<div class="learning-container position-relative d-flex gap-4">
 
-    <div class="login-card p-4 shadow rounded bg-white" style="width: 82.5vw; max-width: none;">
+    <aside class="sidebar card p-4 shadow-sm">
+        <h3 class="sidebar-title">Course Modules</h3>
 
-        <h2>S&P500</h2>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="0">What does investing mean?</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="1">Why investments grow</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="2">Risk vs Reward</button>
 
-        <div class="portfolio-bar d-flex justify-content-between align-items-center p-3 mb-5 bg-light rounded">
+        <button class="nav-btn btn btn-primary mb-2" data-slide="3">Building wealth over time</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="4">Beating inflation</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="5">Financial freedom</button>
 
-            <div>
-                <strong>Current Income:</strong> £<span id="cashDisplay">33000</span><br>
-                <strong>Invested:</strong> £<span id="investedDisplay">0</span>
-            </div>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="6">What is a share?</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="7">How the market works</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="8">Diversification</button>
 
-            <div>
-                <button id="buyButton" class="btn btn-primary me-2">Invest 5% of income</button>
-                <button id="sellButton" class="btn btn-danger">Sell</button>
-            </div>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="9">Protecting personal info</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="10">Avoiding scams</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="11">Safe habits</button>
 
-        </div>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="12">Saving for milestones</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="13">Advantages of starting early</button>
+        <button class="nav-btn btn btn-primary mb-2" data-slide="14">Staying invested</button>
+    </aside>
 
+    <div class="module-area">
+        <div id="topNavBar" class="top-bar shadow-sm p-2 d-flex align-items-center gap-3">
+            <button id="prevSlide" class="btn btn-secondary">◀ Previous</button>
 
-        <div class="player-container">
-            <div class="pulse"></div>
-            <div class="player">
-                <span class="player-text">You</span>
-            </div>
-        </div>
-
-        <div class="d-flex flex-wrap p-2" id="board">
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle">
-                    <span class="player-text">18</span>
-                </div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-                <div class="small-circle step-circle"></div>
-            </div>
-
-            <div class="circle-wrapper">
-                <div class="big-circle step-circle">
-                    <span class="player-text">65</span>
+            <div class="flex-grow-1">
+                <div id="progressBarContainer" class="bg-secondary rounded overflow-hidden" style="height:8px;">
+                    <div id="progressBar" class="bg-primary h-100 w-0"></div>
                 </div>
             </div>
+
+            <button id="nextSlide" class="btn btn-primary">Next ▶</button>
+        </div>
+
+        <div id="slides" style="position: relative; min-height: 300px;">
+
+            <div class="slide active text-center">
+
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 1: What Is Investing?</strong></h1>
+                    <h2>What does investing mean?</h2>
+                    <p>Investing is when you put your money into something that can grow in value over time.
+                        A helpful way to think about it is like planting a smart money seed: it doesn’t grow instantly, and sometimes it might dip during bad weather, but over the long run it has the potential to grow into something much bigger. Instead of letting money sit still, investing puts it to work so it can help you reach future goals.</p>
+                    <p>The key idea is that your money isn’t just sitting still anymore. It’s being used to help companies grow, build new products, or open new locations, and if things go well, you benefit from that growth too.</p>
+                </div>
+
+            </div>
+
+
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 1: What Is Investing?</strong></h1>
+                    <h2>Why do investments grow?</h2>
+                    <p>Investments grow mainly because companies grow. When businesses make more profit, expand, or become more popular, the value of their shares rises. Over long periods of time, entire economies get bigger, technology improves, and successful companies tend to earn more money.</p>
+                    <p>This growth is reflected in the value of their stocks or funds. That’s why investing early and staying invested for a long time often leads to strong results—even with the ups and downs along the way.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 1: What Is Investing?</strong></h1>
+                    <h2>Risk vs Reward</h2>
+                    <p>Every investment comes with some level of risk. Prices can rise and fall because of world events, company news, or changes in the economy. This can feel stressful at times, but it’s completely normal.</p>
+                    <p>The important thing to know is that risk and reward are connected: safer investments usually grow slowly, while higher-risk investments can grow more—especially over many years. Smart investors learn how to balance both by diversifying and staying patient.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+
+                    <h1><strong>Module 2: Benefits of Investing</strong></h1>
+                    <h2>Building wealth over time</h2>
+                    <p>One of the biggest advantages of investing is how much your money can grow over long periods. Even small amounts invested consistently can increase significantly thanks to compounding, the effect where your returns start earning returns of their own.</p>
+                    <p>This is why starting young is such a superpower. The earlier you begin, the more time your investments have to multiply.</p>
+
+                    <div class="roadmap-wrapper d-flex flex-column align-items-center">
+
+                        <div class="login-card roadmap-card card shadow-sm p-4 w-100" style="max-width:900px; position: relative;">
+
+                            <div class="portfolio-bar d-flex justify-content-between align-items-center p-3 mb-4 bg-light rounded">
+                                <div>
+                                    <strong>Current Income:</strong> £<span id="cashDisplay">33000</span><br>
+                                    <strong>Invested:</strong> £<span id="investedDisplay">0</span>
+                                </div>
+                                <div>
+                                    <button id="buyButton" class="btn btn-primary me-2">Invest 5% of income</button>
+                                    <button id="sellButton" class="btn btn-danger">Sell</button>
+                                </div>
+                            </div>
+
+                            <div class="player-container position-absolute">
+                                <div class="pulse position-absolute top-50 start-50 translate-middle rounded-circle"></div>
+                                <div class="player d-flex align-items-center justify-content-center rounded-circle bg-success text-white fw-bold">
+                                    You
+                                </div>
+                            </div>
+
+                            <div id="board" class="d-flex flex-wrap justify-content-center mt-4">
+                                <?php
+                                $ages = array_merge([18], array_fill(0, 5, ""), [65]);
+                                for ($i = 0; $i < count($ages); $i++): ?>
+                                    <div class="circle-wrapper d-flex align-items-center gap-2 m-1">
+                                        <div class="big-circle step-circle d-flex align-items-center justify-content-center bg-primary text-white fw-bold">
+                                            <?php if($ages[$i] !== "") echo $ages[$i]; ?>
+                                        </div>
+                                        <?php if($i != count($ages)-1): ?>
+                                            <?php for($j=0;$j<3;$j++): ?>
+                                                <div class="small-circle step-circle bg-info rounded-circle"></div>
+                                            <?php endfor; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
+
+                        </div>
+
+                        <button id="ageButton" class="btn btn-success mt-3">+ Age</button>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 2: Benefits of Investing</strong></h1>
+                    <h2>Beating inflation</h2>
+                    <p>Inflation means everyday things such as food, clothes, and travel, slowly get more expensive over time. If your money doesn’t grow, it loses buying power.</p>
+                    <p>Investing helps your money grow faster than inflation, giving you the chance to maintain or increase what you can afford in the future. It’s one of the most effective ways to protect the real value of your money.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 2: Benefits of Investing</strong></h1>
+                    <h2>Creating financial freedom</h2>
+                    <p>Investing can unlock choices that might not otherwise be possible. It helps you save for things like travelling, university, moving out, or starting a business one day.</p>
+                    <p>Financial freedom doesn’t mean being rich—it means having options. Investing gives you more control over your future so you're not relying entirely on your job or parents as you get older.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 3: Stock Market Basics</strong></h1>
+                    <h2>What is a share?</h2>
+                    <p>A share represents a tiny piece of a company. When you buy one, you become a small owner of that business. If the company grows, earns more money, or becomes more popular, the value of your share usually increases.</p>
+                    <p>You’re essentially trusting the company’s success, and in return, you get part of the profits and part of the growth.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 3: Stock Market Basics</strong></h1>
+                    <h2>How the stock market works</h2>
+                    <p>The stock market is like a huge online marketplace where people buy and sell shares every second of the day. Prices constantly change based on supply and demand—how many people want to buy something versus how many want to sell it.</p>
+                    <p>When lots of people believe a company will perform well, more buyers appear and the price goes up. When investors lose confidence, the price falls. These movements might seem random day to day, but over many years, the market has historically grown.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 3: Stock Market Basics</strong></h1>
+                    <h2>Diversification: don’t put all your eggs in one basket</h2>
+                    <p>Diversification means spreading your money across many different investments instead of relying on just one. If one company has a bad year, your entire investment won’t collapse because the others can balance it out.</p>
+                    <p>This is why funds are popular—they include many companies at once, giving you instant diversification with just a single purchase.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 4: Online Safety When Investing</strong></h1>
+                    <h2>Protecting personal information</h2>
+                    <p>Your investment account holds sensitive financial information, so keeping it safe is essential. Always use strong, unique passwords and avoid logging in on shared or public computers.</p>
+                    <p>Treat your account like a locked vault—only you should be able to access it. Even a small slip can lead to big problems.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 4: Online Safety When Investing</strong></h1>
+                    <h2>Avoiding scams</h2>
+                    <p>Scams are becoming more common, especially online. If someone promises extremely high returns with “no risk,” pressures you to invest quickly, or contacts you out of nowhere, it’s almost always a scam.</p>
+                    <p>Real investing takes time, involves risk, and never guarantees huge profits overnight. If something feels suspicious, it probably is.</p>
+                    <button type="button" class="btn btn-primary w-25 mx-auto">CLICK HERE!</button>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 4: Online Safety When Investing</strong></h1>
+                    <h2>Creating safe habits online</h2>
+                    <p>Using two-factor authentication (2FA), keeping your phone and laptop updated, and turning on security features can block most attacks before they happen.</p>
+                    <p>These small habits create big protection. Online safety is part of being a responsible modern investor.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 5: How Investing Impacts Major Life Events</strong></h1>
+                    <h2>Saving for big milestones</h2>
+                    <p>Many major life events—like buying your first car, paying for university, or moving into your own place—require money. Investing can help you reach these goals faster than regular saving alone.</p>
+                    <p>By planning ahead and investing early, you reduce stress later and give yourself more opportunities when these milestones arrive.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 5: How Investing Impacts Major Life Events</strong></h1>
+                    <h2>Investing early gives you massive advantages</h2>
+                    <p>Time is the most powerful tool in investing. Even small amounts invested as a teenager can grow into something surprisingly large by adulthood because compounding multiplies your money the longer it sits.</p>
+                    <p>Starting early doesn’t just give you more money—it gives you more time to learn, make decisions, and build confidence.</p>
+                </div>
+            </div>
+
+            <div class="slide text-center">
+                <div class="login-card roadmap-card card shadow-sm p-4 w-100">
+                    <h1><strong>Module 5: How Investing Impacts Major Life Events</strong></h1>
+                    <h2>Staying invested through ups and downs</h2>
+                    <p>The market will rise and fall throughout your life. It’s normal, and every investor experiences it. What matters most is staying calm and sticking to your long-term plan.</p>
+                    <p>People who stay invested through difficult times often come out stronger, because markets historically recover and grow over the long run.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <button id="ageButton" class="btn btn-success mt-3">+ Age</button>
 </div>
 
-<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Welcome to AJ Bell Youth Invest!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Welcome to your accelerated life journey. We’ve created a gamified experience to help you master the basics of investing by simulating a lifetime of financial decisions in minutes.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Start</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Event Modal -->
-<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Random Event!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                You encountered a random event. Here’s some information…
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<?php require('template/footer.phtml') ?> <!-- Include the footer template -->
+<?php require('template/footer.phtml') ?>

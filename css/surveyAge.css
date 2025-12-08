@@ -1,17 +1,30 @@
-
+/* Base styling for age selection
+ * provides space for a border but keeps it invisible initially
+ * changes curser to pointer to show it is clickable
+ */
 .age-option {
     transition: all 0.3s ease;
     border: 3px solid transparent;
     cursor: pointer;
 }
+/* Styling when the mouse hovers over an age selection
+ * moves the element slightly upward for a lift effect
+ * adds a soft shadow to create depth
+ */
 .age-option:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
+/* styling applied when an age option is selected
+*  add a red border to show it is selected
+*  light red background for extra emphasis
+*/
 .age-option.selected {
     border-color: #dc3545;
     background-color: rgba(220, 53, 69, 0.05);
 }
+/* utility class to turn cursor into a pointer clickable
+*/
 .cursor-pointer {
     cursor: pointer;
 }

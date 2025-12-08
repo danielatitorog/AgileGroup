@@ -1,49 +1,102 @@
-.circle-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
 
-.big-circle {
-    width: 2.5vw;
-    height: 2.5vw;
-    min-width: 15px;
-    max-width: 60px;
-    background-color: #007bff;
-    border-radius: 25%;
-    margin-left: 10px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    font-size: calc(var(--player-size) / 2.5);
+.learning-container {
+    margin: 0 auto;
+    padding: 20px;
     position: relative;
 }
 
-.small-circle {
-    width: 0.75vw;
-    height: 0.75vw;
-    min-width: 5px;
-    max-width: 25px;
-    background-color: #a4c5ed;
-    border-radius: 25%;
+.module-area {
+    position: relative;
 }
 
-:root {
-    --player-size: 45px;
+.top-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fff;
+    padding: 10px 0;
+}
+
+#progressBarContainer {
+    position: relative;
+    z-index: 1001;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #ddd;
+}
+
+#progressBar {
+    height: 100%;
+    width: 0;
+    background-color: #007bff;
+    transition: width 0.3s ease;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.roadmap-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-card {
+    position: relative;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 20px;
 }
 
 .player-container {
+    width: 45px;
+    height: 45px;
     position: absolute;
-    width: var(--player-size);
-    height: var(--player-size);
     z-index: 10;
     transition: left 0.4s ease, top 0.4s ease;
 }
-
-
 
 .player {
     width: 100%;
@@ -53,62 +106,175 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
     color: white;
-    font-size: calc(var(--player-size) / 3);
-    position: relative;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .pulse {
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 255, 0, 0.5);
+    background-color: rgba(0,255,0,0.5);
     border-radius: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    transform-origin: center;
+    transform: translate(-50%, -50%);
     animation: pulseAnimation 1.5s ease-out infinite;
     z-index: 0;
 }
 
-
 @keyframes pulseAnimation {
-    0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.7;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1.5);
-        opacity: 0;
-    }
-}
-
-.login-card {
-    position: relative;
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
 }
 
 #board {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     position: relative;
+    margin-top: 40px;
 }
 
-main {
-    padding-bottom: 100px;
+.circle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.25rem;
 }
 
-.login-link {
+.big-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff;
+    color: white;
     font-weight: bold;
-    text-decoration: none;     /* no underline normally */
-    color: black;
+    font-size: 14px;
 }
 
-.login-link:hover {
-    text-decoration: underline; /* underline on hover */
-    color: black; /* color */
+.small-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #a4c5ed;
 }
 
 .portfolio-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    box-sizing: border-box;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#ageButton {
+    margin: 20px auto 0;
+    display: block;
+}
+
+.floating-avatar {
+    position: absolute;
+    left: -230px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 240px;
+    height: auto;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.profile-card {
+    border-radius: 20px !important;
+    overflow: hidden;
+}
+
+
+
+/* SECTION 1 - Side-by-side */
+.aj-unique-section {
+    background: #fff;
+    border: 1px solid #eee;
+}
+.aj-heading-line {
+    border-left: 4px solid #E41E26;
+    padding-left: 10px;
+}
+.aj-graphic-box {
+    width: 180px;
+    height: 120px;
+    background: linear-gradient(to bottom right, #f5f5f5, #ececec);
+    border-radius: 12px;
+}
+
+/* SECTION 2 - Icon banner */
+.aj-icon-section {
+    background: #fafafa;
+    border-left: 5px solid #E41E26;
+}
+.aj-icon-circle {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    background: #E41E26;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SECTION 3 - Timeline */
+.aj-timeline {
+    border-left: 3px solid #ccc;
+    padding-left: 20px;
+}
+.aj-timeline-item {
+    margin-bottom: 15px;
+    position: relative;
+}
+.aj-timeline-dot {
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #E41E26;
+    position: absolute;
+    left: -28px;
+    top: 2px;
+}
+
+/* SECTION 4 - Split background */
+.aj-friends-section {
+    background: #E41E26;
+    overflow: hidden;
+}
+.aj-split-graphic {
+    width: 100%;
+    height: 150px;
+    background: #f3f3f3;
+    border-radius: 12px;
+}
+
+/* SECTION 5 - Bordered card */
+.aj-bordered-card {
+    border: 2px solid #E41E26;
+    background: #fff;
+}
+.aj-list li {
+    margin-bottom: 6px;
+}
+
+.header-size {
+    font-size: 40px;
+}
+
+.text-size {
+    font-size: 20px;
 }
