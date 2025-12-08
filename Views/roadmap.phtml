@@ -12,13 +12,11 @@
         </div>
         <button id="nextSlide" class="btn btn-primary">Next ▶</button>
     </div>
-    <!-- END MOVED -->
 
     <div id="slides" style="position: relative; min-height: 300px;">
 
-        <div class="slide active text-center position-relative">
+        <div class="slide active text-center">
 
-            <!-- FLOATING IMAGE (DOES NOT AFFECT LAYOUT) -->
             <img src="../images/bell_avatar.png"
                  alt="Bell Avatar"
                  class="floating-avatar">
@@ -54,53 +52,57 @@
         </div>
 
         <div class="slide text-center">
-            <h1><strong>Module 2: Benefits of Investing</strong></h1>
-            <h2>Building wealth over time</h2>
-            <p>One of the biggest advantages of investing is how much your money can grow over long periods. Even small amounts invested consistently can increase significantly thanks to compounding, the effect where your returns start earning returns of their own.</p>
-            <p>This is why starting young is such a superpower. The earlier you begin, the more time your investments have to multiply.</p>
+            <div class="login-card roadmap-card card shadow-sm p-4 w-100">
 
-            <div class="roadmap-wrapper d-flex flex-column align-items-center">
+                <h1><strong>Module 2: Benefits of Investing</strong></h1>
+                <h2>Building wealth over time</h2>
+                <p>One of the biggest advantages of investing is how much your money can grow over long periods. Even small amounts invested consistently can increase significantly thanks to compounding, the effect where your returns start earning returns of their own.</p>
+                <p>This is why starting young is such a superpower. The earlier you begin, the more time your investments have to multiply.</p>
 
-                <div class="login-card roadmap-card card shadow-sm p-4 w-100" style="max-width:900px; position: relative;">
+                <div class="roadmap-wrapper d-flex flex-column align-items-center">
 
-                    <div class="portfolio-bar d-flex justify-content-between align-items-center p-3 mb-4 bg-light rounded">
-                        <div>
-                            <strong>Current Income:</strong> £<span id="cashDisplay">33000</span><br>
-                            <strong>Invested:</strong> £<span id="investedDisplay">0</span>
-                        </div>
-                        <div>
-                            <button id="buyButton" class="btn btn-primary me-2">Invest 5% of income</button>
-                            <button id="sellButton" class="btn btn-danger">Sell</button>
-                        </div>
-                    </div>
+                    <div class="login-card roadmap-card card shadow-sm p-4 w-100" style="max-width:900px; position: relative;">
 
-                    <div class="player-container position-absolute">
-                        <div class="pulse position-absolute top-50 start-50 translate-middle rounded-circle"></div>
-                        <div class="player d-flex align-items-center justify-content-center rounded-circle bg-success text-white fw-bold">
-                            You
-                        </div>
-                    </div>
-
-                    <div id="board" class="d-flex flex-wrap justify-content-center mt-4">
-                        <?php
-                        $ages = array_merge([18], array_fill(0, 5, ""), [65]);
-                        for ($i = 0; $i < count($ages); $i++): ?>
-                            <div class="circle-wrapper d-flex align-items-center gap-2 m-1">
-                                <div class="big-circle step-circle d-flex align-items-center justify-content-center bg-primary text-white fw-bold">
-                                    <?php if($ages[$i] !== "") echo $ages[$i]; ?>
-                                </div>
-                                <?php if($i != count($ages)-1): ?>
-                                    <?php for($j=0;$j<3;$j++): ?>
-                                        <div class="small-circle step-circle bg-info rounded-circle"></div>
-                                    <?php endfor; ?>
-                                <?php endif; ?>
+                        <div class="portfolio-bar d-flex justify-content-between align-items-center p-3 mb-4 bg-light rounded">
+                            <div>
+                                <strong>Current Income:</strong> £<span id="cashDisplay">33000</span><br>
+                                <strong>Invested:</strong> £<span id="investedDisplay">0</span>
                             </div>
-                        <?php endfor; ?>
+                            <div>
+                                <button id="buyButton" class="btn btn-primary me-2">Invest 5% of income</button>
+                                <button id="sellButton" class="btn btn-danger">Sell</button>
+                            </div>
+                        </div>
+
+                        <div class="player-container position-absolute">
+                            <div class="pulse position-absolute top-50 start-50 translate-middle rounded-circle"></div>
+                            <div class="player d-flex align-items-center justify-content-center rounded-circle bg-success text-white fw-bold">
+                                You
+                            </div>
+                        </div>
+
+                        <div id="board" class="d-flex flex-wrap justify-content-center mt-4">
+                            <?php
+                            $ages = array_merge([18], array_fill(0, 5, ""), [65]);
+                            for ($i = 0; $i < count($ages); $i++): ?>
+                                <div class="circle-wrapper d-flex align-items-center gap-2 m-1">
+                                    <div class="big-circle step-circle d-flex align-items-center justify-content-center bg-primary text-white fw-bold">
+                                        <?php if($ages[$i] !== "") echo $ages[$i]; ?>
+                                    </div>
+                                    <?php if($i != count($ages)-1): ?>
+                                        <?php for($j=0;$j<3;$j++): ?>
+                                            <div class="small-circle step-circle bg-info rounded-circle"></div>
+                                        <?php endfor; ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+
                     </div>
+
+                    <button id="ageButton" class="btn btn-success mt-3">+ Age</button>
 
                 </div>
-
-                <button id="ageButton" class="btn btn-success mt-3">+ Age</button>
 
             </div>
         </div>
