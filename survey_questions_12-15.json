@@ -1,0 +1,87 @@
+{
+  "title": "Investment Knowledge Survey",
+  "description": "Assess your current experience and knowledge about investing",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Have you ever heard the word 'investing' before?",
+      "type": "radio",
+      "options": ["Yes", "No", "I’m not sure"]
+    },
+    {
+      "id": 2,
+      "question": "What do you think investing means?",
+      "type": "radio",
+      "options": ["Making money grow over time", "Spending money", "I don’t know"]
+    },
+    {
+      "id": 3,
+      "question": "Do you know the difference between saving and investing?",
+      "type": "radio",
+      "options": ["Yes", "A little", "Not really", "No, but I want to learn"]
+    },
+    {
+      "id": 4,
+      "question": "What do you think happens when you invest money?",
+      "type": "radio",
+      "options": ["It might grow", "It stays the same", "I don’t know", "I want to learn"]
+    },
+    {
+      "id": 5,
+      "question": "Which things have you heard about before? (Choose all that apply)",
+      "type": "checkbox",
+      "options": [
+        "Stocks (owning a tiny part of a company)",
+        "Saving money in a bank",
+        "Cryptocurrency",
+        "None of these"
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What is your biggest question about money?",
+      "type": "radio",
+      "options": ["How to save", "How to grow money", "How to spend wisely", "I don’t know"]
+    },
+    {
+      "id": 7,
+      "question": "What is the main reason you want to learn about investing?",
+      "type": "radio",
+      "options": [
+        "To grow my money in the future",
+        "To understand how it works",
+        "Because everyone talks about it",
+        "I’m not sure yet"
+      ]
+    },
+    {
+      "id": 8,
+      "question": "How comfortable are you with taking risks? (1 = not comfortable at all, 5 = very comfortable)",
+      "type": "radio",
+      "options": ["1", "2", "3", "4", "5"]
+    },
+    {
+      "id": 9,
+      "question": "What worries you the most about investing?",
+      "type": "radio",
+      "options": [
+        "Losing my money",
+        "I don’t know how to start",
+        "It seems confusing",
+        "I think it costs too much money",
+        "I might do it wrong"
+      ]
+    },
+    {
+      "id": 10,
+      "question": "Why would you want to invest money in the future?",
+      "type": "radio",
+      "options": [
+        "To have more money later",
+        "To save for something big",
+        "For my future as an adult",
+        "I’m not sure yet"
+      ]
+    }
+  ]
+}
