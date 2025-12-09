@@ -276,10 +276,78 @@
 }
 
 .text-size {
-    font-size: 20px;
+    font-size: 18px;
+}
+
+.contact-card {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    transition: all 0.25s ease;
+    border-radius: 14px;
+}
+
+.contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.contact-email {
+    font-size: 1.2rem;
+    color: #d71e28;
+    text-decoration: none;
+}
+
+.contact-email:hover {
+    text-decoration: underline;
+}
+
+/* Ensure footer appears only at the bottom naturally */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 main {
-    padding-bottom: 80px;
+    flex: 1 0 auto;
 }
 
+
+
+/* Footer styling */
+.footer {
+    border-top: 1px solid #ddd;
+}
+
+.footer-logo {
+    height: 55px;
+    width: auto;
+}
+
+.footer-left {
+    margin-top: 3px; /* small adjustment for alignment */
+}
+
+
+.footer-text p {
+    font-size: 16px;
+    color: #555;
+}
+
+.footer-icons i {
+    font-size: 22px;
+    color: #444;
+    cursor: pointer;
+}
+
+.footer-icons i:hover {
+    color: #d70000; /* optional hover color */
+}
+
+.nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+}

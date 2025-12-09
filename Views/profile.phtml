@@ -4,7 +4,7 @@
     <div class="row">
 
         <!-- Profile Sidebar -->
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <div class="card shadow-sm mb-4 profile-card">
                 <div class="card-body text-center">
 
@@ -26,23 +26,58 @@
                 </div>
                 <div class="card-body">
 
-                    <?php foreach ($view->friends as $friend): ?>
-                        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                            <strong><?= htmlspecialchars($friend['name']); ?></strong>
-                            <span class="badge bg-info text-dark">
-                                <?= $friend['modulesCompleted']; ?>%
-                            </span>
-                        </div>
-                    <?php endforeach; ?>
+                    <?php if (!empty($view->friends)): ?>
+                        <?php foreach ($view->friends as $friend): ?>
+                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                                <div>
+                                    <strong><?= htmlspecialchars($friend['username']); ?></strong><br>
+                                    <small class="text-muted">
+                                        <?= htmlspecialchars($friend['email']); ?>
+                                    </small>
+                                </div>
+
+                                <!-- Remove friend button -->
+                                <form action="addfriends.php" method="GET" style="display:inline;">
+                                    <input type="hidden" name="delete" value="<?= $friend['id']; ?>">
+                                    <button class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-muted">No friends added yet.</p>
+                    <?php endif; ?>
 
                 </div>
             </div>
+
+            <div class="card shadow-sm profile-card mt-3">
+                <div class="card-body">
+                    <h5>Add a Friend</h5>
+
+                    <!-- Show friend error message if set -->
+                    <?php if (isset($_SESSION['friend_error'])): ?>
+                        <div class="alert alert-danger">
+                            <?= htmlspecialchars($_SESSION['friend_error']); ?>
+                        </div>
+                        <?php unset($_SESSION['friend_error']); ?>
+                    <?php endif; ?>
+
+                    <form action="addfriends.php" method="POST">
+                        <input type="text" name="friend_username"
+                               class="form-control mb-2"
+                               placeholder="Friend's username"
+                               required>
+                        <button class="btn btn-primary w-100">Add Friend</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
         <!-- Dashboard / Modules Progress -->
-        <div class="col-md-8 mt-4 mt-md-0">
+        <div class="col-lg-8 mt-4 mt-lg-0">
 
-            <div class="card shadow-sm mb-4 profile-card">
+            <div class="card shadow-sm profile-card">
                 <div class="card-header bg-danger text-white">
                     <h5 class="mb-0">Your Progress</h5>
                 </div>

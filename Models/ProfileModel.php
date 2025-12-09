@@ -41,15 +41,12 @@ class ProfileModel
         ];
     }
 
-    /**
-     * Placeholder friend progress (until DB table exists)
-     */
-    public function getFriends()
+    public function getFriends($userId)
     {
-        return [
-            ['name' => "Jordan", 'modulesCompleted' => 40],
-            ['name' => "Taylor", 'modulesCompleted' => 75],
-            ['name' => "Sam", 'modulesCompleted' => 20]
-        ];
+        require_once("FriendsModel.php");
+        $friendsModel = new FriendsModel();
+        return $friendsModel->getFriends($userId);
     }
+
+
 }

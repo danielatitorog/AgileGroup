@@ -1,52 +1,37 @@
 <?php
 session_start();
 
-require_once('Models/UserDataSet.php');
-require_once('Models/UserAuthentication.php');
+require_once("Models/FriendsModel.php");
 
-//Ensure user is logged in
+// Ensure user logged in
 if (!isset($_SESSION['user_id'])) {
-    die("You must be logged in to view this page.");
+    header("Location: index.php");
+    exit;
 }
 
 $userId = $_SESSION['user_id'];
+$model = new FriendsModel();
 
-//Build $view object
-$view = new stdClass();
-$view->user = new User();
-$view->user->isLoggedIn = true;
-$view->user->username = $_SESSION['username'];   //NO MORE NULL
+// Process Add Friend
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['friend_username'])) {
+    $result = $model->addFriend($userId, $_POST['friend_username']);
 
-//Database connection
-$db = Database::getInstance()->getdbConnection();
-
-//DELETE friend logic
-if (isset($_GET['delete'])) {
-    $friendId = intval($_GET['delete']);
-
-    $query = $db->prepare("DELETE FROM friends WHERE id = ? AND user_id = ?");
-    $query->execute([$friendId, $userId]);
-
-    header("Location: addfriends.php");
-    exit();
-}
-//ADD friend logic
-if ($_SERVER['REQUEST_METHOD'] === "POST") {
-
-    if (!empty($_POST['friend_username'])) {
-        $friend = trim($_POST['friend_username']);
-
-        $query = $db->prepare("INSERT INTO friends (user_id, friend_username) VALUES (?, ?)");
-        $query->execute([$userId, $friend]);
+    if ($result !== true) {
+        // Save error message for display on profile page
+        $_SESSION['friend_error'] = $result;
     }
 
-    header("Location: addfriends.php");
-    exit();
+    header("Location: profile.php");
+    exit;
 }
-//LOAD friend list
-$query = $db->prepare("SELECT id, friend_username FROM friends WHERE user_id = ?");
-$query->execute([$userId]);
-$view->friends = $query->fetchAll(PDO::FETCH_ASSOC);
 
-//Load view
-require_once('Views/addfriends.phtml');
+// Process Delete Friend
+if (isset($_GET['delete'])) {
+    $model->deleteFriend($userId, intval($_GET['delete']));
+    header("Location: profile.php");
+    exit;
+}
+
+// Fallback redirect
+header("Location: profile.php");
+exit;
