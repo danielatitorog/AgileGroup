@@ -2,34 +2,28 @@
 
 <div class="container-fluid ">
     <div class="row h-100">
-        <?php if (!$view->user->isLoggedIn()): ?>
-            <!-- LEFT SIDE IMAGE (2/3 width) -->
-            <div class="col-lg-8 col-md-7 p-3 d-none d-md-block">
-                <div style="position: relative; width: 100%; padding-top: 66.67%">
-                    <img src="/images/youth_invest.png"
-                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        <!-- LEFT SIDE IMAGE (2/3 width) -->
+        <div class="col-lg-8 col-md-7 p-3 d-none d-md-block">
+            <div style="position: relative; width: 100%; padding-top: 66.67%">
+                <img src="/images/youth_invest.png"
+                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
                     object-fit: cover; border-radius: 20px;" alt="banner">
-                </div>
             </div>
-        <?php else: ?>
-            <!-- LEFT SIDE IMAGE (2/3 width) -->
-            <div class="col-12 p-3">
-                <div style="position: relative; width: 100%; height: 300px;">
-                    <img src="/images/youth_invest.png"
-                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-             object-fit: cover; border-radius: 20px;" alt="banner">
-                </div>
-            </div>
+        </div>
+        <!-- RIGHT SIDE LOGIN (top-aligned) -->
+        <div class="col-lg-4 col-md-5 col-12 p-3 d-flex align-items-center justify-content-center">
 
-        <?php endif; ?>
-        <?php if (!$view->user->isLoggedIn()): ?>
-            <!-- RIGHT SIDE LOGIN (top-aligned) -->
-            <div class="col-lg-4 col-md-5 col-12 p-3 d-flex align-items-start justify-content-center">
-
-                <div class="login-card p-4 shadow bg-white" style="width: 100%; max-width: 380px; border-radius: 20px;">
-                    <?php if (!$view->user->isLoggedIn()): ?>
+            <div class="login-card p-4 shadow bg-white" style="width: 100%; max-width: 380px; border-radius: 20px;">
+                <?php if ($view->user->isLoggedIn()): ?>
+                    <h4 class="fw-bold text-danger mb-2">Ready to Begin?</h4>
+                    <p class="text-size mb-3">
+                        Your learning journey will guide you step-by-step through everything you need to know.
+                    </p>
+                    <a href="roadmap.php" class="btn btn-danger w-100 fw-semibold text-size">
+                        Start Learning →
+                    </a>
+                <?php else: ?>
                         <h2 class="text-center mb-4 fw-semibold">Login</h2>
-                    <?php endif; ?>
                     <?php if (!empty($view->authMessage)): ?>
                         <div class="alert alert-info text-center">
                             <?= htmlspecialchars($view->authMessage); ?>
@@ -53,9 +47,9 @@
 
                         </div>
                     </form>
-                </div>
+                <?php endif; ?>
             </div>
-        <?php endif; ?>
+        </div>
 
     </div>
 </div>
@@ -75,57 +69,29 @@
     </section>
 
 
-    <!-- SECTION 2 — WHAT YOU’LL LEARN (Icon banner blocks) -->
-    <section class="aj-icon-section p-4 rounded-4 mb-4">
-        <div class="d-flex align-items-center mb-3">
-            <div class="aj-icon-circle">🎯</div>
-            <h2 class="fw-bold text-danger ms-3">What You’ll Learn</h2>
-        </div>
-        <p class="text-size">YouthInvest gives you the essential money skills every young person should know:</p>
-        <ul class="aj-list text-size">
-            <li>How to <strong>budget</strong> without stress</li>
-            <li>Why <strong>saving early</strong> is a superpower</li>
-            <li>What <strong>stocks, funds, and risk</strong> really mean</li>
-            <li>How companies actually make money</li>
-            <li>How to build a <strong>practice portfolio</strong> with pretend money</li>
-            <li>How to set smart <strong>financial goals</strong> for the future</li>
-        </ul>
-    </section>
-
-
-    <!-- SECTION 3 — LEARNING JOURNEY (Timeline layout) -->
-    <section class="aj-timeline-section p-4 rounded-4 mb-4">
-        <h2 class="fw-bold text-danger mb-3">Your Learning Journey</h2>
+    <!-- SECTION 2 — LEARNING JOURNEY (Timeline layout) -->
+    <section class="aj-timeline-section p-4 rounded-4 mb-4"><h2 class="fw-bold text-danger mb-3">Your Learning
+            Journey</h2>
         <p class="text-size">Think of this as your adventure map — each stage is a new level to unlock:</p>
-
         <div class="aj-timeline mt-4 text-size">
-            <div class="aj-timeline-item">
-                <span class="aj-timeline-dot"></span>
-                <p>Module 1 – What is Investing and How Does it Work?</p>
-            </div>
-            <div class="aj-timeline-item">
-                <span class="aj-timeline-dot"></span>
-                <p>Module 2 – Saving vs Investing</p>
-            </div>
-            <div class="aj-timeline-item">
-                <span class="aj-timeline-dot"></span>
-                <p>Module 3 – Stocks and Stock Market</p>
-            </div>
-            <div class="aj-timeline-item">
-                <span class="aj-timeline-dot"></span>
-                <p>Module 4 – Financial Scams and Online Safety</p>
-            </div>
-            <div class="aj-timeline-item">
-                <span class="aj-timeline-dot"></span>
-                <p>Module 5 – The Impact of Investing</p>
-            </div>
+            <div class="aj-timeline-item"><span class="aj-timeline-dot"></span>
+                <p>Module 1 – What is Investing and How Does it Work?</p></div>
+            <div class="aj-timeline-item"><span class="aj-timeline-dot"></span>
+                <p>Module 2 – Saving vs Investing</p></div>
+            <div class="aj-timeline-item"><span class="aj-timeline-dot"></span>
+                <p>Module 3 – Stocks and Stock Market</p></div>
+            <div class="aj-timeline-item"><span class="aj-timeline-dot"></span>
+                <p>Module 4 – Financial Scams and Online Safety</p></div>
+            <div class="aj-timeline-item"><span class="aj-timeline-dot"></span>
+                <p>Module 5 – The Impact of Investing</p></div>
         </div>
     </section>
 
-    <!-- SECTION 4 + SECTION 5 SIDE BY SIDE ON LARGE SCREENS -->
+
+    <!-- SECTION 3 + SECTION 4 SIDE BY SIDE ON LARGE SCREENS -->
     <div class="row g-4 mb-4">
 
-        <!-- SECTION 4 — FRIENDS & TEAM LEARNING -->
+        <!-- SECTION 3 — FRIENDS & TEAM LEARNING -->
         <div class="col-lg-6">
             <section class="aj-friends-section rounded-4 p-4 h-100 d-flex align-items-center">
                 <div class="text-white">
@@ -143,7 +109,7 @@
             </section>
         </div>
 
-        <!-- SECTION 5 — WHY YOUTHINVEST WORKS -->
+        <!-- SECTION 4 — WHY YOUTHINVEST WORKS -->
         <div class="col-lg-6">
             <section class="aj-bordered-card p-4 rounded-4 h-100">
                 <h2 class="fw-bold text-danger">Why YouthInvest Works</h2>
