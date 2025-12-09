@@ -1,4 +1,4 @@
-
+// wait for the entire page to load before running any script
     document.addEventListener('DOMContentLoaded', function() {
     const ageOptions = document.querySelectorAll('.age-option');
     const startBtn = document.getElementById('startBtn');

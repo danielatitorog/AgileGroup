@@ -1,0 +1,252 @@
+<?php require('template/header.phtml'); ?>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+
+                <!-- Quiz Header -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0">Financial Literacy Quiz</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Test your knowledge about investing, stocks, and financial security!</p>
+
+                        <?php if (!$view->showResults): ?>
+                            <div class="progress mb-3">
+                                <div class="progress-bar progress-bar-striped bg-success"
+                                     role="progressbar"
+                                     style="width: <?= ($view->currentQuestion - 1) / $view->totalQuestions * 100 ?>%"
+                                     aria-valuenow="<?= $view->currentQuestion - 1 ?>"
+                                     aria-valuemin="0"
+                                     aria-valuemax="<?= $view->totalQuestions ?>">
+                                </div>
+                            </div>
+                            <p class="text-muted">
+                                Question <?= $view->currentQuestion ?> of <?= $view->totalQuestions ?>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Quiz Content -->
+                <?php if ($view->showResults): ?>
+                    <!-- Results View -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h3 class="mb-0">Quiz Results</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="display-1 fw-bold text-primary mb-3">
+                                <?= $view->quizResults['percentage'] ?>%
+                            </div>
+
+                            <div class="alert alert-info">
+                                <h4 class="alert-heading"><?= $view->quizResults['feedback'] ?></h4>
+                                <p>You scored <?= $view->quizResults['score'] ?> out of <?= $view->quizResults['total'] ?> questions correctly.</p>
+                            </div>
+
+                            <div class="mt-4 mb-4">
+                                <?php if (!$view->showDetailedResults): ?>
+                                    <form action="quiz.php" method="POST" class="d-inline">
+                                        <button type="submit" name="show_details" class="btn btn-info btn-lg me-2">
+                                            <i class="bi bi-eye"></i> View Detailed Results
+                                        </button>
+                                    </form>
+                                <?php else: ?>
+                                    <form action="quiz.php" method="POST" class="d-inline">
+                                        <button type="submit" name="hide_details" class="btn btn-secondary btn-lg me-2">
+                                            <i class="bi bi-eye-slash"></i> Hide Detailed Results
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+
+                                <form action="quiz.php" method="POST" class="d-inline">
+                                    <button type="submit" name="restart" class="btn btn-primary btn-lg me-2">
+                                        <i class="bi bi-arrow-repeat"></i> Retake Quiz
+                                    </button>
+                                </form>
+
+                                <a href="learning-hub.php" class="btn btn-outline-primary btn-lg me-2">
+                                    <i class="bi bi-book"></i> Learning Hub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Results Section -->
+                    <?php if ($view->showDetailedResults && !empty($view->detailedResults)): ?>
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <h4 class="mb-0">
+                                    <i class="bi bi-list-check"></i> Detailed Results
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="accordion" id="quizAccordion">
+                                    <?php foreach ($view->detailedResults as $index => $result): ?>
+                                        <div class="accordion-item mb-3">
+                                            <h2 class="accordion-header" id="heading<?= $index ?>">
+                                                <button class="accordion-button <?= $result['is_correct'] ? 'bg-success-subtle' : 'bg-danger-subtle' ?> <?= $index > 0 ? 'collapsed' : '' ?>"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapse<?= $index ?>"
+                                                        aria-expanded="<?= $index === 0 ? 'true' : 'false' ?>"
+                                                        aria-controls="collapse<?= $index ?>">
+                                                <span class="me-3">
+                                                    <strong>Question <?= $index + 1 ?>:</strong>
+                                                    <?= htmlspecialchars($result['question']) ?>
+                                                </span>
+                                                    <span class="badge <?= $result['is_correct'] ? 'bg-success' : 'bg-danger' ?> ms-2">
+                                                    <?= $result['is_correct'] ? '✓ Correct' : '✗ Incorrect' ?>
+                                                </span>
+                                                </button>
+                                            </h2>
+                                            <div id="collapse<?= $index ?>"
+                                                 class="accordion-collapse collapse <?= $index === 0 ? 'show' : '' ?>"
+                                                 aria-labelledby="heading<?= $index ?>"
+                                                 data-bs-parent="#quizAccordion">
+                                                <div class="accordion-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="card <?= $result['is_correct'] ? 'border-success' : 'border-danger' ?>">
+                                                                <div class="card-header <?= $result['is_correct'] ? 'bg-success text-white' : 'bg-danger text-white' ?>">
+                                                                    <h5 class="mb-0">Your Answer</h5>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <p class="card-text">
+                                                                        <?php if ($result['user_answer_index'] !== null): ?>
+                                                                            <strong><?= htmlspecialchars($result['user_answer']) ?></strong>
+                                                                        <?php else: ?>
+                                                                            <em>Not answered</em>
+                                                                        <?php endif; ?>
+                                                                    </p>
+                                                                    <?php if (!$result['is_correct'] && $result['user_answer_index'] !== null): ?>
+                                                                        <div class="alert alert-warning">
+                                                                            <i class="bi bi-exclamation-triangle"></i>
+                                                                            This answer is incorrect
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="card border-success">
+                                                                <div class="card-header bg-success text-white">
+                                                                    <h5 class="mb-0">Correct Answer</h5>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <p class="card-text">
+                                                                        <strong><?= htmlspecialchars($result['correct_answer']) ?></strong>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-4">
+                                                        <div class="card border-info">
+                                                            <div class="card-header bg-info text-white">
+                                                                <h5 class="mb-0">
+                                                                    <i class="bi bi-lightbulb"></i> Explanation
+                                                                </h5>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <p class="card-text"><?= htmlspecialchars($result['explanation']) ?></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-3">
+                                                        <h6>All Options:</h6>
+                                                        <div class="list-group">
+                                                            <?php foreach ($result['options'] as $optIndex => $option): ?>
+                                                                <div class="list-group-item
+                                                                <?= $optIndex == $result['correct_index'] ? 'list-group-item-success' : '' ?>
+                                                                <?= $optIndex == $result['user_answer_index'] && !$result['is_correct'] ? 'list-group-item-danger' : '' ?>">
+                                                                    <?php if ($optIndex == $result['correct_index']): ?>
+                                                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                                    <?php elseif ($optIndex == $result['user_answer_index'] && !$result['is_correct']): ?>
+                                                                        <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                                    <?php else: ?>
+                                                                        <i class="bi bi-circle me-2"></i>
+                                                                    <?php endif; ?>
+                                                                    <?= htmlspecialchars($option) ?>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                <?php elseif ($view->question): ?>
+                    <!-- Question View -->
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title mb-4">
+                                Question <?= $view->currentQuestion ?>:
+                                <?= htmlspecialchars($view->question['question']) ?>
+                            </h3>
+
+                            <form action="quiz.php" method="POST">
+                                <div class="mb-4">
+                                    <?php foreach ($view->question['options'] as $index => $option): ?>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   name="answer"
+                                                   id="option<?= $index ?>"
+                                                   value="<?= $index ?>"
+                                                    <?= (isset($view->userAnswers['q' . $view->currentQuestion]) &&
+                                                            $view->userAnswers['q' . $view->currentQuestion] == $index) ? 'checked' : '' ?>
+                                                   required>
+                                            <label class="form-check-label fs-5 ms-3" for="option<?= $index ?>">
+                                                <?= htmlspecialchars($option) ?>
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <!-- Previous Button -->
+
+                                <div class="d-flex justify-content-between">
+                                    <?php if ($view->currentQuestion > 1): ?>
+                                        <a href="quiz.php?prev=true" class="btn btn-outline-secondary">
+                                            <i class="bi bi-arrow-left"></i> Previous
+                                        </a>
+                                    <?php else: ?>
+                                        <div></div> <!-- Spacer -->
+                                    <?php endif; ?>
+
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <?= $view->currentQuestion == $view->totalQuestions ? 'Finish Quiz' : 'Next Question' ?>
+                                        <i class="bi bi-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Help Text -->
+                <div class="mt-4 text-center text-muted">
+                    <small>
+                        <i class="bi bi-info-circle"></i>
+                        Take your time to think about each question. There are no time limits!
+                        <?php if ($view->showResults && !$view->showDetailedResults): ?>
+                            Click "View Detailed Results" to see explanations for each question.
+                        <?php endif; ?>
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<?php require('template/footer.phtml'); ?>

@@ -1,5 +1,7 @@
 
-/* Question Steps */
+/* Circular Question Steps indicators
+ * these are the round step indicators controls their size, style, colour, and animations.
+ */
 .question-step {
     width: 40px;
     height: 40px;
@@ -7,36 +9,47 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: #e9ecef;
-    color: #6c757d;
+    background-color: #e9ecef;  /* light grey background */
+    color: #6c757d;   /* grey text colour */
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;   /* smooth animation on changes */
     border: 2px solid transparent;
      }
+
+/* Highlight the currently active question step */
 .question-step.active-step {
-    background-color: #dc3545 !important;
-    color: white !important;
+    background-color: #dc3545 !important;  /* Red background */
+    color: white !important;  /* white text colour */
     border-color: #dc3545;
-    transform: scale(1.1);
+    transform: scale(1.1);  /* makes it slightly larger */
     box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
 }
+/* style for steps that have already been answered */
 .question-step.answered-step {
-    background-color: #28a745 !important;
+    background-color: #28a745 !important;  /* Greed background colour */
     color: white !important;
 }
+/* Hover effect when no active
+ * it add slightly zoo and soft shadow effect
+ */
 .question-step:hover:not(.active-step) {
     transform: scale(1.05);
     box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
 
-/* Question Card Animations */
+/*  smooth question Card Animations */
 .question-card {
     transition: transform 0.5s ease, opacity 0.5s ease;
 }
+/* when the card is active fade it in */
 .question-card.active-question {
     animation: fadeIn 0.5s ease;
 }
+/* Fade in animation effect
+ * start will be invisible
+ * end will be fully visible
+ */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -46,7 +59,10 @@
     }
 }
 
-/* Options Styling */
+/* Answer Options Styling
+ * option has rounded corner with light coloured border
+  * clickable hover effects and has space 5ps space between them
+ */
 .list-group-item {
     margin-bottom: 5px;
     border-radius: 8px !important;
@@ -54,16 +70,24 @@
     transition: all 0.2s;
     cursor: pointer;
 }
+
+/* option style, when user hover over the options
+* with light grey background and slightly darker border
+*/
 .list-group-item:hover {
     background-color: #f8f9fa;
     border-color: #adb5bd;
 }
+
+/* Selected options, Bootstrap bg-light override
+ * with soft red tint and red border
+ */
 .list-group-item.bg-light {
     background-color: rgba(220, 53, 69, 0.05) !important;
     border-color: #dc3545 !important;
 }
 
-/* Make radio/checkbox larger and properly aligned */
+/* Make radio/checkbox clickable, larger and properly aligned */
 .form-check-input {
     width: 1.2em;
     height: 1.2em;
@@ -71,24 +95,35 @@
     cursor: pointer;
 }
 
-/* Button Styling */
+/* Button Styling for Next/Previous/submit buttons
+ * bigger buttons with medium-bold text
+ * minimum width added to prevent tiny buttons
+ */
 .btn-lg {
     padding: 12px 30px;
     font-weight: 500;
     min-width: 150px;
 }
+
+/* Disabled next/submit buttons
+ * button faded and greyed out
+ * Disabled cursor
+ */
+
 .next-btn:disabled, .submit-btn:disabled {
     background-color: #6c757d;
     border-color: #6c757d;
     cursor: not-allowed;
     opacity: 0.65;
 }
+
+/* Hover effect for enabled submit button with darker green colour */
 .submit-btn:not(:disabled):hover {
     background-color: #218838;
     border-color: #1e7e34;
 }
 
-/* Responsive */
+/* Responsive design for tablets */
 @media (max-width: 768px) {
     .question-step {
         width: 35px;
@@ -108,6 +143,9 @@
     }
 }
 
+/* Responsive design for small phone less than 576px
+* stack buttons vertically and resize elements
+*/
 @media (max-width: 576px) {
     .btn-lg {
         padding: 8px 16px;

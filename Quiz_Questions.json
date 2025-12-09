@@ -1,0 +1,298 @@
+[
+  {
+    "id": "q1",
+    "question": "What is a stock?",
+    "options": [
+      "Money in a wallet",
+      "A small piece of a company",
+      "A type of loan",
+      "Paper with numbers"
+    ],
+    "correctIndex": 1,
+    "explanation": "A stock represents ownership in a company — buying a share means you own a small part of that company."
+  },
+  {
+    "id": "q2",
+    "question": "What does it mean to invest money?",
+    "options": [
+      "To hide your money",
+      "To use money to try to make more money",
+      "To spend money on snacks",
+      "To donate money"
+    ],
+    "correctIndex": 1,
+    "explanation": "Investing means using your money to buy assets that have the potential to grow in value."
+  },
+  {
+    "id": "q3",
+    "question": "Saving is usually for short-term goals.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "correctIndex": 1,
+    "explanation": "Savings help with short-term needs like emergencies or upcoming purchases."
+  },
+  {
+    "id": "q4",
+    "question": "Why be careful with “get rich quick” offers?",
+    "options": [
+      "They are often scams",
+      "They always work",
+      "They are required by banks",
+      "They are safe for teens"
+    ],
+    "correctIndex": 0,
+    "explanation": "Promises of fast, easy money are a common sign of scams."
+  },
+  {
+    "id": "q5",
+    "question": "How can investing help you over time?",
+    "options": [
+      "It makes money disappear",
+      "It can help your money grow",
+      "It stops you from saving",
+      "It guarantees you get rich"
+    ],
+    "correctIndex": 1,
+    "explanation": "Investing can grow your money through returns, profits, or increased value over many years."
+  },
+  {
+    "id": "q6",
+    "question": "What is the stock market?",
+    "options": [
+      "A place where people buy and sell stocks",
+      "A grocery store",
+      "A bank",
+      "A social media app"
+    ],
+    "correctIndex": 0,
+    "explanation": "The stock market is where investors trade shares of companies."
+  },
+  {
+    "id": "q7",
+    "question": "How can investing help your future goals?",
+    "options": [
+      "It can grow your money over time",
+      "It gives instant cash",
+      "It removes the need to work",
+      "It guarantees riches"
+    ],
+    "correctIndex": 0,
+    "explanation": "Investing grows your money gradually, helping you afford big goals later in life."
+  },
+  {
+    "id": "q8",
+    "question": "Why should you never share passwords?",
+    "options": [
+      "They are too long",
+      "Friends might change them",
+      "Someone could steal your accounts or money",
+      "Teachers say so"
+    ],
+    "correctIndex": 2,
+    "explanation": "Sharing passwords puts your personal and financial information at risk."
+  },
+  {
+    "id": "q9",
+    "question": "Why is starting early helpful when investing?",
+    "options": [
+      "Because investing only works for kids",
+      "Your money has more time to grow",
+      "It’s free for teens",
+      "It removes all risks"
+    ],
+    "correctIndex": 1,
+    "explanation": "The earlier you invest, the more time your money has to grow through compounding."
+  },
+  {
+    "id": "q10",
+    "question": "Why is investing useful for future dreams like buying a car or starting a business?",
+    "options": [
+      "It gives instant money",
+      "It replaces saving completely",
+      "It can grow your money over several years",
+      "It makes things more expensive"
+    ],
+    "correctIndex": 2,
+    "explanation": "Investing helps build money for big long-term goals by growing your savings."
+  },
+  {
+    "id": "q11",
+    "question": "When you buy a share of a company, you…",
+    "options": [
+      "Own a small part of it",
+      "Own the entire company",
+      "Become the CEO",
+      "Get a job there"
+    ],
+    "correctIndex": 0,
+    "explanation": "A share represents partial ownership — even if it's a tiny piece!"
+  },
+  {
+    "id": "q12",
+    "question": "What is a “return”?",
+    "options": [
+      "Returning a product to a store",
+      "The money you earn from an investment",
+      "A new type of tax",
+      "How fast you can spend money"
+    ],
+    "correctIndex": 1,
+    "explanation": "A return is the profit or income you get from an investment."
+  },
+  {
+    "id": "q13",
+    "question": "Which of these can affect a stock’s price?",
+    "options": [
+      "The weather only",
+      "How many apps you download",
+      "Company news and performance",
+      "Your favourite colour"
+    ],
+    "correctIndex": 2,
+    "explanation": "Stock prices change based on company performance, news, and investor expectations."
+  },
+  {
+    "id": "q14",
+    "question": "What is a financial scam?",
+    "options": [
+      "A trick to steal your money or information",
+      "A safe investment",
+      "A free reward",
+      "A bank bonus"
+    ],
+    "correctIndex": 0,
+    "explanation": "A financial scam is meant to trick people into giving up money or personal info."
+  },
+  {
+    "id": "q15",
+    "question": "What does “building wealth” mean?",
+    "options": [
+      "Spending more money",
+      "Increasing your financial resources",
+      "Buying more clothes",
+      "Borrowing money"
+    ],
+    "correctIndex": 1,
+    "explanation": "Building wealth means growing your financial resources over time."
+  },
+  {
+    "id": "q16",
+    "question": "What is a broker or investing app used for?",
+    "options": [
+      "Playing games",
+      "Buying and selling stocks",
+      "Making memes",
+      "Printing money"
+    ],
+    "correctIndex": 1,
+    "explanation": "Brokers and investing apps let you buy and sell stocks digitally."
+  },
+  {
+    "id": "q17",
+    "question": "Why is learning about investing while you're young important?",
+    "options": [
+      "Teens must invest by law",
+      "It helps you make smarter money choices later",
+      "It makes school easier",
+      "It removes all financial risks"
+    ],
+    "correctIndex": 1,
+    "explanation": "Learning early helps you build good financial habits for life."
+  },
+  {
+    "id": "q18",
+    "question": "How can investing help you build wealth over time?",
+    "options": [
+      "By reducing your income",
+      "By increasing the value of what you invested in",
+      "By taking money away from saving",
+      "By making you spend more"
+    ],
+    "correctIndex": 1,
+    "explanation": "As investments grow in value, so does your overall wealth."
+  },
+  {
+    "id": "q19",
+    "question": "Why do stock prices change?",
+    "options": [
+      "Random magic",
+      "Because of supply, demand, and company performance",
+      "Because the CEO says so",
+      "They never change"
+    ],
+    "correctIndex": 1,
+    "explanation": "Stock prices move based on how well a company is doing and how much investors want the stock."
+  },
+  {
+    "id": "q20",
+    "question": "Why do people invest?",
+    "options": [
+      "To lose money",
+      "To avoid using banks",
+      "To grow their money over time",
+      "To stop working"
+    ],
+    "correctIndex": 2,
+    "explanation": "People invest to increase their wealth and reach long-term financial goals."
+  },
+  {
+    "id": "q21",
+    "question": "What is a dividend?",
+    "options": [
+      "Money a company pays to shareholders",
+      "A type of bill",
+      "A tax",
+      "A loan"
+    ],
+    "correctIndex": 0,
+    "explanation": "A dividend is a payment some companies give to shareholders as part of their profits."
+  },
+  {
+    "id": "q22",
+    "question": "Which is a sign something might be a scam?",
+    "options": [
+      "It loads slowly",
+      "It promises huge rewards very fast",
+      "It has a long description",
+      "It uses emojis"
+    ],
+    "correctIndex": 1,
+    "explanation": "Promises of quick riches are a common warning sign for scams."
+  },
+  {
+    "id": "q23",
+    "question": "Investing is usually for long-term goals.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "correctIndex": 1,
+    "explanation": "Investing works best over long periods, allowing money time to grow."
+  },
+  {
+    "id": "q24",
+    "question": "How can investing impact a community?",
+    "options": [
+      "It helps businesses grow and create jobs",
+      "It closes stores",
+      "It stops the economy",
+      "It makes everything more expensive"
+    ],
+    "correctIndex": 0,
+    "explanation": "Investing supports businesses, which can lead to more jobs and a stronger community."
+  },
+  {
+    "id": "q25",
+    "question": "What is one thing you can invest in?",
+    "options": [
+      "Video game skins",
+      "Stocks",
+      "Air",
+      "Free apps"
+    ],
+    "correctIndex": 1,
+    "explanation": "Stocks are a common investment because their value can grow over time."
+  }
+]
