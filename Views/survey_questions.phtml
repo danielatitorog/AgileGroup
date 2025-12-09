@@ -1,0 +1,208 @@
+<?php
+// Include the header template file
+// This file contains HTML doctype, head section, navigation, etc.
+require('template/header.phtml'); ?>
+    <!-- Includes CSS file specifically for survey page. -->
+    <link rel="stylesheet" href="../css/surveyQuestions.css">
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <!-- Display error message if error occurs -->
+                <?php if (!empty($view->errorMessage)): ?>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <?= htmlspecialchars($view->errorMessage) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Survey Progress and information Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <!-- Survey Header section -->
+                        <div class="text-center mb-4">
+                            <h1 class="text-danger mb-2"><?= htmlspecialchars($view->title) ?></h1>
+                            <p class="lead text-muted"><?= htmlspecialchars($view->description) ?></p>
+                            <div class="badge bg-info">
+                                <i class="bi bi-info-circle"></i> Answer one question at a time
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar showing survey completion -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small class="text-muted">
+                                    Question <span id="currentQuestionNum">1</span> of <?= $view->totalQuestions ?>
+                                </small>
+                                <span class="badge bg-danger" id="progressPercentage">0%</span>
+                            </div>
+                            <div class="progress" style="height: 10px; border-radius: 5px;">
+                                <div class="progress-bar bg-danger" role="progressbar"
+                                     id="progressBar"
+                                     style="width: <?= round(100/$view->totalQuestions) ?>%;"
+                                     aria-valuenow="<?= round(100/$view->totalQuestions) ?>"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Question step Navigation -->
+                        <div class="d-flex justify-content-center flex-wrap gap-2 mb-3">
+                            <?php for ($i = 1; $i <= $view->totalQuestions; $i++): ?>
+                                <div class="question-step <?= $i === 1 ? 'active-step' : '' ?>"
+                                     data-step="<?= $i ?>"
+                                     title="Question <?= $i ?>">
+                                    <?= $i ?>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Survey Form - One Question at a Time -->
+                <form method="POST" action="survey.php" id="surveyForm" data-total-questions="<?= $view->totalQuestions ?>">
+                    <!-- Hidden fields to store all answers for submission-->
+                    <?php foreach ($view->questions as $index => $question): ?>
+                        <input type="hidden" name="question_<?= $question['id'] ?>" id="hidden_q<?= $question['id'] ?>" value="">
+                        <?php if ($question['type'] === 'checkbox'): ?>
+                            <input type="hidden" name="question_<?= $question['id'] ?>[]" id="hidden_q<?= $question['id'] ?>_checkboxes" value="">
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+
+                    <!-- Questions Container - Only one question visible at a time -->
+                    <div id="questionsContainer">
+                        <?php foreach ($view->questions as $index => $question): ?>
+                            <div class="question-card card shadow mb-4 <?= $index === 0 ? 'active-question' : 'd-none' ?>"
+                                 id="questionCard-<?= $question['id'] ?>"
+                                 data-question-id="<?= $question['id'] ?>"
+                                 data-question-index="<?= $index ?>">
+
+                                <div class="card-body p-4">
+                                    <!-- Question Header with badge and numbering-->
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <span class="badge bg-danger fs-6">Question <?= $index + 1 ?></span>
+                                            <span class="badge bg-secondary ms-2">
+                                                <?= $question['type'] === 'radio' ? 'Single choice' : 'Multiple choice' ?>
+                                            </span>
+                                        </div>
+                                        <div class="text-muted">
+                                            <small><?= $index + 1 ?> of <?= $view->totalQuestions ?></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question Text -->
+                                    <h4 class="card-title mb-4">
+                                        <?= htmlspecialchars($question['question']) ?>
+                                    </h4>
+
+                                    <!-- Answer Options -->
+                                    <div class="options-container">
+                                        <?php if ($question['type'] === 'radio'): ?>
+                                            <div class="list-group">
+                                                <?php foreach ($question['options'] as $optionIndex => $option): ?>
+                                                    <label class="list-group-item list-group-item-action border-0 py-3"
+                                                           for="q<?= $question['id'] ?>_option<?= $optionIndex ?>">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="me-3">
+                                                                <input class="form-check-input me-2 question-radio"
+                                                                       type="radio"
+                                                                       name="current_question_<?= $question['id'] ?>"
+                                                                       id="q<?= $question['id'] ?>_option<?= $optionIndex ?>"
+                                                                       value="<?= htmlspecialchars($option) ?>"
+                                                                       data-question-id="<?= $question['id'] ?>">
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <?= htmlspecialchars($option) ?>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                <?php endforeach; ?>
+                                            </div>
+
+                                        <?php elseif ($question['type'] === 'checkbox'): ?>
+                                            <div class="list-group">
+                                                <?php foreach ($question['options'] as $optionIndex => $option): ?>
+                                                    <label class="list-group-item list-group-item-action border-0 py-3"
+                                                           for="q<?= $question['id'] ?>_option<?= $optionIndex ?>">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="me-3">
+                                                                <input class="form-check-input me-2 question-checkbox"
+                                                                       type="checkbox"
+                                                                       name="current_question_<?= $question['id'] ?>[]"
+                                                                       id="q<?= $question['id'] ?>_option<?= $optionIndex ?>"
+                                                                       value="<?= htmlspecialchars($option) ?>"
+                                                                       data-question-id="<?= $question['id'] ?>">
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <?= htmlspecialchars($option) ?>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <!-- Navigation Buttons Previous/Continue/Submit-->
+                                    <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                                        <button type="button" class="btn btn-outline-secondary btn-lg prev-btn <?= $index === 0 ? 'invisible' : '' ?>">
+                                            <i class="bi bi-arrow-left"></i> Previous
+                                        </button>
+
+                                        <div class="text-center">
+                                            <?php if ($index < $view->totalQuestions - 1): ?>
+                                                <!-- Show Continue button for all questions except last question -->
+                                                <button type="button" class="btn btn-danger btn-lg next-btn"
+                                                        id="nextBtn-<?= $question['id'] ?>"
+                                                        data-question-id="<?= $question['id'] ?>"
+                                                        disabled>
+                                                    Continue <i class="bi bi-arrow-right"></i>
+                                                </button>
+                                            <?php else: ?>
+                                                <!-- Show Submit button for last question -->
+                                                <button type="submit" class="btn btn-success btn-lg submit-btn" disabled>
+                                                    <i class="bi bi-check-circle"></i> Complete Survey
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <!-- Spacer to balance the layout -->
+                                        <div style="width: 120px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal for survey submission -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger"><i class="bi bi-question-circle"></i> Confirm Submission</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to submit the survey? You cannot change your answers after submission.</p>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i>
+                        <span id="answeredCountText">0</span> of <?= $view->totalQuestions ?> questions answered
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Review Answers</button>
+                    <button type="button" class="btn btn-danger" id="confirmSubmit">Yes, Submit Survey</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Loads the required java script file.  -->
+    <script src="../js/surveyQuestions.js"></script>
+    <!-- Loads the required footer file.  -->
+<?php require('template/footer.phtml'); ?>

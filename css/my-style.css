@@ -1,6 +1,4 @@
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+
 
 .learning-container {
     margin: 0 auto;
@@ -191,4 +189,92 @@ body {
     height: auto;
     z-index: 5;
     pointer-events: none;
+}
+
+.profile-card {
+    border-radius: 20px !important;
+    overflow: hidden;
+}
+
+
+
+/* SECTION 1 - Side-by-side */
+.aj-unique-section {
+    background: #fff;
+    border: 1px solid #eee;
+}
+.aj-heading-line {
+    border-left: 4px solid #E41E26;
+    padding-left: 10px;
+}
+.aj-graphic-box {
+    width: 180px;
+    height: 120px;
+    background: linear-gradient(to bottom right, #f5f5f5, #ececec);
+    border-radius: 12px;
+}
+
+/* SECTION 2 - Icon banner */
+.aj-icon-section {
+    background: #fafafa;
+    border-left: 5px solid #E41E26;
+}
+.aj-icon-circle {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    background: #E41E26;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SECTION 3 - Timeline */
+.aj-timeline {
+    border-left: 3px solid #ccc;
+    padding-left: 20px;
+}
+.aj-timeline-item {
+    margin-bottom: 15px;
+    position: relative;
+}
+.aj-timeline-dot {
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #E41E26;
+    position: absolute;
+    left: -28px;
+    top: 2px;
+}
+
+/* SECTION 4 - Split background */
+.aj-friends-section {
+    background: #E41E26;
+    overflow: hidden;
+}
+.aj-split-graphic {
+    width: 100%;
+    height: 150px;
+    background: #f3f3f3;
+    border-radius: 12px;
+}
+
+/* SECTION 5 - Bordered card */
+.aj-bordered-card {
+    border: 2px solid #E41E26;
+    background: #fff;
+}
+.aj-list li {
+    margin-bottom: 6px;
+}
+
+.header-size {
+    font-size: 40px;
+}
+
+.text-size {
+    font-size: 20px;
 }

@@ -1,0 +1,111 @@
+<?php
+// Include the header template file
+// This file contains HTML doctype, head section, navigation, etc.
+require('template/header.phtml'); ?>
+    <!-- Link to the CSS file specifically for this age selection page. -->
+    <link rel="stylesheet" href="../css/surveyAge.css">
+
+    <!-- Main container for the age selection page -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <!-- Page Header Section -->
+                <div class="text-center mb-5">
+                    <h1 class="display-4 text-danger fw-bold">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        Investment Knowledge Survey
+                    </h1>
+                    <p class="lead text-muted">
+                        Please Select your age group to start survey about investing
+                    </p>
+                </div>
+                <!-- Age Selection Form card -->
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <form method="POST" action="survey.php" id="ageForm">
+                            <div class="row g-4">
+
+                                <!-- Age 12-15 Selection Option, and Description of what this age group survey covers -->
+                                <div class="col-md-6">
+                                    <input type="radio"
+                                           name="age_group"
+                                           value="12-15"
+                                           id="age_12_15"
+                                           class="d-none">
+                                    <label for="age_12_15"
+                                           class="age-option card border h-100 text-center p-4 cursor-pointer">
+                                        <div class="card-body">
+                                            <i class="bi bi-person-fill text-primary display-1 mb-3"></i>
+                                            <h3 class="card-title text-primary">12-15 Years</h3>
+                                            <p class="card-text text-muted">
+                                                Basic investment concepts for beginners
+                                            </p>
+                                            <div class="mt-3">
+                                                <!-- Skill level badge -->
+                                                <span class="badge bg-primary">
+                                                <i class="bi bi-star"></i> Beginner Level
+                                            </span>
+                                                <!-- Estimated time badge -->
+                                                <span class="badge bg-light text-dark">
+                                                <i class="bi bi-clock"></i> 5-10 min
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <!-- Age 12-15 Selection Option, and Description of what this age group survey covers -->
+                                <div class="col-md-6">
+                                    <input type="radio"
+                                           name="age_group"
+                                           value="15-18"
+                                           id="age_15_18"
+                                           class="d-none">
+                                    <label for="age_15_18"
+                                           class="age-option card border h-100 text-center p-4 cursor-pointer">
+                                        <div class="card-body">
+                                            <i class="bi bi-person-badge-fill text-success display-1 mb-3"></i>
+                                            <h3 class="card-title text-success">15-18 Years</h3>
+                                            <p class="card-text text-muted">
+                                                Intermediate-Level investment topics
+                                            </p>
+                                            <div class="mt-3">
+                                                <!-- Skill level badge -->
+                                                <span class="badge bg-success">
+                                                <i class="bi bi-star-half"></i> Intermediate Level
+                                            </span>
+                                                <!-- Estimated time badge -->
+                                                <span class="badge bg-light text-dark">
+                                                <i class="bi bi-clock"></i> 8-12 min
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Form submission section, submit button is disabled until an age group is selected -->
+                            <div class="text-center mt-5">
+                                <button type="submit" id="startBtn" class="btn btn-danger btn-lg px-5 py-3" disabled>
+                                    <i class="bi bi-play-fill"></i> Start Survey
+                                </button>
+
+                                <div class="mt-4">
+                                    <div class="alert alert-info d-inline-block">
+                                        <i class="bi bi-info-circle"></i>
+                                        Your answers help us provide better financial education.
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loads JavaScript file for age selection page functionality -->
+    <script src="../js/surveyAge.js"></script>
+    <!-- Include the footer template file -->
+<?php require('template/footer.phtml'); ?>

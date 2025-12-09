@@ -1,33 +1,40 @@
 <?php require('template/header.phtml'); ?>
 
-<div class="container-fluid vh-100">
+<div class="container-fluid ">
     <div class="row h-100">
-
-        <!-- LEFT SIDE IMAGE (2/3 width) -->
-        <div class="col-lg-8 col-md-7 p-3 d-none d-md-block">
-            <div style="position: relative; width: 100%; padding-top: 66.67%">
-                <img src="/images/youth_invest.png"
-                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        <?php if (!$view->user->isLoggedIn()): ?>
+            <!-- LEFT SIDE IMAGE (2/3 width) -->
+            <div class="col-lg-8 col-md-7 p-3 d-none d-md-block">
+                <div style="position: relative; width: 100%; padding-top: 66.67%">
+                    <img src="/images/youth_invest.png"
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
                     object-fit: cover; border-radius: 20px;" alt="banner">
+                </div>
             </div>
-        </div>
+        <?php else: ?>
+            <!-- LEFT SIDE IMAGE (2/3 width) -->
+            <div class="col-12 p-3">
+                <div style="position: relative; width: 100%; height: 300px;">
+                    <img src="/images/youth_invest.png"
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+             object-fit: cover; border-radius: 20px;" alt="banner">
+                </div>
+            </div>
 
+        <?php endif; ?>
+        <?php if (!$view->user->isLoggedIn()): ?>
+            <!-- RIGHT SIDE LOGIN (top-aligned) -->
+            <div class="col-lg-4 col-md-5 col-12 p-3 d-flex align-items-start justify-content-center">
 
-        <!-- RIGHT SIDE LOGIN (top-aligned) -->
-        <div class="col-lg-4 col-md-5 col-12 p-3 d-flex align-items-start justify-content-center">
-
-            <div class="login-card p-4 shadow bg-white" style="width: 100%; max-width: 380px; border-radius: 20px;">
-                <?php if (!$view->user->isLoggedIn()): ?>
-                    <h2 class="text-center mb-4 fw-semibold">Login</h2>
-                <?php endif; ?>
-                <?php if (!empty($view->authMessage)): ?>
-                    <div class="alert alert-info text-center">
-                        <?= htmlspecialchars($view->authMessage); ?>
-                    </div>
-                <?php endif; ?>
-                <?php if ($view->user->isLoggedIn()): ?>
-                    <a class="btn btn-danger w-100" href="roadmap.php">Start Journey</a>
-                <?php else: ?>
+                <div class="login-card p-4 shadow bg-white" style="width: 100%; max-width: 380px; border-radius: 20px;">
+                    <?php if (!$view->user->isLoggedIn()): ?>
+                        <h2 class="text-center mb-4 fw-semibold">Login</h2>
+                    <?php endif; ?>
+                    <?php if (!empty($view->authMessage)): ?>
+                        <div class="alert alert-info text-center">
+                            <?= htmlspecialchars($view->authMessage); ?>
+                        </div>
+                    <?php endif; ?>
                     <form action="index.php" method="POST">
                         <div class="mb-3">
                             <label for="username" class="form-label fw-semibold">Username</label>
@@ -46,12 +53,117 @@
 
                         </div>
                     </form>
-                <?php endif; ?>
+                </div>
             </div>
-
-        </div>
+        <?php endif; ?>
 
     </div>
 </div>
+
+<div class="container">
+
+    <!-- SECTION 1 — OVERVIEW (Side-by-side layout with image placeholder) -->
+    <section class="text-center d-flex flex-column flex-md-row align-items-center rounded-4 mb-5">
+        <div class="flex-grow-1 pe-md-4">
+            <h2 class="text-danger fw-bold my-4 header-size">Welcome to YouthInvest</h2>
+            <p class="text-size">
+                <strong>YouthInvest</strong> — where learning about money feels more like a game
+                than a classroom. Explore how saving, spending, and investing really work through stories
+                and missions designed to build your confidence step-by-step.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- SECTION 2 — WHAT YOU’LL LEARN (Icon banner blocks) -->
+    <section class="aj-icon-section p-4 rounded-4 mb-4">
+        <div class="d-flex align-items-center mb-3">
+            <div class="aj-icon-circle">🎯</div>
+            <h2 class="fw-bold text-danger ms-3">What You’ll Learn</h2>
+        </div>
+        <p class="text-size">YouthInvest gives you the essential money skills every young person should know:</p>
+        <ul class="aj-list text-size">
+            <li>How to <strong>budget</strong> without stress</li>
+            <li>Why <strong>saving early</strong> is a superpower</li>
+            <li>What <strong>stocks, funds, and risk</strong> really mean</li>
+            <li>How companies actually make money</li>
+            <li>How to build a <strong>practice portfolio</strong> with pretend money</li>
+            <li>How to set smart <strong>financial goals</strong> for the future</li>
+        </ul>
+    </section>
+
+
+    <!-- SECTION 3 — LEARNING JOURNEY (Timeline layout) -->
+    <section class="aj-timeline-section p-4 rounded-4 mb-4">
+        <h2 class="fw-bold text-danger mb-3">Your Learning Journey</h2>
+        <p class="text-size">Think of this as your adventure map — each stage is a new level to unlock:</p>
+
+        <div class="aj-timeline mt-4 text-size">
+            <div class="aj-timeline-item">
+                <span class="aj-timeline-dot"></span>
+                <p>Module 1 – What is Investing and How Does it Work?</p>
+            </div>
+            <div class="aj-timeline-item">
+                <span class="aj-timeline-dot"></span>
+                <p>Module 2 – Saving vs Investing</p>
+            </div>
+            <div class="aj-timeline-item">
+                <span class="aj-timeline-dot"></span>
+                <p>Module 3 – Stocks and Stock Market</p>
+            </div>
+            <div class="aj-timeline-item">
+                <span class="aj-timeline-dot"></span>
+                <p>Module 4 – Financial Scams and Online Safety</p>
+            </div>
+            <div class="aj-timeline-item">
+                <span class="aj-timeline-dot"></span>
+                <p>Module 5 – The Impact of Investing</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4 + SECTION 5 SIDE BY SIDE ON LARGE SCREENS -->
+    <div class="row g-4 mb-4">
+
+        <!-- SECTION 4 — FRIENDS & TEAM LEARNING -->
+        <div class="col-lg-6">
+            <section class="aj-friends-section rounded-4 p-4 h-100 d-flex align-items-center">
+                <div class="text-white">
+                    <h2 class="fw-bold">Friends & Team Learning</h2>
+                    <p class="text-size">
+                        Learning is always better with friends! On YouthInvest you can:
+                    </p>
+                    <ul class="text-size">
+                        <li>Add friends and learn together</li>
+                        <li>Compare badges (never real money!)</li>
+                        <li>Team up for special missions</li>
+                        <li>Celebrate progress and level up together</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- SECTION 5 — WHY YOUTHINVEST WORKS -->
+        <div class="col-lg-6">
+            <section class="aj-bordered-card p-4 rounded-4 h-100">
+                <h2 class="fw-bold text-danger">Why YouthInvest Works</h2>
+                <p class="text-size">YouthInvest helps you build real-life money skills in a fun, stress-free way. It
+                    works because:</p>
+                <ul class="aj-list text-size">
+                    <li>You learn by <strong>playing</strong>, not memorising</li>
+                    <li>Everything is written for <strong>teens</strong>, not adults</li>
+                    <li>You practise investing with <strong>zero risk</strong></li>
+                    <li>You build strong financial habits that will help you for life</li>
+                </ul>
+                <p class="text-size"><strong>Our mission:</strong> Help you feel confident, capable, and prepared for
+                    the future.</p>
+            </section>
+        </div>
+
+    </div>
+
+
+</div>
+
 
 <?php require('template/footer.phtml'); ?>

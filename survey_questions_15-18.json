@@ -1,0 +1,94 @@
+{
+  "title": "Investment Knowledge Survey",
+  "description": "Assess your current experience and knowledge about investing",
+  "questions": [
+    {
+      "id": 1,
+      "question": "How would you describe your understanding of investing?",
+      "type": "radio",
+      "options": ["I know nothing", "I know a little", "I know the basics", "I feel confident"]
+    },
+    {
+      "id": 2,
+      "question": "Which of these have you heard about before? (Choose all that apply)",
+      "type": "checkbox",
+      "options": [
+        "Stocks (owning a small part of a company)",
+        "Bonds (lending money to a company or government)",
+        "Funds (a group of many investments put together)",
+        "Real estate (property)",
+        "Cryptocurrency",
+        "None of these"
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Have you ever invested money before?",
+      "type": "radio",
+      "options": ["No, never", "Yes, once or twice", "Yes, a little", "Yes, a lot"]
+    },
+    {
+      "id": 4,
+      "question": "What do you think is the main difference between saving and investing?",
+      "type": "radio",
+      "options": [
+        "Saving means keeping your money for later, investing means trying to grow your money.",
+        "They are the same",
+        "I’m not sure"
+      ]
+    },
+    {
+      "id": 5,
+      "question": "What stops you from investing right now?",
+      "type": "radio",
+      "options": [
+        "I don’t know how",
+        "I’m afraid of losing money",
+        "I don’t have enough money",
+        "Nothing — I’m ready"
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What do you want to learn most about investing?",
+      "type": "radio",
+      "options": ["How to start", "How to grow money", "Everything", "I’m not sure"]
+    },
+    {
+      "id": 7,
+      "question": "Why might someone choose to invest?",
+      "type": "radio",
+      "options": ["To grow their money over time", "To spend faster", "I don’t know"]
+    },
+    {
+      "id": 8,
+      "question": "How comfortable are you with taking risks? (1 = not comfortable at all, 5 = very comfortable)",
+      "type": "radio",
+      "options": ["1", "2", "3", "4", "5"]
+    },
+    {
+      "id": 9,
+      "question": "What worries you the most about investing?",
+      "type": "radio",
+      "options": [
+        "Losing my money",
+        "I don’t know how to start",
+        "It seems confusing",
+        "I think it costs too much money",
+        "I might make a mistake"
+      ]
+    },
+    {
+      "id": 10,
+      "question": "What is your primary investment goal?",
+      "type": "radio",
+      "options": [
+        "To have more money in the future",
+        "Wealth Building",
+        "Saving for something big (car, house, travel)",
+        "Education",
+        "Not sure"
+      ]
+    }
+  ]
+}

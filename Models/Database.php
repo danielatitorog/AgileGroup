@@ -41,7 +41,7 @@ class Database
     {
         try {
             // Connect to SQLite database file
-            $this->_dbHandle = new PDO("sqlite:petwatch.sqlite");
+            $this->_dbHandle = new PDO("sqlite:youthinvest.sqlite");
             // Enable exceptions for error handling
             $this->_dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {//catch any failure to the database
