@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="description" content="PetWatch - A web application to report, track, and search for lost and found pets using the MVC pattern and Bootstrap.">
+    <meta name="description"
+          content="PetWatch - A web application to report, track, and search for lost and found pets using the MVC pattern and Bootstrap.">
     <meta name="author" content="Daniela Titorog">
 
     <!-- Bootstrap core CSS -->
@@ -46,30 +47,31 @@
                         <!-- Home page link -->
                         <a class="nav-link active fw-semibold" aria-current="page" href="index.php">Home</a>
                     </li>
-                    <?php if ($view->user->isLoggedIn()) { ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="roadmap.php">Roadmap</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="addfriends.php">Friends</a>
-                    </li>
+                    <?php if ($view->user->isLoggedIn()): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="roadmap.php">Roadmap</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addfriends.php">Friends</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.php">Contact Us</a>
                     </li>
                 </ul>
 
-                <!-- Right side of the menu -->
-                <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="profile.php">
-                            <img src="/images/profilepicture.png" alt="Profile"
-                                 class="rounded-circle" width="32" height="32">
-                        </a>
-                    </li>
+                <?php if ($view->user->isLoggedIn()): ?>
+                    <!-- Right side of the menu -->
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="profile.php">
+                                <img src="/images/profilepicture.png" alt="Profile"
+                                     class="rounded-circle" width="32" height="32">
+                            </a>
+                        </li>
 
 
-
-                    <!-- Logout button -->
+                        <!-- Logout button -->
                         <li class="nav-item d-flex align-items-center">
                             <form action="index.php" method="POST" class="d-inline">
                                 <button type="submit" name="logoutBtn" class="btn btn-outline-light rounded-pill"
@@ -77,8 +79,8 @@
                                 </button>
                             </form>
                         </li>
-                    <?php } ?>
-                </ul>
+                    </ul>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
