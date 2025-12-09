@@ -12,6 +12,56 @@ function updateProgress(index = currentSlide) {
     nextBtn.disabled = index === slides.length - 1;
 }
 
+function getModuleForSlide(slideIndex) {
+    let accumulated = 0;
+
+    for (const module of MODULES) {
+        const start = accumulated;
+        const end = accumulated + module.total_pages - 1;
+
+        if (slideIndex >= start && slideIndex <= end) {
+            return module.module_id;
+        }
+
+        accumulated += module.total_pages;
+    }
+
+    return null; // Should never happen
+}
+
+
+function getModuleProgress(slideIndex) {
+    let accumulated = 0;
+
+    for (const module of MODULES) {
+        const start = accumulated;
+        const end = accumulated + module.total_pages - 1;
+
+        if (slideIndex >= start && slideIndex <= end) {
+            const pageInModule = slideIndex - start + 1;
+            return Math.round((pageInModule / module.total_pages) * 100);
+        }
+
+        accumulated += module.total_pages;
+    }
+
+    return 0; // fallback
+}
+
+// Send AJAX request to save progress
+function saveProgress(slideIndex) {
+    const moduleId = getModuleForSlide(slideIndex);
+    const percent = getModuleProgress(slideIndex);
+    const page = slideIndex;
+
+    fetch("saveProgress.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: `module=${moduleId}&percent=${percent}&page=${page}`
+    }).catch(err => console.error("Progress save failed:", err));
+}
+
+
 function showSlide(index) {
     if (isTransitioning || index === currentSlide) return;
     isTransitioning = true;
@@ -34,6 +84,8 @@ function showSlide(index) {
 
             currentSlide = index;
             updateProgress(currentSlide);
+
+            saveProgress(currentSlide);
 
             if (currentSlide === 1) alignPlayer();
 
@@ -90,7 +142,7 @@ function triggerRandomEvent() {
         eventModal.show();
         eventModalEl.addEventListener('hidden.bs.modal', () => {
             ageButton.disabled = false;
-        }, { once: true });
+        }, {once: true});
     }
 }
 
@@ -142,7 +194,7 @@ window.addEventListener('DOMContentLoaded', () => {
     movePlayerTo(0);
     updatePortfolioUI();
     const infoModalEl = document.getElementById('infoModal');
-    if(infoModalEl){
+    if (infoModalEl) {
         const infoModal = new bootstrap.Modal(infoModalEl);
         infoModal.show();
     }

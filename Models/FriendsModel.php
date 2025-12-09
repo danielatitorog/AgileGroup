@@ -11,17 +11,24 @@ class FriendsModel
         $this->db = Database::getInstance()->getdbConnection();
     }
 
-    /** Fetch all friends for user */
     public function getFriends($userId)
     {
-        // Join with users table to get friend info
-        $sql = "SELECT f.id AS id,
-                       u.id AS friend_id,
-                       u.username,
-                       u.email
-                FROM friends f
-                JOIN users u ON f.friend_id = u.id
-                WHERE f.user_id = :uid";
+        $sql = "
+        SELECT 
+            f.id AS id,
+            u.id AS friend_id,
+            u.username,
+            (
+                SELECT ROUND(AVG(COALESCE(ump.progress_percent, 0)))
+                FROM modules m
+                LEFT JOIN user_module_progress ump
+                    ON ump.module_id = m.module_id
+                    AND ump.user_id = u.id
+            ) AS progress
+        FROM friends f
+        JOIN users u ON f.friend_id = u.id
+        WHERE f.user_id = :uid
+    ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":uid", $userId, PDO::PARAM_INT);
@@ -29,6 +36,7 @@ class FriendsModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     /** Helper: find a user by username */
     private function findUserByUsername($username)

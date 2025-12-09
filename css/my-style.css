@@ -346,8 +346,3 @@ main {
 .footer-icons i:hover {
     color: #d70000; /* optional hover color */
 }
-
-.nav-link {
-    padding-top: 0;
-    padding-bottom: 0;
-}
