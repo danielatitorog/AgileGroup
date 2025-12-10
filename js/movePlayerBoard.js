@@ -1,3 +1,7 @@
+// -------------------------------
+// Slide Navigation + Progress
+// -------------------------------
+
 const slides = document.querySelectorAll(".slide");
 const progressBar = document.getElementById("progressBar");
 const prevBtn = document.getElementById("prevSlide");
@@ -22,13 +26,10 @@ function getModuleForSlide(slideIndex) {
         if (slideIndex >= start && slideIndex <= end) {
             return module.module_id;
         }
-
         accumulated += module.total_pages;
     }
-
-    return null; // Should never happen
+    return null;
 }
-
 
 function getModuleProgress(slideIndex) {
     let accumulated = 0;
@@ -41,29 +42,24 @@ function getModuleProgress(slideIndex) {
             const pageInModule = slideIndex - start + 1;
             return Math.round((pageInModule / module.total_pages) * 100);
         }
-
         accumulated += module.total_pages;
     }
-
-    return 0; // fallback
+    return 0;
 }
 
-// Send AJAX request to save progress
 function saveProgress(slideIndex) {
     const moduleId = getModuleForSlide(slideIndex);
     const percent = getModuleProgress(slideIndex);
-    const page = slideIndex;
 
     fetch("saveProgress.php", {
         method: "POST",
-        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        body: `module=${moduleId}&percent=${percent}&page=${page}`
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `module=${moduleId}&percent=${percent}&page=${slideIndex}`
     }).catch(err => console.error("Progress save failed:", err));
 }
 
-
 function showSlide(index) {
-    if (isTransitioning || index === currentSlide) return;
+    if (isTransitioning || index === currentSlide || index < 0 || index >= slides.length) return;
     isTransitioning = true;
 
     const current = slides[currentSlide];
@@ -73,136 +69,212 @@ function showSlide(index) {
 
     setTimeout(() => {
         current.classList.remove("active", "fade-out");
-        current.style.zIndex = 1;
-
-        next.style.zIndex = 2;
         next.classList.add("active", "fade-in");
+
+        currentSlide = index;
+        updateProgress();
 
         setTimeout(() => {
             next.classList.remove("fade-in");
-            next.style.zIndex = 1;
-
-            currentSlide = index;
-            updateProgress(currentSlide);
-
             saveProgress(currentSlide);
-
-            if (currentSlide === 1) alignPlayer();
-
             isTransitioning = false;
         }, 500);
     }, 500);
 }
 
-
 prevBtn.addEventListener("click", () => showSlide(currentSlide - 1));
 nextBtn.addEventListener("click", () => showSlide(currentSlide + 1));
-
 slides[currentSlide].classList.add("active");
 updateProgress();
-
-const ageButton = document.getElementById("ageButton");
-const player = document.querySelector(".player-container");
-const steps = document.querySelectorAll("#board .step-circle");
-const boardParent = document.querySelector(".roadmap-card");
-
-let position = 0;
-let cash = 33000;
-let invested = 0;
-const investFraction = 0.05;
-const annualReturn = 0.07;
-let tradeAllowed = true;
-
-const cashDisplay = document.getElementById("cashDisplay");
-const investedDisplay = document.getElementById("investedDisplay");
-const buyButton = document.getElementById("buyButton");
-const sellButton = document.getElementById("sellButton");
-
-function movePlayerTo(index) {
-    if (!steps[index]) return;
-    const target = steps[index];
-    const rectParent = boardParent.getBoundingClientRect();
-    const rectTarget = target.getBoundingClientRect();
-    const playerWidth = player.offsetWidth;
-    const playerHeight = player.offsetHeight;
-
-    const offsetX = rectTarget.left - rectParent.left + rectTarget.width / 2 - playerWidth / 2;
-    const offsetY = rectTarget.top - rectParent.top - playerHeight - 10;
-
-    player.style.left = offsetX + "px";
-    player.style.top = offsetY + "px";
-}
-
-function triggerRandomEvent() {
-    const chance = Math.random();
-    if (chance < 0.25) {
-        const eventModalEl = document.getElementById('eventModal');
-        const eventModal = new bootstrap.Modal(eventModalEl);
-        ageButton.disabled = true;
-        eventModal.show();
-        eventModalEl.addEventListener('hidden.bs.modal', () => {
-            ageButton.disabled = false;
-        }, {once: true});
-    }
-}
-
-function updatePortfolioUI() {
-    cashDisplay.textContent = cash.toFixed(2);
-    investedDisplay.textContent = invested.toFixed(2);
-}
-
-function getInvestAmount() {
-    return Math.round(cash * investFraction);
-}
-
-buyButton.addEventListener("click", () => {
-    if (!tradeAllowed) return;
-    const amount = getInvestAmount();
-    if (cash < amount) return alert("Not enough cash to invest!");
-    cash -= amount;
-    invested += amount;
-    tradeAllowed = false;
-    updatePortfolioUI();
-});
-
-sellButton.addEventListener("click", () => {
-    if (!tradeAllowed) return;
-    const amount = getInvestAmount();
-    if (invested < amount) return alert("Not enough invested to sell!");
-    invested -= amount;
-    cash += amount;
-    tradeAllowed = false;
-    updatePortfolioUI();
-});
-
-ageButton.addEventListener("click", () => {
-    if (position < steps.length - 1) {
-        position++;
-        invested = +(invested * (1 + annualReturn)).toFixed(2);
-        updatePortfolioUI();
-        tradeAllowed = true;
-        movePlayerTo(position);
-        triggerRandomEvent();
-    }
-});
-
-function alignPlayer() {
-    movePlayerTo(position);
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    movePlayerTo(0);
-    updatePortfolioUI();
-    const infoModalEl = document.getElementById('infoModal');
-    if (infoModalEl) {
-        const infoModal = new bootstrap.Modal(infoModalEl);
-        infoModal.show();
-    }
-});
 
 document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         const target = parseInt(btn.dataset.slide);
         showSlide(target);
+    });
+});
+
+// -------------------------------
+// Inflation Slider
+// -------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.getElementById("inflationSlider");
+    if (!slider) return;
+
+    const moneyCircle = document.getElementById("moneyCircle");
+    const yearsText = document.getElementById("yearsText");
+    const valueText = document.getElementById("valueText");
+
+    const startAmount = 100;
+    const inflationRate = 0.03;
+
+    slider.addEventListener("input", function () {
+        const years = this.value;
+        const power = startAmount / Math.pow(1 + inflationRate, years);
+        yearsText.textContent = `${years} Year${years === "1" ? "" : "s"}`;
+        valueText.textContent = `£${power.toFixed(2)}`;
+
+        const scale = power / startAmount;
+        moneyCircle.style.transform = `scale(${scale})`;
+
+        if (power < 50) {
+            moneyCircle.style.backgroundColor = "#dc3545";
+            valueText.className = "fw-bold text-danger";
+        } else {
+            moneyCircle.style.backgroundColor = "#198754";
+            valueText.className = "fw-bold text-success";
+        }
+    });
+});
+
+// -------------------------------
+// Avoiding Scams Widget
+// -------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("scannerToggle");
+    if (!toggle) return;
+
+    const messageBox = document.querySelector(".message-box");
+    const scamWords = document.querySelectorAll(".scam-word");
+    const redFlags = document.getElementById("redFlags");
+    const toggleLabel = document.getElementById("toggleLabel");
+
+    toggle.addEventListener("change", function () {
+        if (this.checked) {
+            toggleLabel.textContent = "Highlighted View";
+
+            messageBox.style.borderLeftColor = "#b60111";
+            redFlags.classList.remove("d-none");
+
+            scamWords.forEach(w => {
+                w.style.backgroundColor = "#ffc107";
+                w.style.fontWeight = "bold";
+            });
+        } else {
+            toggleLabel.textContent = "Normal View";
+
+            messageBox.style.borderLeftColor = "#0d6efd";
+            redFlags.classList.add("d-none");
+
+            scamWords.forEach(w => {
+                w.style.backgroundColor = "transparent";
+                w.style.fontWeight = "normal";
+            });
+        }
+    });
+});
+
+// -------------------------------
+// 2FA Simulation Widget
+// -------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("defenseToggle");
+    const btn = document.getElementById("btnHack");
+
+    if (!toggle || !btn) return;
+
+    const door = document.getElementById("doorPanel");
+    const lock2Container = document.getElementById("lock2Container");
+    const light1 = document.getElementById("light1");
+    const resultText = document.getElementById("hackResultText");
+
+    toggle.addEventListener("change", resetSim);
+    btn.addEventListener("click", startAttack);
+
+    function startAttack() {
+        btn.disabled = true;
+        resultText.textContent = "Attempting to crack password...";
+
+        setTimeout(() => {
+            light1.classList.replace("bg-secondary", "bg-danger");
+
+            if (toggle.checked) {
+                setTimeout(() => finishAttack(false), 800);
+            } else {
+                finishAttack(true);
+            }
+        }, 600);
+    }
+
+    function finishAttack(success) {
+        if (success) {
+            door.style.backgroundColor = "#ffcccc";
+            door.style.borderColor = "#dc3545";
+            resultText.innerHTML = "<strong>SYSTEM HACKED</strong><br>Without 2FA, the password was not enough.";
+            resultText.className = "text-center small text-danger border-top pt-2";
+        } else {
+            door.style.backgroundColor = "#d1e7dd";
+            door.style.borderColor = "#198754";
+            resultText.innerHTML = "<strong>ATTACK BLOCKED</strong><br>2FA prevented the breach.";
+            resultText.className = "text-center small text-success border-top pt-2";
+        }
+
+        setTimeout(resetSim, 4000);
+    }
+
+    function resetSim() {
+        btn.disabled = false;
+
+        door.style.backgroundColor = "#ffffff";
+        door.style.borderColor = "#dee2e6";
+
+        light1.classList.remove("bg-danger");
+        light1.classList.add("bg-secondary");
+
+        lock2Container.style.opacity = toggle.checked ? "1" : "0.3";
+
+        resultText.textContent = toggle.checked
+            ? "Defenses Up. Ready to attack."
+            : "Defenses Down. Ready to attack.";
+
+        resultText.className = "text-center small fw-bold text-muted border-top pt-2";
+    }
+});
+
+// -------------------------------
+// Wealth Over Time Widget
+// -------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.getElementById("timeSlider");
+    if (!slider) return;
+
+    const yearsLabel = document.getElementById("yearsLabel");
+    const barCash = document.getElementById("barCash");
+    const barInterest = document.getElementById("barInterest");
+    const valCash = document.getElementById("valCash");
+    const valInvested = document.getElementById("valInvested");
+
+    const monthly = 100;
+    const rate = 0.08;
+    const maxScale = 149036;
+
+    slider.addEventListener("input", function () {
+        const years = parseInt(this.value);
+        yearsLabel.textContent = years;
+
+        const totalCash = monthly * 12 * years;
+        const monthlyRate = rate / 12;
+        const months = years * 12;
+
+        let totalInvested =
+            years > 0
+                ? monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
+                : 0;
+
+        barCash.style.width = Math.min((totalCash / maxScale) * 100, 100) + "%";
+        barInterest.style.width = Math.min((totalInvested / maxScale) * 100, 100) + "%";
+
+        const fmt = new Intl.NumberFormat("en-GB", {
+            style: "currency",
+            currency: "GBP",
+            maximumFractionDigits: 0
+        });
+
+        valCash.textContent = fmt.format(totalCash);
+        valInvested.textContent = fmt.format(totalInvested);
     });
 });
