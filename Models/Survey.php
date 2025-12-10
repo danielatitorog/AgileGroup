@@ -75,8 +75,8 @@ class Survey
     private function getJsonFilePath()
     {
         // check age group and return corresponding filename
-        if ($this->ageGroup === "12-15") {
-            return"survey_questions_12-15.json";
+        if ($this->ageGroup === "12-14") {
+            return"survey_questions_12-14.json";
         }
         elseif ($this->ageGroup === "15-18") {
             return "survey_questions_15-18.json";
