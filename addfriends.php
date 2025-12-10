@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['friend_username'])) {
 
 // Process Delete Friend
 if (isset($_GET['delete'])) {
-    $model->deleteFriend($userId, intval($_GET['delete']));
+    $model->deleteFriend($userId, $_POST['delete']);
     header("Location: profile.php");
     exit;
 }
