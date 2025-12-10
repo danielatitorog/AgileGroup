@@ -8,9 +8,11 @@ $view->pageTitle = 'Survey';
 $view->user = new User();
 $view->errorMessage = '';
 
-// Check if this is a survey submission user answering questions
-// This handles the POST request when survey answers are submitted
-// currently just redirects user to thank you page - answers are not being saved
+/**Check if this is a survey submission user answering questions
+ * This handles the POST request when survey answers are submitted
+ * currently just redirects user to thank you page - answers are not being saved
+ **/
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['age_group'])) {
     header("Location: survey_thankyou.php");
     exit;
