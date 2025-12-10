@@ -1,3 +1,7 @@
+// -------------------------------
+// Slide Navigation + Progress
+// -------------------------------
+
 const slides = document.querySelectorAll(".slide");
 const progressBar = document.getElementById("progressBar");
 const prevBtn = document.getElementById("prevSlide");
@@ -22,13 +26,10 @@ function getModuleForSlide(slideIndex) {
         if (slideIndex >= start && slideIndex <= end) {
             return module.module_id;
         }
-
         accumulated += module.total_pages;
     }
-
-    return null; // Should never happen
+    return null;
 }
-
 
 function getModuleProgress(slideIndex) {
     let accumulated = 0;
@@ -41,29 +42,24 @@ function getModuleProgress(slideIndex) {
             const pageInModule = slideIndex - start + 1;
             return Math.round((pageInModule / module.total_pages) * 100);
         }
-
         accumulated += module.total_pages;
     }
-
-    return 0; // fallback
+    return 0;
 }
 
-// Send AJAX request to save progress
 function saveProgress(slideIndex) {
     const moduleId = getModuleForSlide(slideIndex);
     const percent = getModuleProgress(slideIndex);
-    const page = slideIndex;
 
     fetch("saveProgress.php", {
         method: "POST",
-        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        body: `module=${moduleId}&percent=${percent}&page=${page}`
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `module=${moduleId}&percent=${percent}&page=${slideIndex}`
     }).catch(err => console.error("Progress save failed:", err));
 }
 
-
 function showSlide(index) {
-    if (isTransitioning || index === currentSlide) return;
+    if (isTransitioning || index === currentSlide || index < 0 || index >= slides.length) return;
     isTransitioning = true;
 
     const current = slides[currentSlide];
@@ -73,37 +69,23 @@ function showSlide(index) {
 
     setTimeout(() => {
         current.classList.remove("active", "fade-out");
-        current.style.zIndex = 1;
-
-        next.style.zIndex = 2;
         next.classList.add("active", "fade-in");
 
         currentSlide = index;
-        updateProgress(currentSlide);
+        updateProgress();
 
         setTimeout(() => {
             next.classList.remove("fade-in");
-            next.style.zIndex = 1;
-
-            currentSlide = index;
-            updateProgress(currentSlide);
-
             saveProgress(currentSlide);
-
-            if (currentSlide === 1) alignPlayer();
-
             isTransitioning = false;
         }, 500);
     }, 500);
 }
 
-
 prevBtn.addEventListener("click", () => showSlide(currentSlide - 1));
 nextBtn.addEventListener("click", () => showSlide(currentSlide + 1));
-
 slides[currentSlide].classList.add("active");
 updateProgress();
-
 
 document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -111,212 +93,186 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
         showSlide(target);
     });
 });
-function triggerRandomEvent() {
-    const chance = Math.random();
-    if (chance < 0.25) {
-        const eventModalEl = document.getElementById('eventModal');
-        const eventModal = new bootstrap.Modal(eventModalEl);
-        ageButton.disabled = true;
-        eventModal.show();
-        eventModalEl.addEventListener('hidden.bs.modal', () => {
-            ageButton.disabled = false;
-        }, {once: true});
-    }
-}
 
+// -------------------------------
+// Inflation Slider
+// -------------------------------
 
-// inflation slider
-document.addEventListener("DOMContentLoaded", function() {
-    const slider = document.getElementById('inflationSlider');
-    const moneyCircle = document.getElementById('moneyCircle');
-    const yearsText = document.getElementById('yearsText');
-    const valueText = document.getElementById('valueText');
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.getElementById("inflationSlider");
+    if (!slider) return;
+
+    const moneyCircle = document.getElementById("moneyCircle");
+    const yearsText = document.getElementById("yearsText");
+    const valueText = document.getElementById("valueText");
+
     const startAmount = 100;
     const inflationRate = 0.03;
 
-    slider.addEventListener('input', function() {
+    slider.addEventListener("input", function () {
         const years = this.value;
+        const power = startAmount / Math.pow(1 + inflationRate, years);
+        yearsText.textContent = `${years} Year${years === "1" ? "" : "s"}`;
+        valueText.textContent = `£${power.toFixed(2)}`;
 
-        let purchasingPower = startAmount / Math.pow((1 + inflationRate), years);
-
-        yearsText.textContent = years + (years == 1 ? " Year" : " Years");
-        valueText.textContent = '£' + purchasingPower.toFixed(2);
-
-        const scale = purchasingPower / startAmount;
+        const scale = power / startAmount;
         moneyCircle.style.transform = `scale(${scale})`;
 
-        if (purchasingPower < 50) {
-            moneyCircle.style.backgroundColor = '#dc3545';
-            valueText.className = 'fw-bold text-danger';
+        if (power < 50) {
+            moneyCircle.style.backgroundColor = "#dc3545";
+            valueText.className = "fw-bold text-danger";
         } else {
-            moneyCircle.style.backgroundColor = '#198754';
-            valueText.className = 'fw-bold text-success';
+            moneyCircle.style.backgroundColor = "#198754";
+            valueText.className = "fw-bold text-success";
         }
     });
 });
 
-// avoiding scams visual representation
-document.addEventListener("DOMContentLoaded", function() {
-    const toggle = document.getElementById('scannerToggle');
-    const messageBox = document.querySelector('.message-box');
-    const scamWords = document.querySelectorAll('.scam-word');
-    const redFlags = document.getElementById('redFlags');
-    const toggleLabel = document.getElementById('toggleLabel');
+// -------------------------------
+// Avoiding Scams Widget
+// -------------------------------
 
-    toggle.addEventListener('change', function() {
-        if(this.checked) {
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("scannerToggle");
+    if (!toggle) return;
+
+    const messageBox = document.querySelector(".message-box");
+    const scamWords = document.querySelectorAll(".scam-word");
+    const redFlags = document.getElementById("redFlags");
+    const toggleLabel = document.getElementById("toggleLabel");
+
+    toggle.addEventListener("change", function () {
+        if (this.checked) {
             toggleLabel.textContent = "Highlighted View";
 
             messageBox.style.borderLeftColor = "#b60111";
+            redFlags.classList.remove("d-none");
 
-            redFlags.classList.remove('d-none');
-
-            scamWords.forEach(word => {
-                word.style.backgroundColor = "#ffc107";
-                word.style.fontWeight = "bold";
+            scamWords.forEach(w => {
+                w.style.backgroundColor = "#ffc107";
+                w.style.fontWeight = "bold";
             });
-
         } else {
             toggleLabel.textContent = "Normal View";
-            toggleLabel.classList.remove('text-danger');
 
             messageBox.style.borderLeftColor = "#0d6efd";
+            redFlags.classList.add("d-none");
 
-            redFlags.classList.add('d-none');
-
-            scamWords.forEach(word => {
-                word.style.backgroundColor = "transparent";
-                word.style.fontWeight = "normal";
-                word.style.textDecoration = "none";
+            scamWords.forEach(w => {
+                w.style.backgroundColor = "transparent";
+                w.style.fontWeight = "normal";
             });
         }
     });
 });
 
-// creating safe habits online visual representation
-document.addEventListener("DOMContentLoaded", function() {
-    const toggle = document.getElementById('defenseToggle');
-    const btn = document.getElementById('btnHack');
+// -------------------------------
+// 2FA Simulation Widget
+// -------------------------------
 
-    const door = document.getElementById('doorPanel');
-    const lock2Container = document.getElementById('lock2Container');
-    const light1 = document.getElementById('light1');
-    const resultText = document.getElementById('hackResultText');
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("defenseToggle");
+    const btn = document.getElementById("btnHack");
 
-    toggle.addEventListener('change', function() {
-        resetSim();
-        if(this.checked) {
-            lock2Container.style.opacity = "1";
-            resultText.textContent = "Defenses Up. Try to hack now.";
-        } else {
-            lock2Container.style.opacity = "0.3";
-            resultText.textContent = "Defenses Down. Vulnerable.";
-        }
-    });
+    if (!toggle || !btn) return;
 
-    btn.addEventListener('click', function() {
+    const door = document.getElementById("doorPanel");
+    const lock2Container = document.getElementById("lock2Container");
+    const light1 = document.getElementById("light1");
+    const resultText = document.getElementById("hackResultText");
+
+    toggle.addEventListener("change", resetSim);
+    btn.addEventListener("click", startAttack);
+
+    function startAttack() {
         btn.disabled = true;
         resultText.textContent = "Attempting to crack password...";
 
         setTimeout(() => {
-            light1.classList.remove('bg-secondary');
-            light1.classList.add('bg-danger');
+            light1.classList.replace("bg-secondary", "bg-danger");
 
-            if(toggle.checked) {
-                setTimeout(() => {
-                    attemptResult(false);
-                }, 800);
+            if (toggle.checked) {
+                setTimeout(() => finishAttack(false), 800);
             } else {
-                attemptResult(true);
+                finishAttack(true);
             }
         }, 600);
-    });
+    }
 
-    function attemptResult(hackerWon) {
-        setTimeout(() => {
-            if(hackerWon) {
-                door.style.backgroundColor = "#ffcccc";
-                door.style.borderColor = "#dc3545";
+    function finishAttack(success) {
+        if (success) {
+            door.style.backgroundColor = "#ffcccc";
+            door.style.borderColor = "#dc3545";
+            resultText.innerHTML = "<strong>SYSTEM HACKED</strong><br>Without 2FA, the password was not enough.";
+            resultText.className = "text-center small text-danger border-top pt-2";
+        } else {
+            door.style.backgroundColor = "#d1e7dd";
+            door.style.borderColor = "#198754";
+            resultText.innerHTML = "<strong>ATTACK BLOCKED</strong><br>2FA prevented the breach.";
+            resultText.className = "text-center small text-success border-top pt-2";
+        }
 
-                resultText.innerHTML = "<strong>SYSTEM HACKED</strong><br>Without 2FA, the password was not enough.";
-                resultText.className = "text-center small text-danger border-top pt-2";
-            } else {
-                door.style.backgroundColor = "#d1e7dd";
-                door.style.borderColor = "#198754";
-
-                resultText.innerHTML = "<strong>ATTACK BLOCKED</strong><br>The hacker has the password, but 2FA stopped the attack.";
-                resultText.className = "text-center small text-success border-top pt-2";
-            }
-
-            setTimeout(() => {
-                resetSim();
-            }, 4000);
-        }, 300);
+        setTimeout(resetSim, 4000);
     }
 
     function resetSim() {
         btn.disabled = false;
+
         door.style.backgroundColor = "#ffffff";
         door.style.borderColor = "#dee2e6";
 
-        light1.classList.remove('bg-danger');
-        light1.classList.add('bg-secondary');
+        light1.classList.remove("bg-danger");
+        light1.classList.add("bg-secondary");
 
-        if(toggle.checked) {
-            resultText.textContent = "Defenses Up. Ready to attack.";
-            resultText.className = "text-center small fw-bold text-muted border-top pt-2";
-        } else {
-            resultText.textContent = "Defenses Down. Ready to attack.";
-            resultText.className = "text-center small fw-bold text-muted border-top pt-2";
-        }
-window.addEventListener('DOMContentLoaded', () => {
-    movePlayerTo(0);
-    updatePortfolioUI();
-    const infoModalEl = document.getElementById('infoModal');
-    if (infoModalEl) {
-        const infoModal = new bootstrap.Modal(infoModalEl);
-        infoModal.show();
+        lock2Container.style.opacity = toggle.checked ? "1" : "0.3";
+
+        resultText.textContent = toggle.checked
+            ? "Defenses Up. Ready to attack."
+            : "Defenses Down. Ready to attack.";
+
+        resultText.className = "text-center small fw-bold text-muted border-top pt-2";
     }
 });
 
-// building wealth overtime visual representation
-document.addEventListener("DOMContentLoaded", function() {
-    const slider = document.getElementById('timeSlider');
-    const yearsLabel = document.getElementById('yearsLabel');
+// -------------------------------
+// Wealth Over Time Widget
+// -------------------------------
 
-    const barCash = document.getElementById('barCash');
-    const barInterest = document.getElementById('barInterest');
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.getElementById("timeSlider");
+    if (!slider) return;
 
-    const valCash = document.getElementById('valCash');
-    const valInvested = document.getElementById('valInvested');
+    const yearsLabel = document.getElementById("yearsLabel");
+    const barCash = document.getElementById("barCash");
+    const barInterest = document.getElementById("barInterest");
+    const valCash = document.getElementById("valCash");
+    const valInvested = document.getElementById("valInvested");
 
     const monthly = 100;
     const rate = 0.08;
     const maxScale = 149036;
 
-    slider.addEventListener('input', function() {
+    slider.addEventListener("input", function () {
         const years = parseInt(this.value);
         yearsLabel.textContent = years;
 
         const totalCash = monthly * 12 * years;
-
         const monthlyRate = rate / 12;
         const months = years * 12;
-        let totalInvested = 0;
 
-        if (years > 0) {
-            totalInvested = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
-        }
+        let totalInvested =
+            years > 0
+                ? monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
+                : 0;
 
-        const cashPerc = Math.min((totalCash / maxScale) * 100, 100);
-        const totalInvPerc = Math.min((totalInvested / maxScale) * 100, 100);
+        barCash.style.width = Math.min((totalCash / maxScale) * 100, 100) + "%";
+        barInterest.style.width = Math.min((totalInvested / maxScale) * 100, 100) + "%";
 
-        const interestPerc = totalInvPerc;
-
-        barCash.style.width = cashPerc + "%";
-        barInterest.style.width = interestPerc + "%";
-
-        const fmt = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
+        const fmt = new Intl.NumberFormat("en-GB", {
+            style: "currency",
+            currency: "GBP",
+            maximumFractionDigits: 0
+        });
 
         valCash.textContent = fmt.format(totalCash);
         valInvested.textContent = fmt.format(totalInvested);
