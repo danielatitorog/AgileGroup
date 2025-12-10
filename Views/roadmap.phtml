@@ -176,6 +176,7 @@
                     <h2>What is a share?</h2>
                     <p>A share represents a tiny piece of a company. When you buy one, you become a small owner of that business. If the company grows, earns more money, or becomes more popular, the value of your share usually increases.</p>
                     <p>You’re essentially trusting the company’s success, and in return, you get part of the profits and part of the growth.</p>
+                    <img src="../images/bellstocks.png" width="400" height="400" class="mx-auto" alt="Bell Stocks">
                 </div>
             </div>
 
@@ -185,6 +186,26 @@
                     <h2>How the stock market works</h2>
                     <p>The stock market is like a huge online marketplace where people buy and sell shares every second of the day. Prices constantly change based on supply and demand—how many people want to buy something versus how many want to sell it.</p>
                     <p>When lots of people believe a company will perform well, more buyers appear and the price goes up. When investors lose confidence, the price falls. These movements might seem random day to day, but over many years, the market has historically grown.</p>
+                    <div class="container">
+                        <h2>Share Ownership Simulator</h2>
+                        <div class="stats">
+                            <div>Total Shares: 100</div>
+                            <div>Share Price: <span id="price"></span></div>
+                        </div>
+                        <div class="stats">
+                            <div>Your Shares: <span id="owned"></span></div>
+                            <div>Your Ownership: <span id="ownership"></span></div>
+                        </div>
+                        <div class="buttons">
+                            <button id="buy">Buy 1 Share</button>
+                            <button id="sell">Sell 1 Share</button>
+                        </div>
+                        <button id="changePrice" class="price-btn">Simulate Price Change</button>
+                        <div class="portfolio">
+                            <div>Your Portfolio Value</div>
+                            <div id="value" class="value"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -194,6 +215,7 @@
                     <h2>Diversification: don’t put all your eggs in one basket</h2>
                     <p>Diversification means spreading your money across many different investments instead of relying on just one. If one company has a bad year, your entire investment won’t collapse because the others can balance it out.</p>
                     <p>This is why funds are popular—they include many companies at once, giving you instant diversification with just a single purchase.</p>
+                    <img src="../images/bellinvesting.png" width="400" height="400" class="mx-auto" alt="Bell Investing">
                 </div>
             </div>
 
@@ -381,6 +403,9 @@
 <script>
     const MODULES = <?= json_encode($view->modules); ?>;
 </script>
+
+<script src="../js/stockinvesting.js"></script>
+
 
 
 <?php require('template/footer.phtml') ?>
