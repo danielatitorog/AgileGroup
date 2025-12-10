@@ -1,0 +1,71 @@
+<?php require('template/header.phtml') ?>
+
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <span class="navbar-brand">Virtual Portfolio</span>
+            <span class="navbar-text me-3" id="points-display">Points: 0</span>
+            <span class="navbar-text" id="cash-display">Cash: €10,000</span>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+
+        <div class="row mb-4">
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Portfolio Value</h4>
+                        <h2 id="portfolio-value">€10,000</h2>
+                        <p id="badge-display" class="text-success"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="portfolioChart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>Market</h4>
+        <div class="card mb-4">
+            <div class="card-body">
+                <table class="table" id="market-table">
+                    <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Price</th>
+                        <th>Buy</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <h4>Your Holdings</h4>
+        <div class="card mb-4">
+            <div class="card-body">
+                <table class="table" id="portfolio-table">
+                    <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Sell</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/virtual_portfolio.js"></script>
+
+<?php require('template/footer.phtml') ?>
