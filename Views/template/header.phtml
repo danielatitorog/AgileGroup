@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="description" content="PetWatch - A web application to report, track, and search for lost and found pets using the MVC pattern and Bootstrap.">
-    <meta name="author" content="Daniela Titorog">
+    <meta name="author" content="Daniela Titorog, Amara Kanwal, Afonso Fernandes Soares Mendes, Saif Ahmed, Maria Embashi, Nihad Hossain, and Umar Tariq ">
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -19,6 +19,7 @@
     <link href="/css/my-style.css" rel="stylesheet">
 
     <title>Youth Invest</title>
+    <link rel="icon" type="image/ico" href="/images/favicon.ico">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -46,30 +47,31 @@
                         <!-- Home page link -->
                         <a class="nav-link active fw-semibold" aria-current="page" href="index.php">Home</a>
                     </li>
-                    <?php if ($view->user->isLoggedIn()) { ?>
+                    <?php if ($view->user->isLoggedIn()): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="roadmap.php">Roadmap</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="quiz.php">Quiz</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="roadmap.php">Roadmap</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="addfriends.php">Friends</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="result.php">Results</a>
+                        <a class="nav-link" href="contact.php">Contact Us</a>
                     </li>
                 </ul>
 
-                <!-- Right side of the menu -->
-                <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="profile.php">
-                            <img src="/images/profilepicture.png" alt="Profile"
-                                 class="rounded-circle" width="32" height="32">
-                        </a>
-                    </li>
+                <?php if ($view->user->isLoggedIn()): ?>
+                    <!-- Right side of the menu -->
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="profile.php">
+                                <img src="/images/profilepicture.png" alt="Profile"
+                                     class="rounded-circle" width="32" height="32">
+                            </a>
+                        </li>
 
 
-
-                    <!-- Logout button -->
+                        <!-- Logout button -->
                         <li class="nav-item d-flex align-items-center">
                             <form action="index.php" method="POST" class="d-inline">
                                 <button type="submit" name="logoutBtn" class="btn btn-outline-light rounded-pill"
@@ -77,8 +79,8 @@
                                 </button>
                             </form>
                         </li>
-                    <?php } ?>
-                </ul>
+                    </ul>
+                <?php endif; ?>
             </div>
         </div>
     </nav>

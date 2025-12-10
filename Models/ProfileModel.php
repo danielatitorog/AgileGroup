@@ -12,7 +12,7 @@ class ProfileModel
     }
 
     /**
-     * Fetch user data from the DB by ID
+     * Fetch user data + modules + progress
      */
     public function getUserData($userId)
     {
@@ -28,28 +28,82 @@ class ProfileModel
         }
 
         return [
-            'name'   => $row['username'],
-            'email'  => $row['email'],
-            'joined' => "N/A",
-
-            // Temporary placeholder modules
-            'modules' => [
-                ['title' => "What is Investment?", 'completed' => 35],
-                ['title' => "Saving vs Investing", 'completed' => 60],
-                ['title' => "Stocks and Stock Market", 'completed' => 10]
-            ]
+            'name'    => $row['username'],
+            'email'   => $row['email'],
+            'joined'  => "N/A", // add joined date later if needed
+            'modules' => $this->getUserModules($userId)
         ];
     }
 
     /**
-     * Placeholder friend progress (until DB table exists)
+     * Load all modules + user progress
      */
-    public function getFriends()
+    private function getUserModules($userId)
     {
-        return [
-            ['name' => "Jordan", 'modulesCompleted' => 40],
-            ['name' => "Taylor", 'modulesCompleted' => 75],
-            ['name' => "Sam", 'modulesCompleted' => 20]
-        ];
+        $sql = "
+            SELECT 
+                m.module_id,
+                m.module_name,
+                m.total_pages,
+                IFNULL(ump.progress_percent, 0) AS progress
+            FROM modules m
+            LEFT JOIN user_module_progress ump
+                ON m.module_id = ump.module_id
+                AND ump.user_id = :uid
+        ";
+
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->bindParam(':uid', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $modules = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $modules[] = [
+                'title'     => $row['module_name'],
+                'completed' => $row['progress']
+            ];
+        }
+
+        return $modules;
     }
+
+    public function getFriends($userId)
+    {
+        require_once("FriendsModel.php");
+        $friendsModel = new FriendsModel();
+        return $friendsModel->getFriends($userId);
+    }
+
+    public function saveProgress($userId, $moduleId, $percent, $lastPage)
+    {
+        $sql = "
+        INSERT INTO user_module_progress (user_id, module_id, progress_percent, last_page_visited, updated_at)
+        VALUES (:uid, :mid, :percent, :lastPage, datetime('now'))
+        ON CONFLICT(user_id, module_id) DO UPDATE SET
+            progress_percent = excluded.progress_percent,
+            last_page_visited = excluded.last_page_visited,
+            updated_at = datetime('now')
+    ";
+
+        $stmt = $this->_dbHandle->prepare($sql);
+
+        $stmt->execute([
+            ':uid' => $userId,
+            ':mid' => $moduleId,
+            ':percent' => $percent,
+            ':lastPage' => $lastPage
+        ]);
+    }
+
+    public function getModules()
+    {
+        $sql = "SELECT module_id, module_name, total_pages FROM modules ORDER BY module_id ASC";
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
 }

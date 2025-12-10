@@ -20,9 +20,10 @@ if (!$view->user->isLoggedIn()) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST["loginBtn"])) {
+        $username = trim($_POST["username"]);
+        $password = $_POST["password"];
         // Login button pressed from the login form
-
-        if ($view->user->login($_POST['username'], $_POST['password'])) {
+        if ($view->user->login($username, $password)) {
             $view->authMessage = "Login successful.";
         } else {
             // Login failed: set an error message for the view
@@ -35,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $view->authMessage = "You have been logged out.";   // Inform user
     }
 }
-
 
 // Include the index view
 require_once('Views/index.phtml');

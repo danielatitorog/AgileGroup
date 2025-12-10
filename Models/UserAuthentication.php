@@ -28,6 +28,15 @@ class User
             session_regenerate_id(true); // helps prevent session fixation
         }
 
+        // Session timeout (1 hour)
+        $timeout = 3600; // 1 hour
+
+        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
+            $this->logout();
+        } else {
+            $_SESSION['last_activity'] = time();
+        }
+
         // If already logged in, populate current user
         if ($this->isLoggedIn()) {
             $this->_currentUser = $this->getCurrentUser();
@@ -56,6 +65,8 @@ class User
             $_SESSION['username'] = $row['username'];
             $_SESSION['email'] = $row['email'];
             $_SESSION['role'] = $row['role'];
+
+            $_SESSION['last_activity'] = time(); // Session time-out
 
             $this->_currentUser = new UserData($row);
             return true;
