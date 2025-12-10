@@ -24,6 +24,7 @@
         <button class="nav-btn btn btn-primary mb-2" data-slide="12">Saving for milestones</button>
         <button class="nav-btn btn btn-primary mb-2" data-slide="13">Advantages of starting early</button>
         <button class="nav-btn btn btn-primary mb-2" data-slide="14">Staying invested</button>
+        <a href="quiz.php" class="nav-btn btn btn-primary mb-2">Quiz</a>
     </aside>
 
     <div class="module-area">
@@ -42,23 +43,79 @@
         <div id="slides" style="position: relative; min-height: 300px;">
 
             <div class="slide active text-center">
-
                 <div class="login-card roadmap-card card shadow-sm p-4 w-100">
                     <h1><strong>Module 1: What Is Investing?</strong></h1>
                     <h2>What does investing mean?</h2>
-                    <p>Investing is when you put your money into something that can grow in value over time.
-                        A helpful way to think about it is like planting a smart money seed: it doesn’t grow instantly, and sometimes it might dip during bad weather, but over the long run it has the potential to grow into something much bigger. Instead of letting money sit still, investing puts it to work so it can help you reach future goals.</p>
-                    <p>The key idea is that your money isn’t just sitting still anymore. It’s being used to help companies grow, build new products, or open new locations, and if things go well, you benefit from that growth too.</p>
-                </div>
 
+                    <div class="intro-journey-wrapper">
+                        <div class="intro-card">
+                            <div class="intro-path"></div>
+                            <div class="intro-coin" id="introCoin">£</div>
+                        </div>
+
+                        <div class="intro-slider-area mt-3">
+                            <input type="range"
+                                   min="0"
+                                   max="3"
+                                   step="1"
+                                   value="0"
+                                   id="introYearSlider"
+                                   class="intro-slider">
+                            <div class="d-flex justify-content-between small text-muted mt-1">
+                                <span>Today</span>
+                                <span>5 yrs</span>
+                                <span>10 yrs</span>
+                                <span>20 yrs</span>
+                            </div>
+                            <p class="mt-2 mb-0">
+                                <strong id="introYearLabel">Today</strong> this pot might be worth about
+                                <strong id="introBalance">£100</strong> if you have just started investing. Move the
+                                slider to imagine how it could grow over time. These numbers are simple examples, not predictions.
+                            </p>
+                        </div>
+                    </div>
+
+                    <p>
+                        Investing is when you put your money into something that can grow in value over time.
+                        Instead of letting money sit still, you put it to work so it has the chance to become more.
+                    </p>
+                    <p class="mb-0">
+                        Over the long run, regular investing can turn small steps into something much bigger, especially
+                        when you give it time to grow.
+                    </p>
+                </div>
             </div>
 
             <div class="slide text-center">
                 <div class="login-card roadmap-card card shadow-sm p-4 w-100">
                     <h1><strong>Module 1: What Is Investing?</strong></h1>
                     <h2>Why do investments grow?</h2>
-                    <p>Investments grow mainly because companies grow. When businesses make more profit, expand, or become more popular, the value of their shares rises. Over long periods of time, entire economies get bigger, technology improves, and successful companies tend to earn more money.</p>
-                    <p>This growth is reflected in the value of their stocks or funds. That’s why investing early and staying invested for a long time often leads to strong results—even with the ups and downs along the way.</p>
+
+                    <div class="invest-growth-hero row align-items-center my-4">
+                        <div class="col-md-5 mb-3 mb-md-0 d-flex justify-content-center">
+                            <div class="growth-bars-card">
+                                <div class="growth-bars-ground"></div>
+
+                                <div class="growth-bar b1"></div>
+                                <div class="growth-bar b2"></div>
+                                <div class="growth-bar b3"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7 text-start">
+                            <p>
+                                Investments grow mainly because companies grow. When businesses make more profit,
+                                expand, or become more popular, the value of their shares rises. Over long periods of
+                                time, entire economies get bigger, technology improves, and successful companies tend
+                                to earn more money.
+                            </p>
+                            <p class="mb-0">
+                                This growth is reflected in the value of their stocks or funds. That’s why investing
+                                early and staying invested for a long time often leads to strong results—even with the
+                                ups and downs along the way.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -66,8 +123,58 @@
                 <div class="login-card roadmap-card card shadow-sm p-4 w-100">
                     <h1><strong>Module 1: What Is Investing?</strong></h1>
                     <h2>Risk vs Reward</h2>
-                    <p>Every investment comes with some level of risk. Prices can rise and fall because of world events, company news, or changes in the economy. This can feel stressful at times, but it’s completely normal.</p>
+
+                    <p>Every investment comes with some level of risk. Prices can rise and fall because of world events, company news, or changes in the economy. This can feel stressful at times, but it is completely normal.</p>
                     <p>The important thing to know is that risk and reward are connected: safer investments usually grow slowly, while higher-risk investments can grow more—especially over many years. Smart investors learn how to balance both by diversifying and staying patient.</p>
+
+                    <div class="risk-visual-wrapper mt-4">
+                        <p class="fw-semibold mb-3 text-center">
+                            Tap a card to see how the journey changes:
+                        </p>
+
+                        <div class="risk-choice-row mb-3">
+                            <button type="button"
+                                    class="risk-card active"
+                                    data-risk="low">
+                                <div class="risk-card-title">Low risk</div>
+                                <div class="risk-card-sub">Calmer, slower growth</div>
+                            </button>
+
+                            <button type="button"
+                                    class="risk-card"
+                                    data-risk="medium">
+                                <div class="risk-card-title">Medium risk</div>
+                                <div class="risk-card-sub">Balanced journey</div>
+                            </button>
+
+                            <button type="button"
+                                    class="risk-card"
+                                    data-risk="high">
+                                <div class="risk-card-title">High risk</div>
+                                <div class="risk-card-sub">Bigger ups & downs</div>
+                            </button>
+                        </div>
+
+                        <div class="risk-visual-bars">
+                            <div class="risk-bar-column">
+                                <div class="risk-bar">
+                                    <div class="risk-bar-fill risk-bar-fill-growth" id="growthFill"></div>
+                                </div>
+                                <div class="risk-bar-label">Potential growth</div>
+                            </div>
+
+                            <div class="risk-bar-column">
+                                <div class="risk-bar">
+                                    <div class="risk-bar-fill risk-bar-fill-bumps" id="bumpsFill"></div>
+                                </div>
+                                <div class="risk-bar-label">Ups & downs</div>
+                            </div>
+                        </div>
+
+                        <p id="riskJourneyText" class="risk-journey-text text-center mt-3">
+                            Low risk: the ride is calmer and usually more predictable, but growth is slower.
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -197,10 +304,10 @@
                             <div>Your Ownership: <span id="ownership"></span></div>
                         </div>
                         <div class="buttons">
-                            <button id="buy">Buy 1 Share</button>
-                            <button id="sell">Sell 1 Share</button>
+                            <button id="buy" class="btn btn-danger">Buy 1 Share</button>
+                            <button id="sell" class="btn btn-danger">Sell 1 Share</button>
                         </div>
-                        <button id="changePrice" class="price-btn">Simulate Price Change</button>
+                        <button id="changePrice" class="price-btn btn btn-danger mt-1">Simulate Price Change</button>
                         <div class="portfolio">
                             <div>Your Portfolio Value</div>
                             <div id="value" class="value"></div>
@@ -339,6 +446,30 @@
                 <div class="login-card roadmap-card card shadow-sm p-4 w-100">
                     <h1><strong>Module 5: How Investing Impacts Major Life Events</strong></h1>
                     <h2>Saving for big milestones</h2>
+
+                    <div class="milestone-strip mt-4 mb-4">
+                        <div class="milestone-step">
+                            <span class="milestone-icon">🚗</span>
+                            <small>First car</small>
+                        </div>
+                        <div class="milestone-step">
+                            <span class="milestone-icon">🎓</span>
+                            <small>University</small>
+                        </div>
+                        <div class="milestone-step">
+                            <span class="milestone-icon">🏠</span>
+                            <small>Moving out</small>
+                        </div>
+                        <div class="milestone-step">
+                            <span class="milestone-icon">💼</span>
+                            <small>First job</small>
+                        </div>
+                        <div class="milestone-step">
+                            <span class="milestone-icon">🌍</span>
+                            <small>Travel</small>
+                        </div>
+                    </div>
+
                     <p>Many major life events—like buying your first car, paying for university, or moving into your own place—require money. Investing can help you reach these goals faster than regular saving alone.</p>
                     <p>By planning ahead and investing early, you reduce stress later and give yourself more opportunities when these milestones arrive.</p>
                 </div>

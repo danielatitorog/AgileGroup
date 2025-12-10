@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['age_group'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['age_group'])) {
     // Age selection form submitted
     $ageGroup = $_POST['age_group'];
-    $validAgeGroups = ['12-15', '15-18']; // Define valid age groups
+    $validAgeGroups = ['12-14', '15-18']; // Define valid age groups
 
     if (in_array($ageGroup, $validAgeGroups)) {
         // Age group is valid - store it for this session
