@@ -1,88 +1,104 @@
 <?php require('template/header.phtml') ?>
 
-    <nav class="navbar navbar-dark bg-primary">
-        <div class="container-fluid">
-            <span class="navbar-brand">Virtual Portfolio</span>
-            <div>
-                <span class="navbar-text me-3" id="points-display">Points: 0</span>
-                <span class="navbar-text" id="cash-display">Cash: £1,000.00</span>
-            </div>
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+        <span class="navbar-brand">Virtual Portfolio</span>
+        <div>
+            <span class="navbar-text me-3" id="points-display">Points: 0</span>
+            <span class="navbar-text" id="cash-display">Cash: £1,000.00</span>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container py-4">
+<div class="container py-4">
 
-        <!-- BUY/SELL DROPDOWN -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5>Quick Trade</h5>
+    <!-- BUY/SELL DROPDOWN -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Quick Trade</h5>
 
-                <div class="row g-2">
-                    <div class="col-md-5">
-                        <select id="dropdown-company" class="form-select"></select>
-                    </div>
+            <div class="row g-2">
+                <div class="col-md-5">
+                    <select id="dropdown-company" class="form-select"></select>
+                </div>
 
-                    <div class="col-md-3">
-                        <input type="number" id="dropdown-qty" class="form-control" placeholder="Quantity" min="1" value="1">
-                    </div>
+                <div class="col-md-3">
+                    <input type="number" id="dropdown-qty" class="form-control" placeholder="Quantity" min="1" value="1">
+                </div>
 
-                    <div class="col-md-4">
-                        <button class="btn btn-success w-100 mb-2" onclick="dropdownBuy()">Buy Selected</button>
-                        <button class="btn btn-warning w-100" onclick="dropdownSell()">Sell Selected</button>
-                    </div>
+                <div class="col-md-4">
+                    <button class="btn btn-success w-100 mb-2" onclick="dropdownBuy()">Buy Selected</button>
+                    <button class="btn btn-warning w-100" onclick="dropdownSell()">Sell Selected</button>
                 </div>
             </div>
         </div>
-
-        <!-- PORTFOLIO VALUE -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5>Portfolio Value</h5>
-                <h2 id="portfolio-value">£1,000.00</h2>
-            </div>
-        </div>
-
-        <!-- MARKET -->
-        <h4>Market</h4>
-        <div class="card mb-4">
-            <div class="card-body">
-                <table class="table" id="market-table">
-                    <thead>
-                    <tr>
-                        <th>Company</th>
-                        <th>Price</th>
-                        <th>Change</th>
-                        <th>Buy</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <div class="small text-muted">Green = price went up • Red = price went down</div>
-            </div>
-        </div>
-
-        <!-- HOLDINGS -->
-        <h4>Your Assets</h4>
-        <div class="card">
-            <div class="card-body">
-                <table class="table" id="portfolio-table">
-                    <thead>
-                    <tr>
-                        <th>Asset</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>% vs Buy</th>
-                        <th>Sell</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 
-    <script src="../js/virtual_portfolio.js"></script>
+    <!-- PORTFOLIO VALUE -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Portfolio Value</h5>
+            <h2 id="portfolio-value">£1,000.00</h2>
+        </div>
+    </div>
+
+    <!-- [MY CHANGE] Market trend card with improved multi-company line chart -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="mb-2">Market trend</h5>
+            <p class="small text-muted mb-1">
+                Each coloured line shows how a different company’s price has moved recently in your virtual market.
+            </p>
+            <p class="small text-muted mb-2">
+                The chart updates every second using the same prices as the table below. The right side is the most recent point.
+            </p>
+            <canvas id="market-chart" style="width: 100%; height: 200px;"></canvas>
+            <div id="market-legend" class="small text-muted mt-2"></div>
+        </div>
+    </div>
+    <!-- [MY CHANGE] end -->
+
+    <!-- MARKET -->
+    <h4>Market</h4>
+    <div class="card mb-4">
+        <div class="card-body">
+            <table class="table" id="market-table">
+                <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Price</th>
+                    <th>Change</th>
+                    <th>Buy</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="small text-muted">Green = price went up • Red = price went down</div>
+        </div>
+    </div>
+
+    <!-- HOLDINGS -->
+    <h4>Your Assets</h4>
+    <div class="card">
+        <div class="card-body">
+            <table class="table" id="portfolio-table">
+                <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>% vs Buy</th>
+                    <th>Sell</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="../js/virtual_portfolio.js"></script>
 
 <?php require('template/footer.phtml') ?>

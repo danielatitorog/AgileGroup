@@ -21,6 +21,32 @@ let companies = [
 
 const gbp = n => "£" + n.toFixed(2);
 
+// ---------------- GRAPH STATE (YOUR PART) ----------------
+
+// [MY CHANGE] Colours + per-company history (percentage change vs starting price)
+const COLORS = {
+    AAPL: "#0d6efd",
+    MSFT: "#198754",
+    GOOGL: "#fd7e14",
+    AMZN: "#6f42c1",
+    TSLA: "#dc3545",
+    NVDA: "#20c997"
+};
+
+const MAX_POINTS = 60;          // [MY CHANGE] how many recent points to keep
+let priceHistory = {};          // [MY CHANGE] symbol -> array of % changes
+const BASE_PRICES = {};         // [MY CHANGE] remember starting price for each symbol
+
+// [MY CHANGE] Initialise base prices and history arrays from starting prices
+function initMarketHistory() {
+    companies.forEach(c => {
+        BASE_PRICES[c.symbol] = c.price;
+        priceHistory[c.symbol] = [0]; // start at 0% change
+    });
+}
+
+// --------------------------------------------------------
+
 function save(){
     localStorage.setItem(LS.cash, cash);
     localStorage.setItem(LS.holdings, JSON.stringify(holdings));
@@ -111,6 +137,115 @@ function renderHoldings(){
     }
 }
 
+// ------------- GRAPH RENDERING (YOUR PART) -------------
+
+// [MY CHANGE] Legend under the chart so users know which colour is which
+function renderMarketLegend() {
+    const legend = document.getElementById("market-legend");
+    if (!legend) return;
+
+    legend.innerHTML = "";
+    companies.forEach(c => {
+        const color = COLORS[c.symbol] || "#198754";
+        legend.innerHTML += `
+            <span class="me-3">
+                <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${color};margin-right:4px;"></span>
+                ${c.symbol}
+            </span>`;
+    });
+}
+
+// [MY CHANGE] Draw multi-line chart of % change vs starting price
+function renderMarketChart() {
+    const canvas = document.getElementById("market-chart");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    const width = canvas.clientWidth || 400;
+    const height = canvas.clientHeight || 200;
+
+    if (canvas.width !== width) canvas.width = width;
+    if (canvas.height !== height) canvas.height = height;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Gather min/max of percentage changes across all companies
+    let min = Infinity;
+    let max = -Infinity;
+    companies.forEach(c => {
+        const hist = priceHistory[c.symbol] || [];
+        hist.forEach(v => {
+            if (v < min) min = v;
+            if (v > max) max = v;
+        });
+    });
+    if (!isFinite(min) || !isFinite(max)) return;
+
+    // [MY CHANGE] Add a little padding so lines aren't squashed
+    const extra = (max - min) * 0.1 || 1;
+    min -= extra;
+    max += extra;
+
+    const range = (max - min) || 1;
+
+    const padding = 20;
+    const innerW = canvas.width - 2 * padding;
+    const innerH = canvas.height - 2 * padding;
+
+    // [MY CHANGE] light vertical grid lines to show time steps
+    ctx.strokeStyle = "#f3f4f6";
+    ctx.lineWidth = 1;
+    const gridCount = 4;
+    for (let i = 1; i < gridCount; i++) {
+        const x = padding + (i / gridCount) * innerW;
+        ctx.beginPath();
+        ctx.moveTo(x, padding);
+        ctx.lineTo(x, canvas.height - padding);
+        ctx.stroke();
+    }
+
+    // [MY CHANGE] Draw 0% reference line if it is in range
+    if (min <= 0 && max >= 0) {
+        const zeroY = canvas.height - padding - ((0 - min) / range) * innerH;
+        ctx.strokeStyle = "#e5e7eb";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding, zeroY);
+        ctx.lineTo(canvas.width - padding, zeroY);
+        ctx.stroke();
+
+        // label "0%" on the left
+        ctx.fillStyle = "#9ca3af";
+        ctx.font = "10px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+        ctx.fillText("0%", padding + 2, zeroY - 2);
+    }
+
+    // [MY CHANGE] Labels for approx min / max % on the left
+    ctx.fillStyle = "#9ca3af";
+    ctx.font = "10px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    ctx.fillText(max.toFixed(1) + "%", padding + 2, padding + 8);
+    ctx.fillText(min.toFixed(1) + "%", padding + 2, canvas.height - padding - 2);
+
+    // Draw each company's percentage-change line
+    companies.forEach(c => {
+        const hist = priceHistory[c.symbol] || [];
+        if (hist.length === 0) return;
+
+        ctx.beginPath();
+        hist.forEach((val, i) => {
+            const x = padding + (i / Math.max(hist.length - 1, 1)) * innerW;
+            const y = canvas.height - padding - ((val - min) / range) * innerH;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = COLORS[c.symbol] || "#198754";
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+    });
+}
+
+// --------------------------------------------------------
+
 /* -------------------------------------------
    BUY / SELL
 ------------------------------------------- */
@@ -175,6 +310,19 @@ function updatePrices(){
 
         if(c.price < 0.5) c.price = 0.5;
     });
+
+    // [MY CHANGE] Push latest percentage change into each company's history
+    companies.forEach(c => {
+        if (!priceHistory[c.symbol]) priceHistory[c.symbol] = [];
+
+        const base = BASE_PRICES[c.symbol] || c.price;
+        const pctChange = ((c.price - base) / base) * 100;
+        priceHistory[c.symbol].push(pctChange);
+
+        if (priceHistory[c.symbol].length > MAX_POINTS) {
+            priceHistory[c.symbol].shift();
+        }
+    });
 }
 
 /* -------------------------------------------
@@ -186,12 +334,17 @@ function renderAll(){
     renderMarket();
     renderHoldings();
     renderPortfolioValue();
+    renderMarketLegend();   // [MY CHANGE] keep legend in sync
+    renderMarketChart();    // [MY CHANGE] draw/update multi-line chart
 }
 
 /* -------------------------------------------
    MAIN LOOP
 ------------------------------------------- */
-window.onload = renderAll;
+window.onload = function () {        // [MY CHANGE] set up chart data before first render
+    initMarketHistory();
+    renderAll();
+};
 
 setInterval(()=>{
     updatePrices();
