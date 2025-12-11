@@ -294,6 +294,7 @@
                     <p>The stock market is like a huge online marketplace where people buy and sell shares every second of the day. Prices constantly change based on supply and demand—how many people want to buy something versus how many want to sell it.</p>
                     <p>When lots of people believe a company will perform well, more buyers appear and the price goes up. When investors lose confidence, the price falls. These movements might seem random day to day, but over many years, the market has historically grown.</p>
                     <div class="container">
+                        <div class="investor">
                         <h2>Share Ownership Simulator</h2>
                         <div class="stats">
                             <div>Total Shares: 100</div>
@@ -303,17 +304,19 @@
                             <div>Your Shares: <span id="owned"></span></div>
                             <div>Your Ownership: <span id="ownership"></span></div>
                         </div>
-                        <div class="buttons">
-                            <button id="buy" class="btn btn-danger">Buy 1 Share</button>
-                            <button id="sell" class="btn btn-danger">Sell 1 Share</button>
+                        <div class="change-buttons">
+                            <button id="buy" class="change-buttons">Buy 1 Share</button>
+                            <button id="sell" class="change-buttons">Sell 1 Share</button>
                         </div>
-                        <button id="changePrice" class="price-btn btn btn-danger mt-1">Simulate Price Change</button>
+                            <br><br>
+                        <button id="changePrice" class="change-buttons">Simulate Price Change</button>
                         <div class="portfolio">
                             <div>Your Portfolio Value</div>
                             <div id="value" class="value"></div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
 
             <div class="slide text-center">
@@ -481,7 +484,44 @@
                     <h2>Investing early gives you massive advantages</h2>
                     <p>Time is the most powerful tool in investing. Even small amounts invested as a teenager can grow into something surprisingly large by adulthood because compounding multiplies your money the longer it sits.</p>
                     <p>Starting early doesn’t just give you more money—it gives you more time to learn, make decisions, and build confidence.</p>
+                    <div class="container">
+                        <div class="calculator">
+                        <h3>Cost of Waiting Calculator</h3>
+                            <div class="input-group">
+                            <label>Your current age:</label>
+                            <input type="number" id="age" value="25" />
+                        </div>
+
+                        <div class="input-group">
+                            <label>Monthly contribution: ($)</label>
+                            <input type="number" id="monthly" value="200" />
+                        </div>
+
+                        <div class="input-group">
+                            <label>Expected annual return: (%)</label>
+                            <input type="number" id="returnRate" value="7" />
+                        </div>
+
+                        <div class="input-group">
+                            <label>Years you might wait before starting:</label>
+                            <input type="number" id="delay" value="5" />
+                        </div>
+
+                        <button onclick="calculate()">Calculate</button>
+
+                        <div class="results" id="results" style="display:none;">
+                            <p><strong>If you start NOW:</strong><br>
+                                Final value: <span class="value" id="nowValue"></span></p>
+
+                            <p><strong>If you wait:</strong><br>
+                                Final value: <span class="value" id="waitValue"></span></p>
+
+                            <p><strong>Cost of waiting:</strong><br>
+                                <span class="value" id="cost"></span></p>
+                        </div>
+                    </div>
                 </div>
+            </div>
             </div>
 
             <div class="slide text-center">
@@ -560,8 +600,8 @@
     const MODULES = <?= json_encode($view->modules); ?>;
 </script>
 
-<script src="../js/stockinvesting.js"></script>
-
+    <script src="../js/stockinvesting.js"></script>
+    <script src="../js/InvestingCalculator.js"></script>
 
 
 <?php require('template/footer.phtml') ?>
