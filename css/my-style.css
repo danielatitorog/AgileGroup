@@ -748,3 +748,66 @@ main {
         max-width: 320px;
     }
 }
+
+    .calculator {
+        background: white;
+        width: 100%;
+        max-width: 520px;
+        padding: 32px;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e9f0;
+        margin: 0 auto;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .input-group label {
+        font-weight: 500;
+    }
+
+    .input-group input {
+        padding: 10px 12px;
+        font-size: 1rem;
+        border-radius: 6px;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ccc;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .investor {
+        background: white;
+        width: 100%;
+        max-width: 520px;
+        padding: 32px;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e9f0;
+        margin: 0 auto;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-between;
+        margin: 12px 0;
+        font-size: 18px;
+    }
+
+    .change-buttons {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+    }
+
+    .change-buttons:hover {
+        opacity: 0.9;
+    }
