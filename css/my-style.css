@@ -588,19 +588,22 @@ main {
     color: #4b5563;
 }
 
-/* milestones strip on module 5 */
-
-.milestone-strip {
+/* Module 5 milestone planner styles (updated) */
+.milestone-planner {
     max-width: 900px;
     margin: 0 auto 1.5rem;
-    padding: 16px 20px;
-    border-radius: 18px;
-    background: #f3f4ff;
+    padding: 16px 20px 20px;
+    border-radius: 22px;
+    background: radial-gradient(circle at top left, #eef2ff, #f9fafb);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+}
+
+.milestone-strip {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     gap: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    flex-wrap: wrap;
 }
 
 .milestone-step {
@@ -608,8 +611,28 @@ main {
     flex-direction: column;
     align-items: center;
     flex: 1;
-    min-width: 70px;
+    min-width: 80px;
     text-align: center;
+    background: transparent;
+    border: none;
+    padding: 6px 4px;
+    cursor: pointer;
+    transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.milestone-step:focus {
+    outline: none;
+}
+
+.milestone-step:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.04);
+}
+
+.milestone-step small {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #374151;
 }
 
 .milestone-icon {
@@ -621,10 +644,70 @@ main {
     margin-bottom: 4px;
 }
 
-.milestone-step small {
+.milestone-step.active .milestone-icon {
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.18), 0 10px 24px rgba(37,99,235,0.35);
+    transform: scale(1.05);
+}
+
+.milestone-panel {
+    border-radius: 18px;
+    background: #ffffff;
+    padding: 16px 18px;
+    box-shadow: 0 14px 30px rgba(15,23,42,0.16);
+}
+
+.milestone-jars {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1.5rem;
+}
+
+.milestone-jar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.milestone-jar-glass {
+    width: 70px;
+    height: 120px;
+    border-radius: 18px 18px 10px 10px;
+    border: 2px solid #c4d4ff;
+    background: linear-gradient(to top, #eef2ff, #ffffff);
+    box-shadow: inset 0 0 0 1px rgba(148,163,184,0.35);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 3px;
+}
+
+.milestone-jar-fill {
+    width: 100%;
+    height: 20%;
+    border-radius: 14px 14px 6px 6px;
+    background: linear-gradient(180deg, #93c5fd, #2563eb);
+    box-shadow: 0 6px 12px rgba(37,99,235,0.35);
+    transition: height 0.35s ease;
+}
+
+.milestone-jar-fill.jar-invest {
+    background: linear-gradient(180deg, #6ee7b7, #16a34a);
+    box-shadow: 0 6px 12px rgba(34,197,94,0.35);
+}
+
+.milestone-jar-caption {
     font-size: 0.8rem;
-    font-weight: 500;
-    color: #374151;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.milestone-jar-amount {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111827;
 }
 
 @media (max-width: 768px) {
