@@ -649,7 +649,7 @@
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target="#investingMoreInfo">
-                        Learn More About Market Ups and Downs
+                        Learn More About Market Ups and Downs 👇
                     </button>
 
                     <div class="collapse mt-3 text-start" id="investingMoreInfo">
@@ -663,12 +663,47 @@
                             </ul>
 
                             <p class="mt-2">
-                                Even professional investors cannot predict short-term movements.
+                                Even professional investors can't predict how the market will be short term.
                                 The key is consistency, patience, and avoiding emotional decisions.
                             </p>
                         </div>
                 </div>
+
+                <!--Slider-->
+                <div class="mt-4 p-3 border rounded bg-light">
+                    <h5><strong>😲 Imagine you were an investor and the market suddenly drops, how do you think you would feel?</strong></h5>
+                    <p class="mb-1">Drag the slider below:</p>
+
+                    <input type="range" class="form-range" id="emotionSlider" min="0" max="100" step="1">
+
+                    <div id="emotionMessage" class="mt-3 fw-bold text-center">
+                        Slider to begin
+                    </div>
             </div>
+
+            <script>
+                document.getElementById("emotionSlider").addEventListener("input", function () {
+                    const value = parseInt(this.value);
+                    const message = document.getElementById("emotionMessage");
+
+                    if (value < 30) {
+                        message.textContent = "😎 You're calm and steady, AKA a strong long-term investor mindset.";
+                        message.style.color = "green";
+                    }
+                    else if (value < 60) {
+                        message.textContent = "😬 A bit nervous is normal, staying invested over time will help!";
+                        message.style.color = "#0d6efd"; //b
+                    }
+                    else if (value < 85) {
+                        message.textContent = "🫣 You'd feel uneasy, but remember that markets are historically known to recover from downturns.";
+                        message.style.color = "orange";
+                    }
+                    else {
+                        message.textContent = "😰 Very anxious, but selling under pressure (AKA panic selling) can lead to huge mistakes. Remember, long-term patience is vital and is the way you win in investing!";
+                        message.style.color = "red";
+                    }
+                    });
+            </script>
 
         </div>
     </div>
