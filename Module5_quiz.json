@@ -1,0 +1,90 @@
+{
+  "title": "Module 5",
+  "description": "This quiz explores how investing affects major life events and long-term opportunities, including building financial security, supporting education and career goals, helping communities grow, driving innovation, and protecting money from inflation.",
+  "questions": [
+    {
+      "id": "m5_q1",
+      "question": "How can investing help your future goals?",
+      "options": [
+        "It can grow your money over time",
+        "It gives instant cash",
+        "It removes the need to work",
+        "It guarantees riches"
+      ],
+      "correctIndex": 0,
+      "explanation": "Investing allows your money to grow over time, helping you reach future goals like education, buying a car, or starting a business."
+    },
+    {
+      "id": "m5_q2",
+      "question": "How can investing impact a community?",
+      "options": [
+        "It helps businesses grow and create jobs",
+        "It closes stores",
+        "It stops the economy",
+        "It makes everything more expensive"
+      ],
+      "correctIndex": 0,
+      "explanation": "When people invest in businesses, those businesses can expand, hire more workers, and support the local economy."
+    },
+    {
+      "id": "m5_q3",
+      "question": "Why is learning about investing at a young age important?",
+      "options": [
+        "Teens must invest by law",
+        "It helps you make smarter money choices later",
+        "It makes school easier",
+        "It removes all financial risks"
+      ],
+      "correctIndex": 1,
+      "explanation": "Learning about investing early gives you the knowledge to make confident and smart financial decisions as you get older."
+    },
+    {
+      "id": "m5_q4",
+      "question": "How does investing support innovation and new ideas?",
+      "options": [
+        "By limiting what companies can create",
+        "By reducing funds available for new projects",
+        "By giving companies money to develop new products and technologies",
+        "By preventing businesses from taking risks"
+      ],
+      "correctIndex": 2,
+      "explanation": "Investors provide funding that companies use to invent new products, advance technology, and solve problems—driving progress in society."
+    },
+    {
+      "id": "m5_q5",
+      "question": "How can investing help protect you from inflation?",
+      "options": [
+        "By stopping prices from increasing",
+        "By allowing your money to grow faster than rising prices",
+        "By lowering the cost of goods",
+        "By freezing your money’s value"
+      ],
+      "correctIndex": 1,
+      "explanation": "Inflation increases prices over time. Investments like stocks often grow faster than inflation, helping your money maintain or increase its value."
+    },
+    {
+      "id": "m5_q6",
+      "question": "Why is investing considered a powerful tool for building future opportunities?",
+      "options": [
+        "Because it always works perfectly",
+        "Because it replaces education",
+        "Because growing wealth over time gives you more options and choices in life",
+        "Because everyone invests"
+      ],
+      "correctIndex": 2,
+      "explanation": "Investing helps build wealth that opens more opportunities—like starting a business, buying a home, or funding education."
+    },
+    {
+      "id": "m5_q7",
+      "question": "What is one positive impact of investing on your long-term financial security?",
+      "options": [
+        "It removes all financial risks",
+        "It helps you build savings for emergencies and retirement",
+        "It guarantees you will never need to work",
+        "It makes saving unnecessary"
+      ],
+      "correctIndex": 1,
+      "explanation": "Investing grows your resources, helping you prepare for emergencies and retirement so you feel more financially secure in the future."
+    }
+  ]
+}

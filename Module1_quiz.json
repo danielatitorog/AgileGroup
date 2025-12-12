@@ -1,0 +1,90 @@
+{
+  "title": "Module 1",
+  "description": "This quiz covers the basics of investing, including what investing means, why people invest, how returns work, and how investing helps build wealth over time.",
+  "questions": [
+    {
+      "id": "m1_q1",
+      "question": "What does it mean to invest money?",
+      "options": [
+        "To hide your money",
+        "To use money to try to make more money",
+        "To spend money on snacks",
+        "To donate money"
+      ],
+      "correctIndex": 1,
+      "explanation": "Investing means putting your money into something—like stocks or businesses—with the goal of helping it grow over time."
+    },
+    {
+      "id": "m1_q2",
+      "question": "Why do people invest?",
+      "options": [
+        "To lose money",
+        "To avoid using banks",
+        "To grow their money over time",
+        "To stop working"
+      ],
+      "correctIndex": 2,
+      "explanation": "People invest so their money can increase in value over time, helping them reach long-term financial goals."
+    },
+    {
+      "id": "m1_q3",
+      "question": "What is a “return”?",
+      "options": [
+        "Returning a product to a store",
+        "The money you earn from an investment",
+        "A new type of tax",
+        "How fast you can spend money"
+      ],
+      "correctIndex": 1,
+      "explanation": "A return is the profit or gain you earn from an investment, such as money made from stocks or interest."
+    },
+    {
+      "id": "m1_q4",
+      "question": "How can investing help you over time?",
+      "options": [
+        "It makes money disappear",
+        "It can help your money grow",
+        "It stops you from saving",
+        "It guarantees you get rich"
+      ],
+      "correctIndex": 1,
+      "explanation": "Investing helps your money grow gradually, increasing its value over the long term and helping you build wealth."
+    },
+    {
+      "id": "m1_q5",
+      "question": "Which of these is something you can invest in?",
+      "options": [
+        "Video game skins",
+        "Stocks",
+        "Air",
+        "Free apps"
+      ],
+      "correctIndex": 1,
+      "explanation": "Stocks are real financial assets that can increase in value, making them a common and effective investment choice."
+    },
+    {
+      "id": "m1_q6",
+      "question": "What does “building wealth” mean?",
+      "options": [
+        "Spending more money",
+        "Increasing your financial resources",
+        "Buying more clothes",
+        "Borrowing money"
+      ],
+      "correctIndex": 1,
+      "explanation": "Building wealth means growing your financial resources over time through saving, investing, and earning."
+    },
+    {
+      "id": "m1_q7",
+      "question": "Why is starting early helpful when investing?",
+      "options": [
+        "Because investing only works for kids",
+        "Your money has more time to grow",
+        "It’s free for teens",
+        "It removes all risks"
+      ],
+      "correctIndex": 1,
+      "explanation": "Investing early gives your money more time to grow through compounding, which can significantly increase long-term returns."
+    }
+  ]
+}

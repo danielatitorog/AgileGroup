@@ -1,102 +1,174 @@
 <?php require('template/header.phtml'); ?>
 
+    <!-- required stylesheets -->
+    <link href="../css/quiz-gamified.css" rel="stylesheet">
+    <link href="../css/quizQuestions.css" rel="stylesheet">
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12">
 
-                <!-- Quiz Header card
-                 - Displays the title and short description.
-                 - shows the progress bar and question counter while the user is taking the quiz.
-                -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0">Financial Literacy Quiz</h2>
-                    </div>
-                    <div class="card-body">
-                        <p class="lead">Test your knowledge about what you have learned about investing in the modules.</p>
+                <!--
+                   CONDITIONAL HEADER AREA
+                   If we are in "quiz mode" (questions are being shown), we display the
+                   gamified header with:
+                   - Quiz title & description
+                   - Lives indicator (hearts, rendered by JS)
+                   - Countdown timer
+                   - Score, question counter, and total questions
+                   - Visual progress bar
 
-                        <?php if (!$view->showResults): ?>
-                        <!-- Progress bar:
-                         - only shown during the quiz (before results)
-                         - width is calculated based on the number of questions already answered.
+                   If we are in "results mode" ($view->showResults is true), we show a
+                   simpler, classic card header appropriate for a results page.
+               -->
+                <?php if (!$view->showResults): ?>
+                    <!-- Gamified header for quiz questions -->
+                    <div class="quiz-game-header">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h2 class="mb-0 text-white"><?php echo htmlspecialchars($view->quizTitle); ?></h2>
+                                <p class="mb-0 text-white-50"><?php echo htmlspecialchars($view->quizDescription); ?></p>
+                            </div>
+                            <div class="lives-container" id="lives-container">
+                                <!-- Lives will be rendered by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!--
+                           Timer display section.
+                           The timer label is static text; the numeric value is updated by
+                           the JavaScript timer logic. Initial value is a visual placeholder
+                           and matches the configured 30-second limit.
+                       -->
+
+                        <div class="timer-container">
+                            <div class="timer-label">Time Remaining</div>
+                            <div class="timer-display" id="timer-display">00:30</div>
+                        </div>
+
+                        <!--
+                            High-level stats row:
+                            - Score: dynamic, powered by JS and persisted in sessionStorage.
+                            - Question counter: uses server-side values to reflect current position.
+                            - Total: number of questions in the quiz (static per quiz).
                         -->
-                            <div class="progress mb-3">
-                                <div class="progress-bar progress-bar-striped bg-success"
-                                     role="progressbar"
-                                     style="width: <?= ($view->currentQuestion - 1) / $view->totalQuestions * 100 ?>%"
-                                     aria-valuenow="<?= $view->currentQuestion - 1 ?>"
-                                     aria-valuemin="0"
-                                     aria-valuemax="<?= $view->totalQuestions ?>">
+
+                        <div class="game-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="score-display">0</span>
+                                <span class="stat-label">Score</span>
+                            </div>
+                            <div class="stat-item">
+                            <span class="stat-value" id="question-counter">
+                                Question <?php echo $view->currentQuestion; ?> of <?php echo $view->totalQuestions; ?>
+                            </span>
+                                <span class="stat-label">Progress</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value"><?php echo $view->totalQuestions; ?></span>
+                                <span class="stat-label">Total</span>
+                            </div>
+                        </div>
+
+                        <!--
+                            Visual progress bar.
+                            The progress percentage is calculated on the server as:
+                            (currentQuestion - 1) / totalQuestions * 100
+                            This represents the portion of the quiz already completed
+                            (questions fully answered so far).
+                        -->
+                        <div class="game-progress mt-3">
+                            <div class="progress-container">
+                                <div class="progress-bar-gamified" id="progress-bar-gamified"
+                                     style="width: <?php echo ($view->currentQuestion - 1) / $view->totalQuestions * 100; ?>%">
                                 </div>
                             </div>
-                        <!-- Current question indicator -->
-                            <p class="text-muted">
-                                Question <?= $view->currentQuestion ?> of <?= $view->totalQuestions ?>
-                            </p>
-                        <?php endif; ?>
+                            <div class="text-center mt-2">
+                                <small class="text-white">Question <?php echo $view->currentQuestion; ?> of <?php echo $view->totalQuestions; ?></small>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                <?php else: ?>
+                    <!-- Original header for results page -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h2 class="mb-0"><?php echo htmlspecialchars($view->quizTitle); ?></h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead"><?php echo htmlspecialchars($view->quizDescription); ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
-                <!-- Main Quiz Content -->
+                <!--
+                    MAIN QUIZ CONTENT AREA
+                    This section branches into three main modes:
+                    1. Results view ($view->showResults === true)
+                    2. Question view (show current question)
+                    3. (Implicit) No content – if neither condition is met
+                -->
                 <?php if ($view->showResults): ?>
-                    <!-- Results View
-                      - Displayed once the user has completed the quiz.
-                      - it shows, overall score as a percentage, feedback text, score, and action buttons
-                    -->
+                    <!-- Results View with dynamic quiz title -->
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-success text-white">
-                            <h3 class="mb-0">Quiz Results</h3>
+                            <h3 class="mb-0">Quiz Results - <?php echo htmlspecialchars($view->quizTitle); ?></h3>
                         </div>
                         <div class="card-body text-center">
                             <!-- overall percentage score -->
                             <div class="display-1 fw-bold text-primary mb-3">
-                                <?= $view->quizResults['percentage'] ?>%
+                                <?php echo $view->quizResults['percentage']; ?>%
                             </div>
 
                             <!-- Feedback summary and score breakdown -->
                             <div class="alert alert-info">
-                                <h4 class="alert-heading"><?= $view->quizResults['feedback'] ?></h4>
-                                <p>You scored <?= $view->quizResults['score'] ?> out of <?= $view->quizResults['total'] ?> questions correctly.</p>
+                                <h4 class="alert-heading"><?php echo $view->quizResults['feedback']; ?></h4>
+                                <p>You scored <?php echo $view->quizResults['score']; ?> out of <?php echo $view->quizResults['total']; ?> questions correctly.</p>
                             </div>
-                            <!-- Results action buttons (view details, retake, go to learning hub)
-                              - Button to reveal detailed question-by-question breakdown
-                            -->
-                            <div class="mt-4 mb-4">
+                            <!--
+                                RESULTS ACTION BUTTONS
+                                - View/Hide Detailed Results: toggles $view->showDetailedResults
+                                - Retake This Quiz: restarts this specific quiz
+                                - Back to Learning Hub: returns user to roadmap/learning overview
+                                -->
+                            <div class="mt-4 d-flex justify-content-center gap-3">
                                 <?php if (!$view->showDetailedResults): ?>
-                                    <form action="quiz.php" method="POST" class="d-inline">
+                                    <!--Include quiz parameter in form action -->
+                                    <form action="quiz.php?quiz=<?php echo urlencode(isset($_SESSION['current_quiz']) ? $_SESSION['current_quiz'] : ''); ?>" method="POST" class="d-inline">
                                         <button type="submit" name="show_details" class="btn btn-info btn-lg me-2">
                                             <i class="bi bi-eye"></i> View Detailed Results
                                         </button>
                                     </form>
                                 <?php else: ?>
-                                <!-- Button to hide detailed results and show only summary -->
-                                    <form action="quiz.php" method="POST" class="d-inline">
+                                    <form action="quiz.php?quiz=<?php echo urlencode(isset($_SESSION['current_quiz']) ? $_SESSION['current_quiz'] : ''); ?>" method="POST" class="d-inline">
                                         <button type="submit" name="hide_details" class="btn btn-secondary btn-lg me-2">
                                             <i class="bi bi-eye-slash"></i> Hide Detailed Results
                                         </button>
                                     </form>
                                 <?php endif; ?>
-                                <!-- Button to restart the quiz from the beginning-->
-                                <form action="quiz.php" method="POST" class="d-inline">
+                                <form action="quiz.php?quiz=<?php echo urlencode(isset($_SESSION['current_quiz']) ? $_SESSION['current_quiz'] : ''); ?>" method="POST" class="d-inline">
                                     <button type="submit" name="restart" class="btn btn-primary btn-lg me-2">
-                                        <i class="bi bi-arrow-repeat"></i> Retake Quiz
+                                        <i class="bi bi-arrow-repeat"></i> Retake This Quiz
                                     </button>
                                 </form>
-                                <!-- Link back to the Learning Hub-->
-                                <a href="learning-hub.php" class="btn btn-outline-primary btn-lg me-2">
-                                    <i class="bi bi-book"></i> Learning Hub
+
+                                <!-- Navigation to Learning Hub -->
+                                <a href="roadmap.php" class="btn btn-outline-primary btn-lg">
+                                    <i class="bi bi-book"></i> Back to Learning Hub
                                 </a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Detailed Results Section
-                      - Only show when user chosen to view detailed results
-                      - and detailed question data is available
-                      - uses Bootstrap accordion to show each question with
-                      - question text, user's answer (highlight as correct/incorrect)
-                      - correct answer, explanation, and all question options
-                      -->
+                    <!--
+                      DETAILED RESULTS SECTION
+                      Only displayed when:
+                      - $view->showDetailedResults is true AND
+                      - $view->detailedResults is not empty
+                      Each question is rendered as an accordion item with:
+                      - Question text and correctness status in the header
+                      - User answer and correct answer cards
+                      - Explanation card
+                      - A list of all options, visually marking correct and selected answers
+                  -->
                     <?php if ($view->showDetailedResults && !empty($view->detailedResults)): ?>
                         <div class="card shadow-sm">
                             <div class="card-header bg-info text-white">
@@ -107,50 +179,44 @@
                             <div class="card-body">
                                 <div class="accordion" id="quizAccordion">
                                     <?php foreach ($view->detailedResults as $index => $result): ?>
-                                    <!-- Accordion item for each question, bg-success for correct answers and danger for wrong
-                                      - first item in expanded by default, others are collapsed.
-                                    -->
                                         <div class="accordion-item mb-3">
-                                            <h2 class="accordion-header" id="heading<?= $index ?>">
-                                                <button class="accordion-button <?= $result['is_correct'] ? 'bg-success-subtle' : 'bg-danger-subtle' ?> <?= $index > 0 ? 'collapsed' : '' ?>"
+                                            <h2 class="accordion-header" id="heading<?php echo $index; ?>">
+                                                <button class="accordion-button <?php echo $result['is_correct'] ? 'bg-success-subtle' : 'bg-danger-subtle'; ?> <?php echo $index > 0 ? 'collapsed' : ''; ?>"
                                                         type="button"
                                                         data-bs-toggle="collapse"
-                                                        data-bs-target="#collapse<?= $index ?>"
-                                                        aria-expanded="<?= $index === 0 ? 'true' : 'false' ?>"
-                                                        aria-controls="collapse<?= $index ?>">
-                                                <span class="me-3">
-                                                    <strong>Question <?= $index + 1 ?>:</strong>
-                                                    <?= htmlspecialchars($result['question']) ?>
-                                                </span>
-                                                    <!-- Badge indicating correct/incorrect -->
-                                                    <span class="badge <?= $result['is_correct'] ? 'bg-success' : 'bg-danger' ?> ms-2">
-                                                    <?= $result['is_correct'] ? '✓ Correct' : '✗ Incorrect' ?>
-                                                </span>
+                                                        data-bs-target="#collapse<?php echo $index; ?>"
+                                                        aria-expanded="<?php echo $index === 0 ? 'true' : 'false'; ?>"
+                                                        aria-controls="collapse<?php echo $index; ?>">
+                                            <span class="me-3">
+                                                <strong>Question <?php echo $index + 1; ?>:</strong>
+                                                <?php echo htmlspecialchars($result['question']); ?>
+                                            </span>
+                                                    <span class="badge <?php echo $result['is_correct'] ? 'bg-success' : 'bg-danger'; ?> ms-2">
+                                                <?php echo $result['is_correct'] ? '✓ Correct' : '✗ Incorrect'; ?>
+                                            </span>
                                                 </button>
                                             </h2>
-                                            <!-- Collapsible body containing answer details, explanation, and options -->
-                                            <div id="collapse<?= $index ?>"
-                                                 class="accordion-collapse collapse <?= $index === 0 ? 'show' : '' ?>"
-                                                 aria-labelledby="heading<?= $index ?>"
+                                            <div id="collapse<?php echo $index; ?>"
+                                                 class="accordion-collapse collapse <?php echo $index === 0 ? 'show' : ''; ?>"
+                                                 aria-labelledby="heading<?php echo $index; ?>"
                                                  data-bs-parent="#quizAccordion">
                                                 <div class="accordion-body">
                                                     <div class="row">
-                                                        <!-- User answer card -->
+                                                        <!-- User Answer card -->
                                                         <div class="col-md-6">
-                                                            <div class="card <?= $result['is_correct'] ? 'border-success' : 'border-danger' ?>">
-                                                                <div class="card-header <?= $result['is_correct'] ? 'bg-success text-white' : 'bg-danger text-white' ?>">
+                                                            <div class="card <?php echo $result['is_correct'] ? 'border-success' : 'border-danger'; ?>">
+                                                                <div class="card-header <?php echo $result['is_correct'] ? 'bg-success text-white' : 'bg-danger text-white'; ?>">
                                                                     <h5 class="mb-0">Your Answer</h5>
                                                                 </div>
                                                                 <div class="card-body">
                                                                     <p class="card-text">
                                                                         <?php if ($result['user_answer_index'] !== null): ?>
-                                                                        <!-- Display the user's selected answer, if not selected then show enumerated text-->
-                                                                            <strong><?= htmlspecialchars($result['user_answer']) ?></strong>
+                                                                            <strong><?php echo htmlspecialchars($result['user_answer']); ?></strong>
                                                                         <?php else: ?>
                                                                             <em>Not answered</em>
                                                                         <?php endif; ?>
                                                                     </p>
-                                                                    <!-- Warning message when the answer is incorrect -->
+                                                                    <!-- Warning banner for incorrect user answers -->
                                                                     <?php if (!$result['is_correct'] && $result['user_answer_index'] !== null): ?>
                                                                         <div class="alert alert-warning">
                                                                             <i class="bi bi-exclamation-triangle"></i>
@@ -160,7 +226,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!-- Correct answer card -->
+                                                        <!-- Correct Answer card -->
                                                         <div class="col-md-6">
                                                             <div class="card border-success">
                                                                 <div class="card-header bg-success text-white">
@@ -168,14 +234,13 @@
                                                                 </div>
                                                                 <div class="card-body">
                                                                     <p class="card-text">
-                                                                        <!-- Display the correct answer -->
-                                                                        <strong><?= htmlspecialchars($result['correct_answer']) ?></strong>
+                                                                        <strong><?php echo htmlspecialchars($result['correct_answer']); ?></strong>
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- Correct answer Explanation section -->
+                                                    <!-- Explanation block to reinforce learning -->
                                                     <div class="mt-4">
                                                         <div class="card border-info">
                                                             <div class="card-header bg-info text-white">
@@ -184,23 +249,26 @@
                                                                 </h5>
                                                             </div>
                                                             <div class="card-body">
-                                                                <p class="card-text"><?= htmlspecialchars($result['explanation']) ?></p>
+                                                                <p class="card-text"><?php echo htmlspecialchars($result['explanation']); ?></p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- List of all options of the questions
-                                                     - List items styling
-                                                     - Icon to visually indicate the role of each question
-                                                     - highlight correct answer green, and red for wrong
-                                                     - plain for all other options
-                                                     -->
+
+                                                    <!--
+                                                        List of all options.
+
+                                                        Visual rules:
+                                                        - Correct option: green background and check icon.
+                                                        - Incorrect user chosen option: red background and cross icon.
+                                                        - Others: neutral circle icon.
+                                                    -->
                                                     <div class="mt-3">
                                                         <h6>All Options:</h6>
                                                         <div class="list-group">
                                                             <?php foreach ($result['options'] as $optIndex => $option): ?>
                                                                 <div class="list-group-item
-                                                                <?= $optIndex == $result['correct_index'] ? 'list-group-item-success' : '' ?>
-                                                                <?= $optIndex == $result['user_answer_index'] && !$result['is_correct'] ? 'list-group-item-danger' : '' ?>">
+                                                            <?php echo $optIndex == $result['correct_index'] ? 'list-group-item-success' : ''; ?>
+                                                            <?php echo ($optIndex == $result['user_answer_index'] && !$result['is_correct']) ? 'list-group-item-danger' : ''; ?>">
                                                                     <?php if ($optIndex == $result['correct_index']): ?>
                                                                         <i class="bi bi-check-circle-fill text-success me-2"></i>
                                                                     <?php elseif ($optIndex == $result['user_answer_index'] && !$result['is_correct']): ?>
@@ -208,8 +276,7 @@
                                                                     <?php else: ?>
                                                                         <i class="bi bi-circle me-2"></i>
                                                                     <?php endif; ?>
-                                                                    <!-- Display option text -->
-                                                                    <?= htmlspecialchars($option) ?>
+                                                                    <?php echo htmlspecialchars($option); ?>
                                                                 </div>
                                                             <?php endforeach; ?>
                                                         </div>
@@ -224,77 +291,72 @@
                     <?php endif; ?>
 
                 <?php elseif ($view->question): ?>
-                    <!-- Question View
-                      - Displayed while the user is actively taking the quiz
-                      - shows the current question and its possible answers as radio buttons
-                     -->
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h3 class="card-title mb-4">
-                                Question <?= $view->currentQuestion ?>:
-                                <?= htmlspecialchars($view->question['question']) ?>
-                            </h3>
-                            <!-- Question form
-                             - Posts the selected answer back to quiz.php
-                             - The answer field represents the index of the chosen option
-                             - Preserve previously selected answer
-                             -->
-                            <form action="quiz.php" method="POST">
-                                <div class="mb-4">
-                                    <?php foreach ($view->question['options'] as $index => $option): ?>
-                                    <!-- Individual answer option-->
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input"
-                                                   type="radio"
-                                                   name="answer"
-                                                   id="option<?= $index ?>"
-                                                   value="<?= $index ?>"
-                                                    <?= (isset($view->userAnswers['q' . $view->currentQuestion]) &&
-                                                            $view->userAnswers['q' . $view->currentQuestion] == $index) ? 'checked' : '' ?>
-                                                   required>
-                                            <label class="form-check-label fs-5 ms-3" for="option<?= $index ?>">
-                                                <?= htmlspecialchars($option) ?>
-                                            </label>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
 
-                                <!-- Previous Buttons
-                                  - "Previous" to go back to the previous question, if not on the first question
-                                  - "Next Question" or "Finish Quiz" depending on whether this is the last question.
-                                  -->
+                    <!--
+                        ACTIVE QUESTION VIEW
+                        This branch is used when:
+                        - We are NOT showing results ($view->showResults is false)
+                        - We DO have an active question ($view->question is set)
+                        The question is displayed inside the gamified question card,
+                        and the answer options are styled for interactive selection
+                        handled by the gamified JavaScript.
+                    -->
+                    <div class="question-card-gamified">
+                        <h3 class="card-title mb-4" id="question-text">
+                            <span class="badge bg-primary me-2">Q<?php echo $view->currentQuestion; ?></span>
+                            <?php echo htmlspecialchars($view->question['question']); ?>
+                        </h3>
 
-                                <div class="d-flex justify-content-between">
-                                    <?php if ($view->currentQuestion > 1): ?>
-                                        <a href="quiz.php?prev=true" class="btn btn-outline-secondary">
-                                            <i class="bi bi-arrow-left"></i> Previous
-                                        </a>
-                                    <?php else: ?>
-                                        <div></div> <!-- Spacer to keep layout aligned when there is no previous button-->
-                                    <?php endif; ?>
-                                    <!-- Submit/Next button-->
-                                    <button type="submit" class="btn btn-primary px-4">
-                                        <?= $view->currentQuestion == $view->totalQuestions ? 'Finish Quiz' : 'Next Question' ?>
-                                        <i class="bi bi-arrow-right ms-2"></i>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                        <!-- Gamified form with data attribute for correct answer -->
+                        <form class="quiz-form"
+                              action="quiz.php?quiz=<?php echo urlencode(isset($_SESSION['current_quiz']) ? $_SESSION['current_quiz'] : ''); ?>"
+                              method="POST"
+                              data-correct-answer="<?php echo $view->question['correctIndex']; ?>">
+
+                            <div class="answer-options-gamified">
+                                <?php
+                                foreach ($view->question['options'] as $index => $option):
+                                    $letters = array('A', 'B', 'C', 'D');
+                                    $letter = isset($letters[$index]) ? $letters[$index] : ($index + 1);
+                                    ?>
+                                    <div class="answer-option" data-index="<?php echo $index; ?>">
+                                        <span class="option-letter"><?php echo $letter; ?></span>
+                                        <?php echo htmlspecialchars($option); ?>
+                                    </div>
+
+                                    <!-- Hidden radio input for form submission -->
+                                    <input class="form-check-input d-none"
+                                           type="radio"
+                                           name="answer"
+                                           id="option<?php echo $index; ?>"
+                                           value="<?php echo $index; ?>"
+                                            <?php echo (isset($view->userAnswers['q' . $view->currentQuestion]) &&
+                                                    $view->userAnswers['q' . $view->currentQuestion] == $index) ? 'checked' : ''; ?>
+                                           required>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <!-- Navigation button to go onto next question, and finish quiz if it is last question -->
+                            <div class="game-controls">
+
+                                <button type="submit" class="game-button btn-next" id="next-button" disabled>
+                                    <?php echo $view->currentQuestion == $view->totalQuestions ? 'Finish Quiz' : 'Next Question'; ?>
+                                    <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 <?php endif; ?>
 
-                <!-- Contextual Help Text -->
+                <!-- Contextual Help Text, which change dynamically depending on the state of the quiz -->
                 <div class="mt-4 text-center text-muted">
                     <small>
                         <i class="bi bi-info-circle"></i>
                         <?php if (!$view->showResults): ?>
-                        <!-- While user is taking the quiz -->
-                        Take your time to think about each question. There are no time limits!
+                            Answer quickly to avoid losing lives! You have 30 seconds per question.
                         <?php elseif ($view->showResults && !$view->showDetailedResults): ?>
-                        <!-- User finished the quiz and viewing the result -->
                             Click "View Detailed Results" to see explanations for each question.
                         <?php elseif ($view->showDetailedResults): ?>
-                            <!-- User viewing the detailed result -->
                             Review each question carefully to understand why answers were correct or incorrect.
                         <?php endif; ?>
                     </small>
@@ -303,5 +365,17 @@
             </div>
         </div>
     </div>
-<!-- Include the common page footer -->
+
+    <!--
+       GAMIFIED QUIZ JAVASCRIPT
+       quiz-gamified.js:
+       - Drives the interactive game features on the client side:
+         * Timer and visual countdown updates
+         * Lives (hearts) management and animations
+         * Score tracking and persistence in sessionStorage
+         * Visual feedback for correct/incorrect answers (confetti, overlays)
+         * Enabling/disabling navigation based on user interaction
+   -->
+    <script src="../js/quiz-gamified.js"></script>
+<!-- Load required footer template -->
 <?php require('template/footer.phtml'); ?>

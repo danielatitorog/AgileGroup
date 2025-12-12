@@ -1,0 +1,62 @@
+{
+  "title": "Module 2",
+  "description": "This quiz covers the key benefits of investing, including how investing supports long-term goals, how it compares to saving, why starting early matters, and how investment growth helps you achieve bigger financial dreams.",
+  "questions": [
+    {
+      "id": "m2_q1",
+      "question": "Saving is usually for short-term goals.",
+      "options": [
+        "False",
+        "True"
+      ],
+      "correctIndex": 1,
+      "explanation": "Saving is meant for short-term needs—like buying something soon or keeping money safe for emergencies. Savings grow slowly, so they’re best when you need the money within a few months or a couple of years."
+    },
+    {
+      "id": "m2_q2",
+      "question": "Investing is usually for long-term goals.",
+      "options": [
+        "False",
+        "True"
+      ],
+      "correctIndex": 1,
+      "explanation": "Investing is designed for long-term goals because it gives your money time to grow. Over many years, investments can increase in value much more than a savings account, making them perfect for big future goals like a car, university, or building wealth."
+    },
+    {
+      "id": "m2_q3",
+      "question": "What is one benefit of investing compared to putting all your money in a savings account?",
+      "options": [
+        "Investing guarantees you become rich",
+        "Investing has the potential to earn higher returns",
+        "Saving makes your money double automatically",
+        "Investing means you don’t need a plan"
+      ],
+      "correctIndex": 1,
+      "explanation": "Savings accounts earn low interest, while investments—like stocks—can grow much faster. This helps your money work harder for you."
+    },
+    {
+      "id": "m2_q4",
+      "question": "Why do people start investing at a young age?",
+      "options": [
+        "Because teens must invest by law",
+        "Because saving only works after age 30",
+        "Because starting early gives money more time to grow",
+        "Because investing is only for teenagers"
+      ],
+      "correctIndex": 2,
+      "explanation": "The earlier you invest, the longer your money has to grow through compounding. Even small amounts invested early can become much larger over time."
+    },
+    {
+      "id": "m2_q5",
+      "question": "What makes investing useful for future dreams like buying a car, university costs, or starting a business?",
+      "options": [
+        "Investing replaces the need to save",
+        "Investing gives unlimited money instantly",
+        "Investing helps your money grow enough to reach big goals",
+        "Investing stops you from spending"
+      ],
+      "correctIndex": 2,
+      "explanation": "Investing builds your wealth over many years. This growth helps you afford larger goals that saving alone might not reach."
+    }
+  ]
+}
