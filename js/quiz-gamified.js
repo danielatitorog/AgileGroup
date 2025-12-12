@@ -444,7 +444,7 @@ class GamifiedQuiz {
                     </button>
                 </form>
                                 
-                    <a href="roadmap.php" class="game-button btn-prev">
+                    <a href="learning_hub.php" class="game-button btn-prev">
                     <i class="bi bi-book"></i> Go To Learning Hub
                 </a>
                

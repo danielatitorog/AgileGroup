@@ -17,4 +17,4 @@ $view->modules = $view->profileModel->getModules();
 // NEW: load last visited slide
 $view->lastPage = $view->profileModel->getLastVisitedPage($_SESSION['user_id']);
 
-require_once('Views/roadmap.phtml');
+require_once('Views/learning_hub.phtml');
