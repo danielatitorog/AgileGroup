@@ -2,115 +2,190 @@
 require_once('Database.php');
 
 /**
- * QuizResult class
- * Responsible for persisting and retrieving quiz results
- * from the database for individual users.
+ * Class QuizResult
+ *
+ * Responsible for persisting and retrieving quiz performance data.
+ * This model provides:
+ * - A unified database connection via the shared Database singleton
+ * - Methods to save individual quiz attempts
+ * - Methods to retrieve a user's historical results
+ * - Methods to compute a user's best performance statistics
  */
+
 class QuizResult
 {
     /**
-     * @var PDO Database connection handle
-     * @var Database Instance of the database
+     * @var PDO Underlying PDO database connection handle.
+     * @var Database Reference to the Database singleton instance.
      */
     protected $_dbHandle, $_dbInstance;
 
     /**
-     * QuizResult constructor
-     * Initializes the database instance and stores the PDO connection handle
-     * for use in all query methods.
+     * QuizResult constructor.
+     *
+     * Initializes database connectivity for this model by:
+     * - Acquiring the shared Database instance
+     * - Obtaining a PDO connection handle for executing queries
      */
+
     public function __construct()
     {
-        // Get the Database instance
         $this->_dbInstance = Database::getInstance();
-        // Retrieve the PDO database connection from the Database instance
         $this->_dbHandle = $this->_dbInstance->getdbConnection();
     }
 
     /**
-     * Save quiz result to database
-     * Persists a single quiz attempt to the quiz-result table
-     * Uses prepared statements to prevent SQL injection and ensure
-     * safe parameter binding
-     * @param int $userId ID of the user who completed the quiz
-     * @param int $score number of correctly answered questions
-     * @param int $totalQuestions Total number of questions in the quiz
-     * @return int $percentage score as a percentage
-     * @return int|false returns the inserted row on success, or false on failure
+     * Persist a quiz attempt into the database.
+     *
+     * Behavior:
+     * - Attempts to insert a record into the `quiz_results` table.
+     * - Supports an optional quiz identifier (`quiz_id`) for systems
+     *   where multiple quizzes are tracked in a single table.
+     * - If the `quiz_id` column does not exist or an error referencing
+     *   `quiz_id` occurs, it automatically falls back to an insert
+     *   statement that omits this column (for backward compatibility).
+     *
+     * Parameters:
+     * - $userId         : The ID of the user who completed the quiz.
+     * - $score          : The raw number of correct answers.
+     * - $totalQuestions : Total questions that were part of the quiz.
+     * - $percentage     : Calculated percentage score (0–100).
+     * - $quizId         : Optional quiz identifier (e.g. "Module1_quiz").
+     *
+     * Return value:
+     * - Returns the last inserted record ID on success (string or int depending on PDO driver).
+     * - Returns false if the insert fails.
+     * @param int|string $userId
+     * @param int $score
+     * @param int $totalQuestions
+     * @param float|int $percentage
+     * @param string|null $quizId
+     * @return string|false
      */
-    public function saveResult($userId, $score, $totalQuestions, $percentage)
+    public function saveResult($userId, $score, $totalQuestions, $percentage, $quizId)
     {
         try {
-            //SQL statement for inserting a new quiz result
-            $sql = "INSERT INTO quiz_results (user_id, score, total_questions, percentage) 
-                    VALUES (:user_id, :score, :total_questions, :percentage)";
+            // Check if your table has quiz_id column
+            // If yes, use this SQL:
+            if ($quizId) {
+                $sql = "INSERT INTO quiz_results (user_id, score, total_questions, percentage, quiz_id) 
+                        VALUES (:user_id, :score, :total_questions, :percentage, :quiz_id)";
 
-            $statement = $this->_dbHandle->prepare($sql);
-            // Execute the statement with bound parameters
-            $result = $statement->execute([
-                ':user_id' => $userId,
-                ':score' => $score,
-                ':total_questions' => $totalQuestions,
-                ':percentage' => $percentage
-            ]);
-            // on success, return the ID of the newly inserted record
+                $statement = $this->_dbHandle->prepare($sql);
+
+                $result = $statement->execute(array(
+                    ':user_id' => $userId,
+                    ':score' => $score,
+                    ':total_questions' => $totalQuestions,
+                    ':percentage' => $percentage,
+                    ':quiz_id' => $quizId
+                ));
+            } else {
+                // If no quiz_id column or quizId not provided, then use this sql
+                $sql = "INSERT INTO quiz_results (user_id, score, total_questions, percentage) 
+                        VALUES (:user_id, :score, :total_questions, :percentage)";
+
+                $statement = $this->_dbHandle->prepare($sql);
+
+                $result = $statement->execute(array(
+                    ':user_id' => $userId,
+                    ':score' => $score,
+                    ':total_questions' => $totalQuestions,
+                    ':percentage' => $percentage
+                ));
+            }
+
             return $result ? $this->_dbHandle->lastInsertId() : false;
 
         } catch (PDOException $e) {
-            // Log the exception for debugging without exposing details to the user
+            // If quiz_id column doesn't exist, fall back to original
+            if (strpos($e->getMessage(), 'quiz_id') !== false) {
+                $sql = "INSERT INTO quiz_results (user_id, score, total_questions, percentage) 
+                        VALUES (:user_id, :score, :total_questions, :percentage)";
+
+                $statement = $this->_dbHandle->prepare($sql);
+
+                $result = $statement->execute(array(
+                    ':user_id' => $userId,
+                    ':score' => $score,
+                    ':total_questions' => $totalQuestions,
+                    ':percentage' => $percentage
+                ));
+
+                return $result ? $this->_dbHandle->lastInsertId() : false;
+            }
+
             error_log("Error saving quiz result: " . $e->getMessage());
-            // Return false to indicate failure
             return false;
         }
     }
 
     /**
-     * Get user's quiz results
-     * Fetches a list of quiz attempts for a given user ordered by
-     * completion time (latest first). A limit can be applied to
-     * restrict the number of attempt returned
-     * @param int $userId ID of the user who results are being requested
-     * @param int $limit Maximum number of results to return (default: 10)
-     * @return array List of quiz results rows as associative arrays
+     * Retrieve a list of quiz results for a specific user.
+     *
+     * Behavior:
+     * - Fetches rows from the `quiz_results` table filtered by user_id.
+     * - Orders results by the `completed_at` column in descending order
+     *   (most recent first).
+     * - Applies a configurable LIMIT to avoid returning excessive rows.
+     *
+     * Parameters:
+     * - $userId : The ID of the user whose results should be fetched.
+     * - $limit  : Maximum number of rows to return (default: 10).
+     *
+     * Return value:
+     * - Returns an array of associative arrays, each representing a row from `quiz_results`.
+     * - Each row includes all columns from the table (SELECT *).
+     *
+     * @param int|string $userId
+     * @param int $limit
+     * @return array
      */
     public function getUserResults($userId, $limit = 10)
     {
-        //SQL query selecting results for a given user ordered by completion time
         $sql = "SELECT * FROM quiz_results 
                 WHERE user_id = :user_id 
                 ORDER BY completed_at DESC 
                 LIMIT :limit";
-        // Prepare the query and bind parameters
+
         $statement = $this->_dbHandle->prepare($sql);
         $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $statement->execute(); // Execute the query
-        //return all matching quiz attempts as an array
+        $statement->execute();
+
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Get a user's best score summary
-     * Returns aggregate statistics for a given user, including:
-     * best_percentage: the highest percentage achieved
-     * best_score: the highest score achieved
-     * total_attempts: the total number of quiz attempts
-     * @param int $userId ID of the user
-     * @return array|false Associative array of stats, or false if query fails
-     * Keys: best_percentage, best_score, total_attempts
+     * Compute a user's best historical quiz performance.
+     * Behavior:
+     * - Calculates the maximum percentage achieved by the user across all attempts.
+     * - Calculates the maximum raw score achieved.
+     * - Counts the total number of attempts recorded for the user.
+     * This is useful for:
+     * - Displaying personal best stats on dashboards or profile pages.
+     * - Tracking improvements over time.
+     * Return structure:
+     * - [
+     *     'best_percentage' => float|null, // Highest percentage achieved
+     *     'best_score'      => int|null,   // Highest raw score achieved
+     *     'total_attempts'  => int         // Number of records found for the user
+     *   ]
+     * Note: If the user has no records, the columns may be null depending on the database engine.
+     * @param int|string $userId
+     * @return array
      */
     public function getUserBestScore($userId)
     {
-        // Aggregate query to compute max percentage, max score, and total attempts
         $sql = "SELECT MAX(percentage) as best_percentage, 
                        MAX(score) as best_score, 
                        COUNT(*) as total_attempts 
                 FROM quiz_results 
                 WHERE user_id = :user_id";
-        // Prepare and execute the statement with user ID bound
+
         $statement = $this->_dbHandle->prepare($sql);
-        $statement->execute([':user_id' => $userId]);
-        // Returns a single associative row containing the aggregated values
+        $statement->execute(array(':user_id' => $userId));
+// Fetch a single row summarizing the user's best performance.
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }

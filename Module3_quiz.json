@@ -1,0 +1,77 @@
+{
+  "title": "Module 3",
+  "description": "This quiz introduces the basics of stocks and the stock market, including what a stock is, how ownership works, why stock prices change, and key concepts like dividends and market influence.",
+  "questions": [
+    {
+      "id": "m3_q1",
+      "question": "What is a stock?",
+      "options": [
+        "Money in a wallet",
+        "A small piece of a company",
+        "A type of loan",
+        "Paper with numbers"
+      ],
+      "correctIndex": 1,
+      "explanation": "A stock represents ownership in a company. When you buy a stock, you own a small part of that business."
+    },
+    {
+      "id": "m3_q2",
+      "question": "When you buy a share of a company, you…",
+      "options": [
+        "Own a small part of it",
+        "Own the entire company",
+        "Become the CEO",
+        "Get a job there"
+      ],
+      "correctIndex": 0,
+      "explanation": "Buying a share means you own a fraction of the company. You don't run it, but you are considered a shareholder."
+    },
+    {
+      "id": "m3_q3",
+      "question": "What is the stock market?",
+      "options": [
+        "A place where people buy and sell stocks",
+        "A grocery store",
+        "A bank",
+        "A social media app"
+      ],
+      "correctIndex": 0,
+      "explanation": "The stock market is where investors trade stocks—buying and selling shares of companies."
+    },
+    {
+      "id": "m3_q4",
+      "question": "Why do stock prices change?",
+      "options": [
+        "Random magic",
+        "Because of supply, demand, and company performance",
+        "Because the CEO says so",
+        "They never change"
+      ],
+      "correctIndex": 1,
+      "explanation": "Stock prices rise and fall based on how many people want to buy or sell them and how well the company is performing."
+    },
+    {
+      "id": "m3_q5",
+      "question": "What is a dividend?",
+      "options": [
+        "Money a company pays to shareholders",
+        "A type of bill",
+        "A tax"
+      ],
+      "correctIndex": 0,
+      "explanation": "A dividend is a payment some companies give to shareholders as a portion of their profits."
+    },
+    {
+      "id": "m3_q6",
+      "question": "Which of these can affect a stock’s price?",
+      "options": [
+        "The weather only",
+        "How many apps you download",
+        "Company news and performance",
+        "Your favourite colour"
+      ],
+      "correctIndex": 2,
+      "explanation": "If a company releases important news—good or bad—it can impact investor confidence and change the stock’s price."
+    }
+  ]
+}
