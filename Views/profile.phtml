@@ -1,108 +1,346 @@
 <?php require('template/header.phtml'); ?>
 
-<div class="container mt-4">
-    <div class="row">
+<div class="container py-4 profile-page">
+    <!-- Flash messages -->
+    <?php if (isset($_SESSION['friend_message'])): ?>
+        <div class="alert alert-info alert-dismissible fade show mb-3" role="alert">
+            <?= htmlspecialchars($_SESSION['friend_message']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['friend_message']); ?>
+    <?php endif; ?>
 
-        <!-- Profile Sidebar -->
+    <div class="row g-4">
+
+        <!-- Left column: profile + friends -->
         <div class="col-lg-4">
-            <div class="card shadow-sm mb-4 profile-card">
+
+            <!-- Profile header card -->
+            <div class="card shadow border-0 mb-4 profile-header-card">
                 <div class="card-body text-center">
 
-                    <img src="/images/profilepicture.png"
-                         class="rounded-circle mb-3"
-                         style="width:150px; height:150px; object-fit:cover;">
+                    <div class="avatar-wrapper mx-auto mb-3">
+                        <img src="/images/profilepicture.png"
+                             class="rounded-circle profile-avatar"
+                             alt="Profile picture">
+                    </div>
 
-                    <h4><?= htmlspecialchars($view->profile['name']); ?></h4>
-                    <p class="text-muted"><?= htmlspecialchars($view->profile['email']); ?></p>
+                    <h4 class="fw-semibold mb-0"><?= htmlspecialchars($view->profile['name']); ?></h4>
+                    <p class="text-muted mb-1"><?= htmlspecialchars($view->profile['email']); ?></p>
 
-                    <p><strong>Member Since:</strong> <?= $view->profile['joined']; ?></p>
-                </div>
-            </div>
-
-            <!-- Friends List -->
-            <div class="card shadow-sm profile-card">
-                <div class="card-header bg-danger text-white">
-                    <h6 class="mb-0">Friends</h6>
-                </div>
-                <div class="card-body">
-
-                    <?php if (!empty($view->friends)): ?>
-                        <?php foreach ($view->friends as $friend): ?>
-                            <?php $p = $friend['progress'] ?? 0; ?>
-                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-
-                                <div>
-                                    <strong>
-                                        <?= htmlspecialchars($friend['username']); ?>
-                                        <span class="badge bg-info text-dark ms-2"><?= $p ?>%</span>
-                                    </strong>
-                                </div>
-
-                                <form action="addfriends.php" method="GET" style="display:inline;">
-                                    <input type="hidden" name="delete" value="<?= $friend['id']; ?>">
-                                    <button class="btn btn-danger btn-sm">Remove</button>
-                                </form>
-
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="text-muted">No friends added yet.</p>
-                    <?php endif; ?>
-
-                </div>
-            </div>
-
-            <div class="card shadow-sm profile-card mt-3">
-                <div class="card-body">
-                    <h5>Add a Friend</h5>
-
-                    <!-- Show friend error message if set -->
-                    <?php if (isset($_SESSION['friend_error'])): ?>
-                        <div class="alert alert-danger">
-                            <?= htmlspecialchars($_SESSION['friend_error']); ?>
+                    <div class="d-flex justify-content-center gap-3 mt-2">
+                        <div class="profile-stat-chip">
+                            <span class="profile-stat-label">Friends</span>
+                            <span class="profile-stat-value"><?= count($view->friends ?? []); ?></span>
                         </div>
-                        <?php unset($_SESSION['friend_error']); ?>
-                    <?php endif; ?>
+                        <div class="profile-stat-chip">
+                            <span class="profile-stat-label">Requests</span>
+                            <span class="profile-stat-value"><?= count($view->requests ?? []); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    <form action="addfriends.php" method="POST">
-                        <input type="text" name="friend_username"
-                               class="form-control mb-2"
+            <!-- Friend actions card -->
+            <div class="card shadow border-0 mb-4">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h6 class="mb-1 fw-semibold">Add a Friend</h6>
+                    <p class="text-muted small mb-0">
+                        Send a request by typing their username.
+                    </p>
+                </div>
+                <div class="card-body">
+                    <form action="addfriends.php" method="POST" class="d-flex flex-column gap-2">
+                        <input type="text"
+                               name="friend_username"
+                               class="form-control"
                                placeholder="Friend's username"
                                required>
-                        <button class="btn btn-primary w-100">Add Friend</button>
+                        <button class="btn btn-primary w-100">
+                            <i class="bi bi-person-plus me-1"></i> Send Friend Request
+                        </button>
                     </form>
                 </div>
             </div>
 
-        </div>
-
-        <!-- Dashboard / Modules Progress -->
-        <div class="col-lg-8 mt-4 mt-lg-0">
-
-            <div class="card shadow-sm profile-card">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0">Your Progress</h5>
+            <!-- Friends / Requests / Sent tabs -->
+            <div class="card shadow border-0">
+                <div class="card-header bg-white border-0 pb-0">
+                    <ul class="nav nav-tabs card-header-tabs" id="friendsTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active"
+                                    id="friends-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#friends-tab-pane"
+                                    type="button"
+                                    role="tab">
+                                Friends
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="requests-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#requests-tab-pane"
+                                    type="button"
+                                    role="tab">
+                                Requests
+                                <?php if (!empty($view->requests)): ?>
+                                    <span class="badge bg-danger ms-1"><?= count($view->requests); ?></span>
+                                <?php endif; ?>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="sent-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#sent-tab-pane"
+                                    type="button"
+                                    role="tab">
+                                Sent
+                            </button>
+                        </li>
+                    </ul>
                 </div>
+
                 <div class="card-body">
+                    <div class="tab-content" id="friendsTabsContent">
 
-                    <?php foreach ($view->profile['modules'] as $module): ?>
-                        <div class="mb-3">
-                            <h6 class="mb-1"><?= htmlspecialchars($module['title']); ?></h6>
+                        <!-- Friends list -->
+                        <div class="tab-pane fade show active" id="friends-tab-pane" role="tabpanel">
+                            <?php if (!empty($view->friends)): ?>
+                                <div class="list-group list-group-flush">
+                                    <?php foreach ($view->friends as $friend): ?>
+                                        <?php $p = $friend['progress'] ?? 0; ?>
+                                        <div class="list-group-item d-flex align-items-center justify-content-between px-0 friends-list-item">
 
-                            <div class="progress" style="height:20px;">
-                                <div class="progress-bar bg-info"
-                                     style="width: <?= $module['completed']; ?>%">
-                                    <?= $module['completed']; ?>%
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="friends-avatar-placeholder">
+                                                    <span><?= strtoupper(substr($friend['username'], 0, 1)); ?></span>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold">
+                                                        <?= htmlspecialchars($friend['username']); ?>
+                                                    </div>
+                                                    <div class="small text-muted">
+                                                        Avg progress: <?= $p; ?>%
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="progress progress-xs d-none d-md-flex">
+                                                    <div class="progress-bar bg-info" style="width: <?= $p; ?>%"></div>
+                                                </div>
+                                                <form action="addfriends.php" method="POST" class="ms-1">
+                                                    <input type="hidden" name="delete_friend" value="<?= $friend['id']; ?>">
+                                                    <button class="btn btn-outline-danger btn-sm">
+                                                        <i class="bi bi-person-x"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
-                            </div>
+                            <?php else: ?>
+                                <p class="text-muted small mb-0">You haven't added any friends yet.</p>
+                            <?php endif; ?>
                         </div>
-                    <?php endforeach; ?>
 
+                        <!-- Incoming friend requests -->
+                        <div class="tab-pane fade" id="requests-tab-pane" role="tabpanel">
+                            <?php if (!empty($view->requests)): ?>
+                                <div class="list-group list-group-flush">
+                                    <?php foreach ($view->requests as $req): ?>
+                                        <div class="list-group-item d-flex align-items-center justify-content-between px-0">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="friends-avatar-placeholder friends-request">
+                                                    <span><?= strtoupper(substr($req['sender_username'], 0, 1)); ?></span>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold">
+                                                        <?= htmlspecialchars($req['sender_username']); ?>
+                                                    </div>
+                                                    <div class="small text-muted">
+                                                        wants to connect with you
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <form action="addfriends.php" method="POST" class="d-flex gap-1">
+                                                <button name="accept_request"
+                                                        value="<?= $req['request_id']; ?>"
+                                                        class="btn btn-success btn-sm">
+                                                    <i class="bi bi-check-lg"></i>
+                                                </button>
+                                                <button name="decline_request"
+                                                        value="<?= $req['request_id']; ?>"
+                                                        class="btn btn-outline-secondary btn-sm">
+                                                    <i class="bi bi-x-lg"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="text-muted small mb-0">No pending friend requests.</p>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Sent friend requests -->
+                        <div class="tab-pane fade" id="sent-tab-pane" role="tabpanel">
+                            <?php if (!empty($view->sentRequests)): ?>
+                                <div class="list-group list-group-flush">
+                                    <?php foreach ($view->sentRequests as $req): ?>
+                                        <div class="list-group-item d-flex align-items-center justify-content-between px-0">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="friends-avatar-placeholder friends-sent">
+                                                    <span><?= strtoupper(substr($req['receiver_username'], 0, 1)); ?></span>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold">
+                                                        <?= htmlspecialchars($req['receiver_username']); ?>
+                                                    </div>
+                                                    <div class="small text-muted">
+                                                        Request pending…
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="badge bg-light text-muted small">Pending</span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="text-muted small mb-0">You have no outgoing friend requests.</p>
+                            <?php endif; ?>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
         </div>
+
+        <!-- Right column: progress dashboard -->
+        <div class="col-lg-8">
+            <div class="card shadow border-0 mb-4">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-semibold">Your Learning Progress</h5>
+                        <p class="text-muted small mb-0">Track how far you've gone through each module.</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <?php if (!empty($view->profile['modules'])): ?>
+                        <div class="vstack gap-3">
+                            <?php foreach ($view->profile['modules'] as $module): ?>
+                                <div class="module-progress-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="fw-semibold"><?= htmlspecialchars($module['title']); ?></span>
+                                        <span class="text-muted small"><?= $module['completed']; ?>%</span>
+                                    </div>
+                                    <div class="progress progress-lg">
+                                        <div class="progress-bar bg-info"
+                                             role="progressbar"
+                                             style="width: <?= $module['completed']; ?>%"
+                                             aria-valuenow="<?= $module['completed']; ?>"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-muted mb-0">No modules found yet.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+<script>
+    // =====================================
+    // 1. Smooth Tab Transition Animation
+    // =====================================
+    document.querySelectorAll('#friendsTabs button').forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function (event) {
+            const targetPane = document.querySelector(event.target.dataset.bsTarget);
+
+            targetPane.classList.add('fade-in-slide');
+
+            setTimeout(() => {
+                targetPane.classList.remove('fade-in-slide');
+            }, 300);
+        });
+    });
+
+    // Add CSS for smooth effect
+    const tabAnimationStyle = document.createElement("style");
+    tabAnimationStyle.innerHTML = `
+    .fade-in-slide {
+        animation: fadeSlide 0.3s ease forwards;
+    }
+    @keyframes fadeSlide {
+        from { opacity: 0; transform: translateY(6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+`;
+    document.head.appendChild(tabAnimationStyle);
+
+
+    // =====================================
+    // 2. Auto-Fade Flash Messages
+    // =====================================
+    const alertMessage = document.querySelector('.alert');
+    if (alertMessage) {
+        setTimeout(() => {
+            alertMessage.classList.add('fade-out');
+
+            // Remove from DOM after fade
+            setTimeout(() => alertMessage.remove(), 400);
+        }, 3000);
+    }
+
+    const fadeOutStyle = document.createElement("style");
+    fadeOutStyle.innerHTML = `
+    .fade-out {
+        transition: opacity 0.4s ease;
+        opacity: 0;
+    }
+`;
+    document.head.appendChild(fadeOutStyle);
+
+
+    // =====================================
+    // 3. Avatar Hover Pop Animation
+    // =====================================
+    document.querySelectorAll('.friends-avatar-placeholder, .profile-avatar').forEach(avatar => {
+        avatar.addEventListener('mouseenter', () => {
+            avatar.style.transform = "scale(1.07)";
+            avatar.style.transition = "transform 0.2s ease";
+        });
+
+        avatar.addEventListener('mouseleave', () => {
+            avatar.style.transform = "scale(1)";
+        });
+    });
+
+
+    // =====================================
+    // 4. Confirm Friend Removal
+    // =====================================
+    document.querySelectorAll('button.btn-outline-danger').forEach(btn => {
+        btn.addEventListener('click', function (event) {
+            const confirmDelete = confirm("Are you sure you want to remove this friend?");
+            if (!confirmDelete) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 
 <?php require('template/footer.phtml'); ?>

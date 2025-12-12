@@ -7,7 +7,7 @@ const progressBar = document.getElementById("progressBar");
 const prevBtn = document.getElementById("prevSlide");
 const nextBtn = document.getElementById("nextSlide");
 
-let currentSlide = 0;
+let currentSlide = typeof LAST_PAGE !== "undefined" ? LAST_PAGE : 0;
 let isTransitioning = false;
 
 function updateProgress(index = currentSlide) {
@@ -82,10 +82,26 @@ function showSlide(index) {
     }, 500);
 }
 
+// Navigation buttons
 prevBtn.addEventListener("click", () => showSlide(currentSlide - 1));
 nextBtn.addEventListener("click", () => showSlide(currentSlide + 1));
+
+// -------------------------------
+// LOAD USER'S LAST VISITED SLIDE
+// -------------------------------
+
+// Remove old default "active"
+slides.forEach(s => s.classList.remove("active"));
+
+// Activate correct slide
 slides[currentSlide].classList.add("active");
-updateProgress();
+
+// Update progress bar immediately
+updateProgress(currentSlide);
+
+// Sync database (keeps last page consistent)
+saveProgress(currentSlide);
+
 
 document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => {

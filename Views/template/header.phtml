@@ -17,6 +17,10 @@
 
     <!-- Custom stylesheet -->
     <link href="/css/my-style.css" rel="stylesheet">
+    <link href="/css/profile.css" rel="stylesheet">
+    <link href="/css/homepage.css" rel="stylesheet">
+    <link href="/css/contact.css" rel="stylesheet">
+
 
     <title>Youth Invest</title>
     <link rel="icon" type="image/ico" href="/images/favicon.ico">
@@ -50,6 +54,9 @@
                     <?php if ($view->user->isLoggedIn()): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="roadmap.php">Learning Hub</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="virtual_portfolio.php">Virtual Portfolio</a>
                         </li>
                     <?php endif; ?>
                     <li class="nav-item">

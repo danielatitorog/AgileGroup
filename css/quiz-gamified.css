@@ -1,0 +1,630 @@
+/* =========================================================
+   Quiz Game - Gamified UI Stylesheet
+   ---------------------------------------------------------
+   This stylesheet defines the visual presentation, animations,
+   and layout for a gamified quiz experience, including:
+   - Header and background decoration
+   - Lives (heart icons) system
+   - Timer with warning/critical states
+   - Game statistics
+   - Question & answer cards with feedback states
+   - Progress bar, controls, and game over screen
+   - Responsive behavior for mobile devices
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   Game Header Styles
+   - Provides a visually engaging header for the quiz area
+   - Uses gradient background and subtle SVG overlay
+   - Designed to draw attention and frame primary game info
+   --------------------------------------------------------- */
+
+.quiz-game-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative overlay using inline SVG to add subtle circular pattern */
+.quiz-game-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="0.5" stroke-opacity="0.1"/></svg>');
+}
+
+/* ---------------------------------------------------------
+   Lives System
+   - Displays remaining attempts as heart icons
+   - Hearts visually indicate available and lost lives
+   - Designed to be intuitive and game-like
+   --------------------------------------------------------- */
+
+.lives-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.lives-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.lives {
+    display: flex;
+    gap: 8px;
+}
+
+.heart {
+    width: 32px;
+    height: 32px;
+    background-color: #ff4757;
+    position: relative;
+    border-radius: 50% 50% 0 0;
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+}
+
+.heart::before,
+.heart::after {
+    content: '';
+    width: 32px;
+    height: 32px;
+    background-color: #ff4757;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before {
+    top: -16px;
+    left: 0;
+}
+
+.heart::after {
+    top: 0;
+    left: -16px;
+}
+
+.heart.lost {
+    opacity: 0.3;
+    transform: rotate(45deg) scale(0.8);
+    background-color: #ff6b81;
+}
+
+.heart.lost::before,
+.heart.lost::after {
+    background-color: #ff6b81;
+}
+
+/* ---------------------------------------------------------
+   Timer Styles
+   - Central countdown timer for each question or game round
+   - Visual emphasis with larger monospace display
+   - Warning and critical states highlight urgency
+   --------------------------------------------------------- */
+
+.timer-container {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.timer-label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.timer-display {
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-block;
+    min-width: 120px;
+}
+
+.timer-display.warning {
+    color: #ffa502;
+    animation: pulseWarning 1s infinite;
+}
+
+.timer-display.critical {
+    color: #ff4757;
+    animation: pulseCritical 0.5s infinite;
+}
+
+@keyframes pulseWarning {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 165, 2, 0); }
+    50% { text-shadow: 0 0 20px rgba(255, 165, 2, 0.8); }
+}
+
+@keyframes pulseCritical {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(255, 71, 87, 0);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(255, 71, 87, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+/* ---------------------------------------------------------
+   Game Stats
+   - Displays overall score, question number, streak, etc.
+   - Positioned below header/timer for quick glance visibility
+   --------------------------------------------------------- */
+
+.game-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ---------------------------------------------------------
+   Gamified Question Card
+   - Primary container for each question and its options
+   - Card-style layout with accent border to emphasize active question
+   --------------------------------------------------------- */
+
+.question-card-gamified {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 3px solid #667eea;
+    position: relative;
+    overflow: hidden;
+}
+
+.question-card-gamified::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+/* ---------------------------------------------------------
+   Gamified Answer Options
+   - Interactive answer buttons with hover, selected, correct,
+     and wrong states
+   - Designed for clarity, feedback, and accessibility
+   --------------------------------------------------------- */
+
+.answer-options-gamified {
+    display: grid;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.answer-option {
+    padding: 20px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.answer-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+/* State when an option is currently selected by the user */
+.answer-option.selected {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* State when an option is revealed as correct */
+.answer-option.correct {
+    background: linear-gradient(135deg, #2ed573, #1e90ff);
+    color: white;
+    border-color: #2ed573;
+    animation: correctPulse 0.6s ease;
+}
+
+/* State when an option is revealed as incorrect */
+.answer-option.wrong {
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: white;
+    border-color: #ff4757;
+    animation: wrongShake 0.5s ease;
+}
+
+/* Disabled state to prevent further interaction (e.g., after selection) */
+.answer-option.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Circular letter badge (A, B, C, etc.) preceding option text */
+.answer-option .option-letter {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 36px;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+/* Adjust letter colors when option is selected */
+.answer-option.selected .option-letter {
+    background: white;
+    color: #667eea;
+}
+
+/* Green badge when option is correct */
+.answer-option.correct .option-letter {
+    background: #2ed573;
+}
+
+/* Red badge when option is wrong */
+.answer-option.wrong .option-letter {
+    background: #ff4757;
+}
+
+/* Subtle scale pulse to confirm correct selection */
+@keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+/* Shake animation to emphasize incorrect selection */
+@keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* ---------------------------------------------------------
+   Feedback Messages (overlay)
+   - Full-screen modal-style feedback for correct/incorrect answers
+   - Appears centered with pop-in animation
+   --------------------------------------------------------- */
+
+.feedback-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: white;
+    padding: 30px 50px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    animation: feedbackPop 0.8s ease-out forwards;
+    min-width: 300px;
+}
+
+/* Themed background for correct feedback */
+.feedback-message.correct {
+    background: linear-gradient(135deg, #2ed573, #1e90ff);
+    color: white;
+}
+
+/* Themed background for wrong feedback */
+.feedback-message.wrong {
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: white;
+}
+
+/* Pop-in scale animation for feedback overlay */
+@keyframes feedbackPop {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+    80% { transform: translate(-50%, -50%) scale(0.95); }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* ---------------------------------------------------------
+   Game Progress Bar
+   - Visual representation of the player's progress
+   - Animated shine effect for dynamic visual feedback
+   --------------------------------------------------------- */
+
+.game-progress {
+    margin: 20px 0;
+}
+
+.progress-container {
+    background: #e9ecef;
+    border-radius: 10px;
+    height: 20px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+/* Filled portion of the progress bar, width set dynamically via JS */
+.progress-bar-gamified {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Moving shine effect across the progress bar */
+.progress-bar-gamified::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%);
+    animation: progressShine 2s infinite;
+}
+
+/* Horizontal shine animation traversing the bar */
+@keyframes progressShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* ---------------------------------------------------------
+   Game Controls
+   - Previous/Next navigation and other control buttons
+   - Designed for clear affordance, hover feedback, and good spacing
+   --------------------------------------------------------- */
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e9ecef;
+}
+
+/* Base game button styles */
+.game-button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Disabled state for game buttons */
+.game-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Previous button: neutral grey color scheme */
+.btn-prev {
+    background: #6c757d;
+    color: white;
+}
+
+/* Hover effect for previous button (if enabled) */
+.btn-prev:hover:not(:disabled) {
+    background: #5a6268;
+    transform: translateX(-5px);
+}
+
+/* Next button: primary gradient to draw focus */
+.btn-next {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+/* Hover effect for next button (if enabled) */
+.btn-next:hover:not(:disabled) {
+    transform: translateX(5px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* ---------------------------------------------------------
+   Game Over Screen
+   - Final summary display once the game ends
+   - Emphasizes final score and provides celebratory styling
+   --------------------------------------------------------- */
+
+.game-over-screen {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    margin: 30px 0;
+    animation: fadeIn 0.8s ease;
+}
+
+/* Prominent "Game Over" heading */
+.game-over-title {
+    font-size: 3rem;
+    color: #ff4757;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Large gradient-styled final score */
+.game-over-score {
+    font-size: 4rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 20px 0;
+}
+
+/* ---------------------------------------------------------
+   Confetti Container
+   - Full-screen overlay used for animated confetti (JS-driven)
+   - Pointer-events disabled so it doesn’t block interactions
+   --------------------------------------------------------- */
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* ---------------------------------------------------------
+   Mobile Responsiveness
+   - Adjusts paddings, font sizes, and layout for smaller screens
+   - Ensures usability and readability on devices < 768px wide
+   --------------------------------------------------------- */
+
+@media (max-width: 768px) {
+    .quiz-game-header {
+        padding: 15px;
+    }
+
+    .timer-display {
+        font-size: 2rem;
+        min-width: 100px;
+    }
+
+    .game-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .question-card-gamified {
+        padding: 20px;
+    }
+
+    .answer-option {
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    .feedback-message {
+        font-size: 2rem;
+        padding: 20px 30px;
+        min-width: 250px;
+    }
+
+    .game-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .game-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ---------------------------------------------------------
+   Animation Utilities
+   - Generic animations and helper classes that can be reused
+   - Includes fade-in and bounce effects
+   --------------------------------------------------------- */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Utility class for simple fade-in transition */
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.bounce {
+    animation: bounce 0.5s ease;
+}
+
+/* ---------------------------------------------------------
+   Next Button Visibility & State
+   - Ensures #next-button reflects its enabled/disabled state
+   - Typically controlled via JavaScript
+   --------------------------------------------------------- */
+
+#next-button:not(:disabled) {
+    opacity: 1;
+    cursor: pointer;
+}
+
+#next-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------
+   Answer Option Interactivity Safeguards
+   - Explicitly ensures clickability of answer options only
+     when not disabled
+   --------------------------------------------------------- */
+
+.answer-option:not(.disabled) {
+    cursor: pointer;
+}
+
+.answer-option.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}

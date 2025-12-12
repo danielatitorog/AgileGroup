@@ -1,12 +1,10 @@
 <?php
 
-// Include the required model classes
 require_once('Models/UserAuthentication.php');
 require_once('Models/ProfileModel.php');
 
-// Create a stdClass object to hold data for the view
 $view = new stdClass();
-$view->user = new User();       // Instantiate the User object for authentication
+$view->user = new User();
 
 if (!$view->user->isLoggedIn()) {
     header("Location: index.php");
@@ -14,7 +12,9 @@ if (!$view->user->isLoggedIn()) {
 }
 
 $view->profileModel = new ProfileModel();
-$view->modules = $view->profileModel->getModules(); // We'll write this function next
+$view->modules = $view->profileModel->getModules();
 
+// NEW: load last visited slide
+$view->lastPage = $view->profileModel->getLastVisitedPage($_SESSION['user_id']);
 
 require_once('Views/roadmap.phtml');

@@ -1,0 +1,133 @@
+<?php require('template/header.phtml') ?>
+
+<nav class="navbar navbar-expand-lg navbar-dark shadow-lg rounded-3 p-3 mx-3 my-3"
+     style="background: linear-gradient(90deg, #0d6efd, #0b5ed7);">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
+            Virtual Portfolio
+        </a>
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-light text-primary fs-6 py-2 px-3 shadow-sm rounded-pill" id="points-display">
+                Points: 0
+            </span>
+            <span class="badge bg-light text-primary fs-6 py-2 px-3 shadow-sm rounded-pill" id="cash-display">
+                Cash: £1,000.00
+            </span>
+        </div>
+    </div>
+</nav>
+
+
+
+
+<div class="container py-4">
+
+    <!-- BUY/SELL DROPDOWN -->
+    <div class="card mb-4" data-tutorial="trade">
+        <div class="card-body">
+            <h5>Trade</h5>
+
+            <div class="row g-2">
+                <div class="col-md-5">
+                    <select id="dropdown-company" class="form-select"></select>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="number" id="dropdown-qty" class="form-control" placeholder="Quantity" min="1" value="1">
+                </div>
+
+                <div class="col-md-4">
+                    <button class="btn btn-success w-100 mb-2" onclick="dropdownBuy()">Buy Selected</button>
+                    <button class="btn btn-warning w-100" onclick="dropdownSell()">Sell Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PORTFOLIO VALUE -->
+    <div class="card mb-4" data-tutorial="portfolio-value">
+        <div class="card-body">
+            <h5>Portfolio Value</h5>
+            <h2 id="portfolio-value">£1,000.00</h2>
+        </div>
+    </div>
+
+    <!-- [MY CHANGE] Market trend card with improved multi-company line chart -->
+    <div class="card mb-4" data-tutorial="market-chart">
+        <div class="card-body">
+            <h5 class="mb-2">Market trend</h5>
+            <p class="small text-muted mb-1">
+                Each coloured line shows how a different company’s price has moved recently in your virtual market.
+            </p>
+            <p class="small text-muted mb-2">
+                The chart updates every second using the same prices as the table below. The right side is the most recent point.
+            </p>
+            <canvas id="market-chart" style="width: 100%; height: 200px;"></canvas>
+            <div id="market-legend" class="small text-muted mt-2"></div>
+        </div>
+    </div>
+    <!-- [MY CHANGE] end -->
+
+    <!-- MARKET -->
+    <h4>Market</h4>
+    <div class="card mb-4" data-tutorial="market">
+        <div class="card-body">
+            <table class="table" id="market-table">
+                <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Price</th>
+                    <th>Change</th>
+                    <th>Buy</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="small text-muted">Green = price went up • Red = price went down. Prices are simulated and therefore <span style="color:#b60111;"><strong>NOT</strong></span> real.</div>
+        </div>
+    </div>
+
+    <!-- HOLDINGS -->
+    <h4>Your Assets</h4>
+    <div class="card" data-tutorial="assets">
+        <div class="card-body">
+            <table class="table" id="portfolio-table">
+                <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>% vs Buy</th>
+                    <th>Sell</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="tutorialModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Tutorial</h5>
+            </div>
+            <div class="modal-body">
+                <p id="tutorial-text" class="fs-5"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="tutorial-next" type="button" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../js/tutorial.js"></script>
+<script src="../js/virtual_portfolio.js"></script>
+
+
+<?php require('template/footer.phtml') ?>

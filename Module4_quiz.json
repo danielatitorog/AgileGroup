@@ -1,0 +1,103 @@
+{
+  "title": "Module 4",
+  "description": "This quiz teaches how to stay safe online by recognizing scams, protecting passwords, avoiding dangerous links, and understanding common online threats that can steal money or personal information.",
+  "questions": [
+    {
+      "id": "m4_q1",
+      "question": "What is a financial scam?",
+      "options": [
+        "A trick to steal your money or information",
+        "A safe investment",
+        "A free reward",
+        "A bank bonus"
+      ],
+      "correctIndex": 0,
+      "explanation": "A financial scam is designed to trick people into giving away money or personal information."
+    },
+    {
+      "id": "m4_q2",
+      "question": "Why should you never share passwords?",
+      "options": [
+        "They are too long",
+        "Friends might change them",
+        "Someone could steal your accounts or money",
+        "Teachers say so"
+      ],
+      "correctIndex": 2,
+      "explanation": "Sharing passwords can allow someone to access your accounts, steal your money, or misuse your personal information."
+    },
+    {
+      "id": "m4_q3",
+      "question": "Which is a sign something might be a scam?",
+      "options": [
+        "It loads slowly",
+        "It promises huge rewards very fast",
+        "It has a long description",
+        "It uses emojis"
+      ],
+      "correctIndex": 1,
+      "explanation": "Scams often promise fast, unrealistic rewards to trick people into giving away money or information."
+    },
+    {
+      "id": "m4_q4",
+      "question": "Why be careful with “get rich quick” offers?",
+      "options": [
+        "They are often scams",
+        "They always work",
+        "They are required by banks",
+        "They are safe for teens"
+      ],
+      "correctIndex": 0,
+      "explanation": "Most 'get rich quick' offers are scams designed to take your money or personal details."
+    },
+    {
+      "id": "m4_q5",
+      "question": "Which message is most likely a scam?",
+      "options": [
+        "A text from your friend asking to hang out",
+        "A message saying you won a prize you didn’t enter",
+        "A reminder from your school",
+        "A message from an app you installed"
+      ],
+      "correctIndex": 1,
+      "explanation": "Scammers often claim you won something to get your attention, even when you never signed up for a contest."
+    },
+    {
+      "id": "m4_q6",
+      "question": "Why should you avoid clicking on random links online?",
+      "options": [
+        "They make your phone slow",
+        "They take too long to load",
+        "They could lead to fake websites that steal your information",
+        "They only work on computers"
+      ],
+      "correctIndex": 2,
+      "explanation": "Scammers create fake websites that look real. Clicking unknown links can expose your private information or install harmful software."
+    },
+    {
+      "id": "m4_q7",
+      "question": "Why is it important to use strong passwords?",
+      "options": [
+        "Because short passwords are boring",
+        "Because strong passwords look cool",
+        "Because strong passwords make it harder for hackers to break into your accounts",
+        "Because apps force you to use them"
+      ],
+      "correctIndex": 2,
+      "explanation": "A strong password protects your accounts from hackers. You should also use multi-factor authentication whenever possible for extra security."
+    },
+    {
+      "id": "m4_q8",
+      "question": "Which of the following is a safe online behaviour?",
+      "options": [
+        "Sharing your login details with a friend",
+        "Posting your bank card online",
+        "Responding to strangers who message you about money",
+        "Keeping your personal information private"
+      ],
+      "correctIndex": 3,
+      "explanation": "Keeping personal information private protects you from scammers and identity theft."
+    }
+  ]
+}
+

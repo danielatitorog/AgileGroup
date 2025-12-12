@@ -30,9 +30,27 @@ class ProfileModel
         return [
             'name'    => $row['username'],
             'email'   => $row['email'],
-            'joined'  => "N/A", // add joined date later if needed
+            'joined'  => "N/A",
             'modules' => $this->getUserModules($userId)
         ];
+    }
+
+    /**
+     * Get last visited slide for the user
+     */
+    public function getLastVisitedPage($userId)
+    {
+        $sql = "SELECT last_page_visited
+                FROM user_module_progress
+                WHERE user_id = :uid
+                ORDER BY updated_at DESC
+                LIMIT 1";
+
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->execute([':uid' => $userId]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int)$row['last_page_visited'] : 0; // default to slide 0
     }
 
     /**
@@ -84,7 +102,7 @@ class ProfileModel
             progress_percent = excluded.progress_percent,
             last_page_visited = excluded.last_page_visited,
             updated_at = datetime('now')
-    ";
+        ";
 
         $stmt = $this->_dbHandle->prepare($sql);
 
@@ -103,7 +121,4 @@ class ProfileModel
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
-
 }
