@@ -93,7 +93,7 @@
                         <div class="card-header bg-primary text-white">
                             <h2 class="mb-0"><?php echo htmlspecialchars($view->quizTitle); ?></h2>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body shadow-sm mb-4">
                             <p class="lead"><?php echo htmlspecialchars($view->quizDescription); ?></p>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                         <div class="card-header bg-success text-white">
                             <h3 class="mb-0">Quiz Results - <?php echo htmlspecialchars($view->quizTitle); ?></h3>
                         </div>
-                        <div class="card-body text-center">
+                        <div class="card-body shadow-sm mb-4 text-center results-soft-bg">
                             <!-- overall percentage score -->
                             <div class="display-1 fw-bold text-primary mb-3">
                                 <?php echo $view->quizResults['percentage']; ?>%
@@ -181,7 +181,8 @@
                                     <?php foreach ($view->detailedResults as $index => $result): ?>
                                         <div class="accordion-item mb-3">
                                             <h2 class="accordion-header" id="heading<?php echo $index; ?>">
-                                                <button class="accordion-button <?php echo $result['is_correct'] ? 'bg-success-subtle' : 'bg-danger-subtle'; ?> <?php echo $index > 0 ? 'collapsed' : ''; ?>"
+                                                <?php $notAnswered = ($result['user_answer_index'] === null); ?>
+                                                <button class="accordion-button <?php echo $notAnswered ? 'bg-secondary-subtle' : ($result['is_correct'] ? 'bg-success-subtle' : 'bg-danger-subtle'); ?> <?php echo $index > 0 ? 'collapsed' : ''; ?>"
                                                         type="button"
                                                         data-bs-toggle="collapse"
                                                         data-bs-target="#collapse<?php echo $index; ?>"
@@ -191,8 +192,8 @@
                                                 <strong>Question <?php echo $index + 1; ?>:</strong>
                                                 <?php echo htmlspecialchars($result['question']); ?>
                                             </span>
-                                                    <span class="badge <?php echo $result['is_correct'] ? 'bg-success' : 'bg-danger'; ?> ms-2">
-                                                <?php echo $result['is_correct'] ? '✓ Correct' : '✗ Incorrect'; ?>
+                                                    <span class="badge <?php echo $notAnswered ? 'bg-secondary' : ($result['is_correct'] ? 'bg-success' : 'bg-danger'); ?> ms-2">
+                                                <?php echo $notAnswered ? '— Not answered' : ($result['is_correct'] ? '✓ Correct' : '✗ Incorrect'); ?>
                                             </span>
                                                 </button>
                                             </h2>
@@ -206,7 +207,7 @@
                                                         <div class="col-md-6">
                                                             <div class="card <?php echo $result['is_correct'] ? 'border-success' : 'border-danger'; ?>">
                                                                 <div class="card-header <?php echo $result['is_correct'] ? 'bg-success text-white' : 'bg-danger text-white'; ?>">
-                                                                    <h5 class="mb-0">Your Answer</h5>
+                                                                    <h5 class="mb-0 text-white">Your Answer</h5>
                                                                 </div>
                                                                 <div class="card-body">
                                                                     <p class="card-text">
@@ -230,7 +231,7 @@
                                                         <div class="col-md-6">
                                                             <div class="card border-success">
                                                                 <div class="card-header bg-success text-white">
-                                                                    <h5 class="mb-0">Correct Answer</h5>
+                                                                    <h5 class="mb-0 text-white">Correct Answer</h5>
                                                                 </div>
                                                                 <div class="card-body">
                                                                     <p class="card-text">
@@ -244,7 +245,7 @@
                                                     <div class="mt-4">
                                                         <div class="card border-info">
                                                             <div class="card-header bg-info text-white">
-                                                                <h5 class="mb-0">
+                                                                <h5 class="mb-0 text-white">
                                                                     <i class="bi bi-lightbulb"></i> Explanation
                                                                 </h5>
                                                             </div>
@@ -312,6 +313,8 @@
                               action="quiz.php?quiz=<?php echo urlencode(isset($_SESSION['current_quiz']) ? $_SESSION['current_quiz'] : ''); ?>"
                               method="POST"
                               data-correct-answer="<?php echo $view->question['correctIndex']; ?>">
+                            <!-- during timeout and unselected answer user can go to next question -->
+                            <input type="hidden" name="timed_out" id="timedOut" value="0">
 
                             <div class="answer-options-gamified">
                                 <?php
@@ -377,5 +380,5 @@
          * Enabling/disabling navigation based on user interaction
    -->
     <script src="../js/quiz-gamified.js"></script>
-<!-- Load required footer template -->
+    <!-- Load required footer template -->
 <?php require('template/footer.phtml'); ?>
