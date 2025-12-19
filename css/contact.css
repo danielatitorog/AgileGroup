@@ -6,17 +6,37 @@
     border-radius: 14px;
 }
 
-.contact-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-
 .contact-email {
     font-size: 1.2rem;
     color: #d71e28;
     text-decoration: none;
 }
 
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
 .contact-email:hover {
+    color: #0d6efd !important;
+    transform: translateX(5px);
     text-decoration: underline;
+
+}
+
+.phone-number-container {
+    transition: all 0.3s ease;
+}
+
+.phone-number-container:hover {
+    background-color: #e9ecef !important;
+    transform: scale(1.02);
+}
+
+.icon-container {
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover .icon-container {
+    transform: scale(1.1);
 }

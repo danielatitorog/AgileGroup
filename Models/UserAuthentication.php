@@ -25,7 +25,6 @@ class User
         $this->_dbHandle = $this->_dbInstance->getdbConnection();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
-            session_regenerate_id(true); // helps prevent session fixation
         }
 
         // Session timeout (1 hour)
@@ -61,11 +60,12 @@ class User
 
         // Verify password and start session
         if ($row && password_verify($password, $row['password_hash'])) {
+            session_regenerate_id(true);
+
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['email'] = $row['email'];
             $_SESSION['role'] = $row['role'];
-
             $_SESSION['last_activity'] = time(); // Session time-out
 
             $this->_currentUser = new UserData($row);
