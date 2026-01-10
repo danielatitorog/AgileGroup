@@ -242,13 +242,26 @@
                                         <span class="text-muted small"><?= $module['completed']; ?>%</span>
                                     </div>
                                     <div class="progress progress-lg">
-                                        <div class="progress-bar bg-info"
+                                        <?php
+                                        $percent = (int)$module['completed'];
+
+                                        if ($percent < 40) {
+                                            $colorClass = 'progress-low';
+                                        } elseif ($percent < 75) {
+                                            $colorClass = 'progress-medium';
+                                        } else {
+                                            $colorClass = 'progress-high';
+                                        }
+                                        ?>
+
+                                        <div class="progress-bar <?= $colorClass ?>"
                                              role="progressbar"
-                                             style="width: <?= $module['completed']; ?>%"
-                                             aria-valuenow="<?= $module['completed']; ?>"
+                                             style="width: <?= $percent; ?>%"
+                                             aria-valuenow="<?= $percent; ?>"
                                              aria-valuemin="0"
                                              aria-valuemax="100">
                                         </div>
+
                                     </div>
                                 </div>
                             <?php endforeach; ?>
