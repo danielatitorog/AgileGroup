@@ -111,16 +111,11 @@ if (ownedEl && ownershipEl && priceEl && valueEl) {
         }
     };
 
-    // --- UPDATED visual scales ---
-    // Higher number = jars fill more slowly for that milestone.
     const visualMultiplier = {
         car: 2.4,      // was 2.0 – fills a bit slower, not maxed at 10 yrs
         uni: 1.9,      // was 2.4 – fills more for this big long-term goal
         home: 2.6,     // was 2.1 – slows down a little (was full by 8 yrs)
 
-        // [MY CHANGE] Fix "First job" filling too early:
-        // Previously 3.5 made the green jar hit 100% around 9 years.
-        // 5.0 keeps it near-full at 10 years without maxing early.
         job: 5.0,      // was 3.5 – needs more time before it looks “full”
 
         travel: 3.0    // was 2.6 – slightly slower, should be ~90% at 10 yrs

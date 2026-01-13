@@ -30,7 +30,6 @@ function pluralYears(n) {
 }
 
 /* -------------------------------
-   [MY CHANGE]
    Module 1: Intro "What is investing?" slider + coin
 -------------------------------- */
 

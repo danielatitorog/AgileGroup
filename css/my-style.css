@@ -433,7 +433,7 @@
     color: #4b5563;
 }
 
-/* Module 5 milestone planner styles (updated) */
+/* Module 5 milestone planner styles */
 .milestone-planner {
     max-width: 900px;
     margin: 0 auto 1.5rem;
@@ -614,7 +614,7 @@
     color: #111827;
 }
 
-/* Optional: smaller labels (Bootstrap default is fine if you prefer) */
+/* smaller labels */
 .calculator label {
     font-size: 1rem;
     color: #374151;
@@ -623,7 +623,7 @@
 
 /* Inputs */
 .calc-input {
-    border-radius: 6px !important; /* ensures rounded corners even with Bootstrap */
+    border-radius: 6px !important;
     border: 1px solid #ccc;
     padding: 10px 12px;
 }
@@ -702,7 +702,7 @@
     opacity: 0.9;
 }
 
-/* === Share Simulator Enhancements (Light Touch) === */
+/* Share Simulator */
 
 .simulator-card {
     background: linear-gradient(180deg, #ffffff, #f8fbff);
@@ -777,7 +777,7 @@
 
 
 /* ==========================================================
-   [MY CHANGE] Module 2 – "Financial freedom" layered visual
+   Module 2 – "Financial freedom" layered visual
    Money.png  = background (clouds + notes)
    bell_character.png = animated bell (idle + hover)
    ========================================================== */
@@ -849,7 +849,7 @@
 }
 
 /* ==========================================================
-   [MY CHANGE] Animated bell/profile icon in top navbar
+   Animated bell/profile icon in top navbar
    Targets the single bell image with id="bell-avatar".
    ========================================================== */
 
