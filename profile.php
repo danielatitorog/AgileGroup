@@ -23,4 +23,7 @@ $view->friends = $view->model->getFriends($userId); // Load user friend list
 $view->requests = $requestModel->getIncomingRequests($userId); 
 $view->sentRequests = $requestModel->getSentRequests($userId);
 
+$view->quizProgress = $view->model->getQuizProgress($userId);
+$view->quizStats = $view->model->getQuizStats($userId);
+
 require("Views/profile.phtml");
