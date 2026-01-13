@@ -13,6 +13,7 @@ const TOTAL_SHARES = 100;
 let owned = 0;
 let price = 10;
 
+// Update UI
 function updateUI() {
     ownedEl.textContent = owned;
     ownershipEl.textContent = ((owned / TOTAL_SHARES) * 100).toFixed(1) + '%';
@@ -63,6 +64,7 @@ if (ownedEl && ownershipEl && priceEl && valueEl) {
         return;
     }
 
+    // Data for different milestones
     const milestoneData = {
         car: {
             name: 'First car',
@@ -132,11 +134,13 @@ if (ownedEl && ownershipEl && priceEl && valueEl) {
 
     let currentKey = 'car';
 
+    // Update year display based on slider value
     function updateYearsLabel() {
         const years = yearsSlider.value;
         yearsLabel.textContent = years + (years === '1' ? ' year' : ' years');
     }
 
+    // Update milestone visual
     function updateMilestoneView() {
         const data = milestoneData[currentKey];
         const years = parseInt(yearsSlider.value, 10);
@@ -144,6 +148,7 @@ if (ownedEl && ownershipEl && priceEl && valueEl) {
         const monthly = data.monthly;
         const goal = data.goal;
 
+        // Calculate total frim simple cahnges
         const cashTotal = monthly * months;
 
         const annualReturn = 0.05;

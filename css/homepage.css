@@ -117,7 +117,7 @@
     text-decoration: underline;
 }
 
-/* Ensure footer appears only at the bottom naturally */
+/* Ensures footer at the bottom */
 html, body {
     height: 100%;
 }
@@ -565,7 +565,7 @@ main {
 
 .timeline-step:hover .step-number {
     transform: scale(1.15);
-    /* The number will scale with the whole circle */
+    /* The number will scale */
 }
 
 /* Timeline hover effects */

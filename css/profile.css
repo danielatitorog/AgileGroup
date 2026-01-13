@@ -1,6 +1,5 @@
 /* ===========================
-   REFINED RED ACCENT THEME
-   Modern • Clean • Balanced
+              THEME
    =========================== */
 
 :root {
@@ -16,7 +15,7 @@
     border-radius: 14px;
 }
 
-/* Avatar red glow effect — toned down */
+/* Avatar red glow effect */
 .profile-avatar {
     width: 80px;
     height: 80px;
@@ -31,7 +30,7 @@
     margin-bottom: 1rem !important;
 }
 
-/* Stat chips – more neutral, red value highlight only */
+/* Stat chips */
 .profile-stat-chip {
     background: #fff;
     border: 1px solid #ececec;
@@ -49,7 +48,7 @@
     font-weight: 600;
 }
 
-/* Tabs – cleaner red underline, minimalist style */
+/* Tabs */
 .card-header-tabs .nav-link {
     border-bottom: 2px solid transparent;
     color: #555;
@@ -72,7 +71,7 @@
     border-radius: 14px;
 }
 
-/* Friend avatars – balanced palette */
+/* Friend avatars */
 .friends-avatar-placeholder {
     width: 38px;
     height: 38px;
@@ -91,26 +90,26 @@
     color: var(--accent-red-dark) !important;
 }
 
-/* Sent request avatar (soft neutral red) */
+/* Sent request avatar  */
 .friends-sent {
     background: #fae8e9 !important;
     color: var(--accent-red-dark) !important;
 }
 
-/* Friends list hover – subtle */
+/* Friends list hover */
 .friends-list-item:hover {
     background-color: var(--accent-red-light);
     border-radius: 10px;
 }
 
-/* Pending badge – refined */
+/* Pending badge */
 .badge.bg-light.text-muted {
     background-color: #f8e7e8 !important;
     color: var(--accent-red-dark) !important;
     border: 1px solid #f1c5c7 !important;
 }
 
-/* Progress bar – more refined red */
+/* Progress bar */
 .progress-bar.bg-info {
     background-color: var(--accent-red) !important;
     border-radius: 20px;
@@ -124,7 +123,7 @@
     overflow: hidden;
 }
 
-/* Buttons – elegant red accents */
+/* Buttons */
 .btn-outline-danger {
     border-color: var(--accent-red);
     color: var(--accent-red);
