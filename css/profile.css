@@ -1,0 +1,162 @@
+/* ===========================
+   REFINED RED ACCENT THEME
+   Modern • Clean • Balanced
+   =========================== */
+
+:root {
+    --accent-red: #E41E26;
+    --accent-red-light: #fdebec;
+    --accent-red-soft: #f9d3d6;
+    --accent-red-dark: #b61920;
+}
+
+/* Profile header card with a clean red accent */
+.profile-header-card {
+    border-left: 4px solid var(--accent-red);
+    border-radius: 14px;
+}
+
+/* Avatar red glow effect — toned down */
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow:
+            0 0 0 3px #fff,
+            0 4px 12px rgba(228, 30, 38, 0.22);
+}
+
+.avatar-wrapper {
+    margin-bottom: 1rem !important;
+}
+
+/* Stat chips – more neutral, red value highlight only */
+.profile-stat-chip {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    padding: 6px 12px;
+}
+
+.profile-stat-label {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.profile-stat-value {
+    color: var(--accent-red);
+    font-weight: 600;
+}
+
+/* Tabs – cleaner red underline, minimalist style */
+.card-header-tabs .nav-link {
+    border-bottom: 2px solid transparent;
+    color: #555;
+    font-weight: 500;
+}
+
+.card-header-tabs .nav-link.active {
+    border-bottom-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.card-header-tabs .nav-link:hover:not(.active) {
+    color: var(--accent-red-dark);
+    border-bottom-color: var(--accent-red-light);
+}
+
+/* Light card shadow */
+.card.shadow-sm {
+    box-shadow: 0 4px 12px var(--card-shadow) !important;
+    border-radius: 14px;
+}
+
+/* Friend avatars – balanced palette */
+.friends-avatar-placeholder {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: #ffe8e8;
+    color: var(--accent-red-dark);
+    font-weight: 600;
+}
+
+/* Incoming request red avatar */
+.friends-request {
+    background: #fbdada !important;
+    color: var(--accent-red-dark) !important;
+}
+
+/* Sent request avatar (soft neutral red) */
+.friends-sent {
+    background: #fae8e9 !important;
+    color: var(--accent-red-dark) !important;
+}
+
+/* Friends list hover – subtle */
+.friends-list-item:hover {
+    background-color: var(--accent-red-light);
+    border-radius: 10px;
+}
+
+/* Pending badge – refined */
+.badge.bg-light.text-muted {
+    background-color: #f8e7e8 !important;
+    color: var(--accent-red-dark) !important;
+    border: 1px solid #f1c5c7 !important;
+}
+
+/* Progress bar – more refined red */
+.progress-bar.bg-info {
+    background-color: var(--accent-red) !important;
+    border-radius: 20px;
+}
+
+/* Large progress bar container */
+.progress.progress-lg {
+    height: 12px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Buttons – elegant red accents */
+.btn-outline-danger {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--accent-red-light);
+    border-color: var(--accent-red);
+    color: var(--accent-red-dark);
+}
+
+.btn-danger,
+.btn-primary {
+    box-shadow: 0 4px 10px rgba(228, 30, 38, 0.14);
+    border-radius: 10px;
+}
+
+/* Section headers */
+.card-header h5,
+.card-header h6 {
+    color: var(--accent-red-dark);
+    font-weight: 600;
+}
+
+/* Module list titles */
+.module-progress-item span.fw-semibold {
+    border-left: 3px solid var(--accent-red);
+    padding-left: 8px;
+}
+
+/* List hover effect refined */
+.list-group-item:hover {
+    background-color: var(--accent-red-light);
+    transition: background-color 0.15s ease;
+}

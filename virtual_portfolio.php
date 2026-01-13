@@ -13,8 +13,4 @@ if (!$view->user->isLoggedIn()) {
     exit;
 }
 
-$view->profileModel = new ProfileModel();
-$view->modules = $view->profileModel->getModules(); // We'll write this function next
-
-
-require_once('Views/roadmap.phtml');
+require_once('Views/virtual_portfolio.phtml');

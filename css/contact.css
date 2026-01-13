@@ -1,0 +1,22 @@
+/* Contact page */
+.contact-card {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    transition: all 0.25s ease;
+    border-radius: 14px;
+}
+
+.contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.contact-email {
+    font-size: 1.2rem;
+    color: #d71e28;
+    text-decoration: none;
+}
+
+.contact-email:hover {
+    text-decoration: underline;
+}

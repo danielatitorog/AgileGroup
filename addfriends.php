@@ -1,37 +1,47 @@
 <?php
 session_start();
 
+require_once("Models/FriendRequestModel.php");
 require_once("Models/FriendsModel.php");
 
-// Ensure user logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
 
 $userId = $_SESSION['user_id'];
-$model = new FriendsModel();
+$reqModel = new FriendRequestModel();
+$friendModel = new FriendsModel();
 
-// Process Add Friend
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['friend_username'])) {
-    $result = $model->addFriend($userId, $_POST['friend_username']);
-
-    if ($result !== true) {
-        // Save error message for display on profile page
-        $_SESSION['friend_error'] = $result;
-    }
-
+// Send request
+if (isset($_POST['friend_username'])) {
+    $result = $reqModel->sendRequest($userId, $_POST['friend_username']);
+    $_SESSION['friend_message'] = $result === true ?
+        "Friend request sent!" : $result;
     header("Location: profile.php");
     exit;
 }
 
-// Process Delete Friend
-if (isset($_GET['delete'])) {
-    $model->deleteFriend($userId, $_POST['delete']);
+// Accept request
+if (isset($_POST['accept_request'])) {
+    $reqModel->acceptRequest($_POST['accept_request'], $userId);
     header("Location: profile.php");
     exit;
 }
 
-// Fallback redirect
+// Decline request
+if (isset($_POST['decline_request'])) {
+    $reqModel->declineRequest($_POST['decline_request'], $userId);
+    header("Location: profile.php");
+    exit;
+}
+
+// Remove friend
+if (isset($_POST['delete_friend'])) {
+    $friendModel->deleteFriend($userId, $_POST['delete_friend']);
+    header("Location: profile.php");
+    exit;
+}
+
 header("Location: profile.php");
 exit;

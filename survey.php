@@ -8,6 +8,11 @@ $view->pageTitle = 'Survey';
 $view->user = new User();
 $view->errorMessage = '';
 
+if (!$view->user->isLoggedIn()) {
+    header("Location: index.php");
+    exit;
+}
+
 /**Check if this is a survey submission user answering questions
  * This handles the POST request when survey answers are submitted
  * currently just redirects user to thank you page - answers are not being saved
