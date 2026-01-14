@@ -43,15 +43,27 @@
     top: 0;
     left: 0;
     width: 100%;
+
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    z-index: 0;
+
+    transition:
+            opacity 0.5s ease,
+            visibility 0s linear 0.5s;
 }
 
 .slide.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
     position: relative;
+    z-index: 2;
+
+    transition:
+            opacity 0.5s ease,
+            visibility 0s;
 }
 
 .fade-in {
@@ -60,6 +72,7 @@
 
 .fade-out {
     animation: fadeOut 0.5s forwards;
+    pointer-events: none;
 }
 
 @keyframes fadeIn {
@@ -814,10 +827,14 @@
     width: 80%;
     max-width: 380px;
     height: auto;
-    pointer-events: auto;
+    pointer-events: none;
     cursor: default;
     user-select: none;
     transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.slide.active .freedom-visual .freedom-bell-img {
+    pointer-events: auto;
 }
 
 .freedom-bell-img:hover {
@@ -850,7 +867,6 @@
 
 /* ==========================================================
    Animated bell/profile icon in top navbar
-   Targets the single bell image with id="bell-avatar".
    ========================================================== */
 
 #bell-avatar {
