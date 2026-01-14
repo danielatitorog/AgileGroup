@@ -1,351 +1,343 @@
 <?php require('template/header.phtml'); ?>
 
-    <div class="container-fluid ">
-        <div class="row h-100">
-            <!-- LEFT SIDE IMAGE (2/3 width) -->
-            <div class="col-lg-8 col-md-7 p-3 d-md-block">
-                <div style="position: relative; width: 100%; padding-top: 66.67%">
-                    <img src="/images/youth_invest.png"
-                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+<div class="container-fluid ">
+    <div class="row h-100">
+        <!-- LEFT SIDE IMAGE (2/3 width) -->
+        <div class="col-lg-8 col-md-7 p-3 d-md-block">
+            <div style="position: relative; width: 100%; padding-top: 66.67%">
+                <img src="/images/youth_invest.png"
+                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
                     object-fit: cover; border-radius: 20px;" alt="banner">
-                </div>
             </div>
-            <!-- RIGHT SIDE LOGIN (top-aligned) -->
-            <div class="col-lg-4 col-md-5 col-12 p-3 d-flex align-items-center justify-content-center">
-
-                <div class="login-card p-4 shadow bg-white" style="width: 100%; max-width: 380px; border-radius: 20px;">
-                    <?php if ($view->user->isLoggedIn()): ?>
-                        <h4 class="fw-bold text-danger mb-2">Ready to Begin?</h4>
-                        <p class="text-size mb-3">
-                            Your learning journey will guide you step-by-step through everything you need to know.
-                        </p>
-                        <a href="learning_hub.php" class="btn btn-danger w-100 fw-semibold text-size">
-                            Start Learning →
-                        </a>
-                    <?php else: ?>
-                        <h2 class="text-center mb-4 fw-semibold">Login</h2>
-                        <?php if (!empty($view->authMessage)): ?>
-                            <div class="alert alert-info text-center">
-                                <?= htmlspecialchars($view->authMessage); ?>
-                            </div>
-                        <?php endif; ?>
-                        <form action="index.php" method="POST">
-                            <div class="mb-3">
-                                <label for="username" class="form-label fw-semibold">Username</label>
-                                <input type="text" name="username" id="username" class="form-control" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label fw-semibold">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" required>
-                            </div>
-
-                            <button type="submit" name="loginBtn" class="btn btn-danger w-100 fw-semibold">Login</button>
-
-                            <div class="text-center mt-3">
-                                <a href="register.php" class="text-decoration-none">Don't have an account? Register</a>
-
-                            </div>
-                        </form>
-                    <?php endif; ?>
-                </div>
-            </div>
-
         </div>
+        <!-- RIGHT SIDE LOGIN (top-aligned) -->
+        <div class="col-lg-4 col-md-5 col-12 p-3 d-flex align-items-center justify-content-center">
+
+            <div class="login-card p-4 shadow bg-white" style="width: 100%; max-width: 380px; border-radius: 20px;">
+                <?php if ($view->user->isLoggedIn()): ?>
+                    <h4 class="fw-bold text-danger mb-2">Ready to Begin?</h4>
+                    <p class="text-size mb-3">
+                        Your learning journey will guide you step-by-step through everything you need to know.
+                    </p>
+                    <a href="learning_hub.php" class="btn btn-danger w-100 fw-semibold text-size">
+                        Start Learning →
+                    </a>
+                <?php else: ?>
+                    <h2 class="text-center mb-4 fw-semibold">Login</h2>
+                    <?php if (!empty($view->authMessage)): ?>
+                        <div class="alert alert-info text-center">
+                            <?= htmlspecialchars($view->authMessage); ?>
+                        </div>
+                    <?php endif; ?>
+                    <form action="index.php" method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-semibold">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+
+                        <button type="submit" name="loginBtn" class="btn btn-danger w-100 fw-semibold">Login</button>
+
+                        <div class="text-center mt-3">
+                            <a href="register.php" class="text-decoration-none">Don't have an account? Register</a>
+
+                        </div>
+                    </form>
+                <?php endif; ?>
+            </div>
+        </div>
+
     </div>
+</div>
 
-    <div class="container main-content-container">
+<div class="container main-content-container">
 
-        <!-- SECTION 1 — Modern Hero Card (without learning journey) -->
-        <section class="modern-hero-section mb-5">
-            <div class="hero-card p-4 p-md-5 rounded-4 shadow-lg position-relative overflow-hidden">
-                <!-- Background elements -->
-                <div class="hero-bg-elements">
-                    <div class="circle circle-1"></div>
-                    <div class="circle circle-2"></div>
-                    <div class="circle circle-3"></div>
-                </div>
+    <!-- SECTION 1 — Modern Hero Card (without learning journey) -->
+    <section class="modern-hero-section mb-5">
+        <div class="hero-card p-4 p-md-5 rounded-4 shadow-lg position-relative overflow-hidden">
+            <!-- Background elements -->
+            <div class="hero-bg-elements">
+                <div class="circle circle-1"></div>
+                <div class="circle circle-2"></div>
+                <div class="circle circle-3"></div>
+            </div>
 
-                <div class="row position-relative">
-                    <div class="col-12">
-                        <div class="hero-content text-center">
+            <div class="row position-relative">
+                <div class="col-12">
+                    <div class="hero-content text-center">
                         <span class="badge bg-danger bg-opacity-10 text-danger fw-semibold px-3 py-2 rounded-pill mb-3 d-inline-block">
                             <i class="fas fa-graduation-cap me-2"></i>Financial Education for Teens
                         </span>
-                            <h1 class="display-4 fw-bold mb-4 hero-title">
-                                Welcome to <span class="text-highlight">YouthInvest</span>
-                            </h1>
-                            <p class="lead fs-3 text-dark-emphasis mb-4 mx-auto" style="max-width: 800px;">
-                                <strong class="text-danger">YouthInvest</strong> — where learning about money feels more like a game
-                                than a classroom. Explore how saving, spending, and investing really work through stories
-                                and missions designed to build your confidence step-by-step.
-                            </p>
-                            <div class="hero-features d-flex flex-wrap gap-3 justify-content-center">
+                        <h1 class="display-4 fw-bold mb-4 hero-title">
+                            Welcome to <span class="text-highlight">YouthInvest</span>
+                        </h1>
+                        <p class="lead fs-3 text-dark-emphasis mb-4 mx-auto" style="max-width: 800px;">
+                            <strong class="text-danger">YouthInvest</strong> — where learning about money feels more
+                            like a game
+                            than a classroom. Explore how saving, spending, and investing really work through stories
+                            and missions designed to build your confidence step-by-step.
+                        </p>
+                        <div class="hero-features d-flex flex-wrap gap-3 justify-content-center">
                             <span class="feature-tag d-flex align-items-center">
                                 <i class="fas fa-gamepad text-danger me-2"></i>
                                 <span>Game-Based Learning</span>
                             </span>
-                                <span class="feature-tag d-flex align-items-center">
+                            <span class="feature-tag d-flex align-items-center">
                                 <i class="fas fa-shield-alt text-danger me-2"></i>
                                 <span>Safe Environment</span>
                             </span>
-                                <span class="feature-tag d-flex align-items-center">
-                                <i class="fas fa-users text-danger me-2"></i>
-                                <span>Social Learning</span>
-                            </span>
-                                <span class="feature-tag d-flex align-items-center">
-                                <i class="fas fa-chart-line text-danger me-2"></i>
-                                <span>Real Skills</span>
-                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2 — Enhanced Timeline (numbers in red circles) -->
+    <section class="enhanced-timeline-section mb-5">
+        <div class="section-intro text-center mb-5">
+            <h2 class="fw-bold display-6 mb-3 section-title">Your Learning Journey</h2>
+            <p class="text-muted fs-5">Think of this as your adventure map — each stage is a new level to unlock:</p>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+
+            <div class="row g-4 timeline-items">
+                <div class="col-lg-2-4">
+                    <div class="timeline-step active">
+                        <div class="step-header">
+                            <div class="step-number-container">
+                                <div class="step-number bg-danger text-white">
+                                    1
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h5 class="fw-bold step-title">Module 1 – What is Investing?</h5>
+                            <p class="small text-muted">What does investing mean?</p>
+                            <p class="small text-muted">Why investments grow</p>
+                            <p class="small text-muted">Risk vs Reward</p>
+                            <div class="status-badge bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-check-circle me-1"></i>Available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2-4">
+                    <div class="timeline-step active">
+                        <div class="step-header">
+                            <div class="step-number-container">
+                                <div class="step-number bg-danger text-white">
+                                    2
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h5 class="fw-bold step-title">Module 2 – Benefits of Investing</h5>
+                            <p class="small text-muted">Building wealth over time</p>
+                            <p class="small text-muted">Beating inflation</p>
+                            <p class="small text-muted">Financial freedom</p>
+                            <div class="status-badge bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-check-circle me-1"></i>Available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2-4">
+                    <div class="timeline-step active">
+                        <div class="step-header">
+                            <div class="step-number-container">
+                                <div class="step-number bg-danger text-white">
+                                    3
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h5 class="fw-bold step-title">Module 3 – Stock Market Basics</h5>
+                            <p class="small text-muted">What is a share?</p>
+                            <p class="small text-muted">How the market works</p>
+                            <p class="small text-muted">Diversification</p>
+                            <div class="status-badge bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-check-circle me-1"></i>Available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2-4">
+                    <div class="timeline-step active">
+                        <div class="step-header">
+                            <div class="step-number-container">
+                                <div class="step-number bg-danger text-white">
+                                    4
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h5 class="fw-bold step-title">Module 4 – Online Safety</h5>
+                            <p class="small text-muted">Protecting personal info</p>
+                            <p class="small text-muted">Avoiding scams</p>
+                            <p class="small text-muted">Safe habits</p>
+                            <div class="status-badge bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-check-circle me-1"></i>Available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2-4">
+                    <div class="timeline-step active">
+                        <div class="step-header">
+                            <div class="step-number-container">
+                                <div class="step-number bg-danger text-white">
+                                    5
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h5 class="fw-bold step-title">Module 5 - The Impact of Investing</h5>
+                            <p class="small text-muted">Saving for milestones</p>
+                            <p class="small text-muted">Advantages of starting early</p>
+                            <p class="small text-muted">Staying invested</p>
+                            <div class="status-badge bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-check-circle me-1"></i>Available
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SECTION 2 — Enhanced Timeline (numbers in red circles) -->
-        <section class="enhanced-timeline-section mb-5">
-            <div class="section-intro text-center mb-5">
-                <h2 class="fw-bold display-6 mb-3 section-title">Your Learning Journey</h2>
-                <p class="text-muted fs-5">Think of this as your adventure map — each stage is a new level to unlock:</p>
-            </div>
+    <!-- SECTION 3 & 4 — Modern Card Design (without circle) -->
+    <div class="row g-4 mb-5">
+        <!-- SECTION 3 — FRIENDS & TEAM LEARNING (without circle icon) -->
+        <div class="col-lg-6">
+            <div class="social-card rounded-4 overflow-hidden h-100 shadow-lg">
+                <div class="card-gradient-header p-4 p-md-5">
+                    <div class="mb-3">
+                        <h2 class="text-white fw-bold mb-1">Friends & Tracking Progress</h2>
+                        <p class="text-white text-opacity-90 mb-0">Learning is always better with friends!</p>
+                    </div>
+                </div>
 
-            <div class="timeline-container">
-                <div class="timeline-line"></div>
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <p class="text-size mb-4">
+                        On YouthInvest you can:
+                    </p>
 
-                <div class="row g-4 timeline-items">
-                    <div class="col-lg-2-4">
-                        <div class="timeline-step active">
-                            <div class="step-header">
-                                <div class="step-number-container">
-                                    <div class="step-number bg-danger text-white">
-                                        1
-                                    </div>
-                                </div>
+                    <div class="social-features">
+                        <div class="feature-item d-flex mb-3">
+                            <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-user-plus"></i>
                             </div>
-                            <div class="step-content">
-                                <h5 class="fw-bold step-title">Module 1 – What is Investing?</h5>
-                                <p class="small text-muted">What does investing mean?</p>
-                                <p class="small text-muted">Why investments grow</p>
-                                <p class="small text-muted">Risk vs Reward</p>
-                                <div class="status-badge bg-success bg-opacity-10 text-success">
-                                    <i class="fas fa-check-circle me-1"></i>Available
-                                </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Add friends</h6>
+                                <p class="small text-muted mb-0">Connect with peers</p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-2-4">
-                        <div class="timeline-step active">
-                            <div class="step-header">
-                                <div class="step-number-container">
-                                    <div class="step-number bg-danger text-white">
-                                        2
-                                    </div>
-                                </div>
+                        <div class="feature-item d-flex mb-3">
+                            <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-medal"></i>
                             </div>
-                            <div class="step-content">
-                                <h5 class="fw-bold step-title">Module 2 – Benefits of Investing</h5>
-                                <p class="small text-muted">Building wealth over time</p>
-                                <p class="small text-muted">Beating inflation</p>
-                                <p class="small text-muted">Financial freedom</p>
-                                <div class="status-badge bg-success bg-opacity-10 text-success">
-                                    <i class="fas fa-check-circle me-1"></i>Available
-                                </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Keep track of your progress</h6>
+                                <p class="small text-muted mb-0">Keep track of your progress to stay motivated and on target</p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-2-4">
-                        <div class="timeline-step active">
-                            <div class="step-header">
-                                <div class="step-number-container">
-                                    <div class="step-number bg-danger text-white">
-                                        3
-                                    </div>
-                                </div>
+                        <div class="feature-item d-flex mb-3">
+                            <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-medal"></i>
                             </div>
-                            <div class="step-content">
-                                <h5 class="fw-bold step-title">Module 3 – Stock Market Basics</h5>
-                                <p class="small text-muted">What is a share?</p>
-                                <p class="small text-muted">How the market works</p>
-                                <p class="small text-muted">Diversification</p>
-                                <div class="status-badge bg-success bg-opacity-10 text-success">
-                                    <i class="fas fa-check-circle me-1"></i>Available
-                                </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Compare learning progress</h6>
+                                <p class="small text-muted mb-0">Friendly competition with progress tracking</p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-2-4">
-                        <div class="timeline-step active">
-                            <div class="step-header">
-                                <div class="step-number-container">
-                                    <div class="step-number bg-danger text-white">
-                                        4
-                                    </div>
-                                </div>
+                        <div class="feature-item d-flex mb-3">
+                            <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3"
+                                 style="width: 40px; height: 40px;">
+                                <i class="fas fa-medal"></i>
                             </div>
-                            <div class="step-content">
-                                <h5 class="fw-bold step-title">Module 4 – Online Safety</h5>
-                                <p class="small text-muted">Protecting personal info</p>
-                                <p class="small text-muted">Avoiding scams</p>
-                                <p class="small text-muted">Safe habits</p>
-                                <div class="status-badge bg-success bg-opacity-10 text-success">
-                                    <i class="fas fa-check-circle me-1"></i>Available
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2-4">
-                        <div class="timeline-step active">
-                            <div class="step-header">
-                                <div class="step-number-container">
-                                    <div class="step-number bg-danger text-white">
-                                        5
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="step-content">
-                                <h5 class="fw-bold step-title">Module 5 - The Impact of Investing</h5>
-                                <p class="small text-muted">Saving for milestones</p>
-                                <p class="small text-muted">Advantages of starting early</p>
-                                <p class="small text-muted">Staying invested</p>
-                                <div class="status-badge bg-success bg-opacity-10 text-success">
-                                    <i class="fas fa-check-circle me-1"></i>Available
-                                </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Track your quiz results</h6>
+                                <p class="small text-muted mb-0">Monitor learning progress and identify areas for improvement</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- SECTION 3 & 4 — Modern Card Design (without circle) -->
-        <div class="row g-4 mb-5">
-            <!-- SECTION 3 — FRIENDS & TEAM LEARNING (without circle icon) -->
-            <div class="col-lg-6">
-                <div class="social-card rounded-4 overflow-hidden h-100 shadow-lg">
-                    <div class="card-gradient-header p-4 p-md-5">
-                        <div class="mb-3">
-                            <h2 class="text-white fw-bold mb-1">Friends & Team Learning</h2>
-                            <p class="text-white text-opacity-90 mb-0">Learning is always better with friends!</p>
-                        </div>
-                    </div>
-
-                    <div class="card-body p-4 p-md-5 bg-white">
-                        <p class="text-size mb-4">
-                            On YouthInvest you can:
-                        </p>
-
-                        <div class="social-features">
-                            <div class="feature-item d-flex mb-3">
-                                <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                    <i class="fas fa-user-plus"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Add friends and learn together</h6>
-                                    <p class="small text-muted mb-0">Connect with peers for collaborative learning</p>
-                                </div>
-                            </div>
-
-                            <div class="feature-item d-flex mb-3">
-                                <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                    <i class="fas fa-medal"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Compare badges (never real money!)</h6>
-                                    <p class="small text-muted mb-0">Friendly competition with achievement tracking</p>
-                                </div>
-                            </div>
-
-                            <div class="feature-item d-flex mb-3">
-                                <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                    <i class="fas fa-flag-checkered"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Team up for special missions</h6>
-                                    <p class="small text-muted mb-0">Collaborative challenges with unique rewards</p>
-                                </div>
-                            </div>
-
-                            <div class="feature-item d-flex">
-                                <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                    <i class="fas fa-trophy"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Celebrate progress and level up together</h6>
-                                    <p class="small text-muted mb-0">Shared milestones and achievements</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- SECTION 4 — WHY YOUTHINVEST WORKS (without mission circle) -->
+        <div class="col-lg-6">
+            <div class="benefits-card rounded-4 overflow-hidden h-100 border-0 shadow-lg">
+                <div class="card-border-header p-4">
+                    <h2 class="fw-bold mb-3">
+                        <span class="text-gradient-2">Why YouthInvest Works</span>
+                    </h2>
+                    <p class="text-size mb-4">YouthInvest helps you build real-life money skills in a fun, stress-free
+                        way. It works because:</p>
                 </div>
-            </div>
 
-            <!-- SECTION 4 — WHY YOUTHINVEST WORKS (without mission circle) -->
-            <div class="col-lg-6">
-                <div class="benefits-card rounded-4 overflow-hidden h-100 border-0 shadow-lg">
-                    <div class="card-border-header p-4">
-                        <h2 class="fw-bold mb-3">
-                            <span class="text-gradient-2">Why YouthInvest Works</span>
-                        </h2>
-                        <p class="text-size mb-4">YouthInvest helps you build real-life money skills in a fun, stress-free way. It works because:</p>
-                    </div>
-
-                    <div class="card-body p-4 bg-light">
-                        <div class="reasons-grid">
-                            <div class="reason-box bg-white rounded-3 p-3 mb-3 border-start border-3 border-danger">
-                                <div class="d-flex align-items-start">
-                                    <i class="fas fa-gamepad text-danger fa-lg mt-1 me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-1">You learn by <span class="text-danger">playing</span>, not memorising</h6>
-                                        <p class="small text-muted mb-0">Interactive games and simulations make learning engaging</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="reason-box bg-white rounded-3 p-3 mb-3 border-start border-3 border-danger">
-                                <div class="d-flex align-items-start">
-                                    <i class="fas fa-user-friends text-danger fa-lg mt-1 me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-1">Everything is written for <span class="text-danger">teens</span>, not adults</h6>
-                                        <p class="small text-muted mb-0">Age-appropriate content that speaks your language</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="reason-box bg-white rounded-3 p-3 mb-3 border-start border-3 border-danger">
-                                <div class="d-flex align-items-start">
-                                    <i class="fas fa-shield-alt text-danger fa-lg mt-1 me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-1">You practise investing with <span class="text-danger">zero risk</span></h6>
-                                        <p class="small text-muted mb-0">Safe environment with virtual currency</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="reason-box bg-white rounded-3 p-3 border-start border-3 border-danger">
-                                <div class="d-flex align-items-start">
-                                    <i class="fas fa-gem text-danger fa-lg mt-1 me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-1">You build strong financial habits that will help you for life</h6>
-                                        <p class="small text-muted mb-0">Foundation for lifelong financial success</p>
-                                    </div>
+                <div class="card-body p-4 bg-light">
+                    <div class="reasons-grid">
+                        <div class="reason-box bg-white rounded-3 p-3 mb-3 border-start border-3 border-danger">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-gamepad text-danger fa-lg mt-1 me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">You learn by <span class="text-danger">playing</span>, not
+                                        memorising</h6>
+                                    <p class="small text-muted mb-0">Interactive games and simulations make learning
+                                        engaging</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mission-statement mt-4 p-3 rounded-3" style="background: linear-gradient(135deg, rgba(228, 30, 38, 0.05) 0%, rgba(228, 30, 38, 0.02) 100%);">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <i class="fas fa-bullseye text-danger fa-lg"></i>
-                                </div>
+                        <div class="reason-box bg-white rounded-3 p-3 mb-3 border-start border-3 border-danger">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-user-friends text-danger fa-lg mt-1 me-3"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-1 text-danger">Our mission:</h6>
-                                    <p class="mb-0">Help you feel confident, capable, and prepared for the future.</p>
+                                    <h6 class="fw-bold mb-1">Everything is written for <span
+                                                class="text-danger">teens</span>, not adults</h6>
+                                    <p class="small text-muted mb-0">Age-appropriate content that speaks your
+                                        language</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reason-box bg-white rounded-3 p-3 mb-3 border-start border-3 border-danger">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-shield-alt text-danger fa-lg mt-1 me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">You practise <span class="text-danger">investing</span>
+                                    </h6>
+                                    <p class="small text-muted mb-0">Safe environment with virtual currency</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reason-box bg-white rounded-3 p-3 border-start border-3 border-danger">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-gem text-danger fa-lg mt-1 me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">You build strong financial habits that will help you for
+                                        life</h6>
+                                    <p class="small text-muted mb-0">Foundation for lifelong financial success</p>
                                 </div>
                             </div>
                         </div>
@@ -354,12 +346,13 @@
             </div>
         </div>
     </div>
+</div>
 
 
 <?php require('template/footer.phtml'); ?>
 <script>
     // Add this to your existing script or in a new script tag
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Animate timeline steps on scroll
         const observerOptions = {
             threshold: 0.1,
@@ -386,13 +379,13 @@
         // Add hover effect to feature items with delay
         const featureItems = document.querySelectorAll('.feature-item, .reason-box');
         featureItems.forEach(item => {
-            item.addEventListener('mouseenter', function() {
+            item.addEventListener('mouseenter', function () {
                 this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
             });
         });
 
         // Parallax effect for hero background circles
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const scrolled = window.pageYOffset;
             const circles = document.querySelectorAll('.circle');
 
@@ -406,11 +399,11 @@
         // Add pulse animation to available badges
         const badges = document.querySelectorAll('.status-badge');
         badges.forEach(badge => {
-            badge.addEventListener('mouseenter', function() {
+            badge.addEventListener('mouseenter', function () {
                 this.style.animation = 'pulse 1.5s infinite';
             });
 
-            badge.addEventListener('mouseleave', function() {
+            badge.addEventListener('mouseleave', function () {
                 this.style.animation = 'none';
             });
         });

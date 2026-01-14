@@ -1,14 +1,32 @@
-// GAMIFIED QUIZ JAVASCRIPT
-// ----------------------------------------------------------
-// This script provides the core logic for a gamified quiz
-// experience, including:
-// - Question lifecycle and navigation
-// - Timer and per-question countdown handling
-// - Lives system with persistence via sessionStorage
-// - Score tracking and persistence
-// - Visual feedback (correct/incorrect, confetti, game over)
-// - UI state management (enabling/disabling options & buttons)
-// ----------------------------------------------------------
+/**
+ * ==========================================================
+ * GAMIFIED QUIZ JAVASCRIPT
+ * ==========================================================
+ * This script provides the complete client-side logic for
+ * a gamified quiz experience.
+ *
+ * FEATURES
+ * --------
+ * • Question lifecycle and navigation
+ * • Countdown timer with per-question time limits
+ * • Lives (hearts) system with persistence via sessionStorage
+ * • Score tracking with session persistence
+ * • Automatic handling of unanswered (timed-out) questions
+ * • Visual feedback for correct / incorrect answers
+ * • Confetti animation for correct answers
+ * • Game-over screen with restart and navigation options
+ * • UI state management (buttons, options, progress)
+ *
+ * ARCHITECTURE NOTES
+ * ------------------
+ * • Server (PHP) controls question order and correctness
+ * • Client (JS) controls game feel (timer, lives, score)
+ * • `continue=1` URL parameter indicates an active quiz flow
+ * • Fresh visits reset client state automatically
+ *
+ * AUTHOR: (Amara Kanwal)
+ * ==========================================================
+ */
 
 class GamifiedQuiz {
     constructor() {
@@ -64,13 +82,13 @@ class GamifiedQuiz {
         this.elements.questionText = document.getElementById('question-text');
         this.elements.quizForm = document.querySelector('.quiz-form');
 
-       /* console.log('Elements found:', {
-            livesContainer: !!this.elements.livesContainer,
-            timerDisplay: !!this.elements.timerDisplay,
-            answerOptions: this.elements.answerOptions?.length || 0,
-            nextButton: !!this.elements.nextButton,
-            quizForm: !!this.elements.quizForm
-        });*/
+        /* console.log('Elements found:', {
+             livesContainer: !!this.elements.livesContainer,
+             timerDisplay: !!this.elements.timerDisplay,
+             answerOptions: this.elements.answerOptions?.length || 0,
+             nextButton: !!this.elements.nextButton,
+             quizForm: !!this.elements.quizForm
+         });*/
 
         // Only initialize if we're on a quiz question page
         if (!this.elements.quizForm || !this.elements.timerDisplay) {
@@ -81,6 +99,13 @@ class GamifiedQuiz {
         // Get current question from data attribute or URL
         const urlParams = new URLSearchParams(window.location.search);
         const quizParam = urlParams.get('quiz');
+        // Fresh visit (no continue=1) => restart client state
+        // Normal quiz flow uses POST->redirect->GET with &continue=1
+        if (urlParams.get('continue') !== '1') {
+            sessionStorage.removeItem('quiz_score');
+            sessionStorage.removeItem('quiz_lives');
+        }
+
 
         // Initialize lives display
         this.renderLives();
@@ -231,41 +256,50 @@ class GamifiedQuiz {
     /**
      * Handles the scenario where the timer reaches zero:
      * - Stops the timer
-     * - If no answer has been submitted, deducts a life and shows feedback
+     * - If no answer has been submitted, deducts 2 life and shows correct answer
      * - Optionally auto-submits after a brief delay
      */
 
     handleTimeout() {
-        //console.log('Time out!');
         clearInterval(this.timer);
-
-        if (!this.answered) {
-            this.loseLife();
-            this.showFeedback('Time\'s Up!', false);
-
-            // Automatically proceed/submit after a short delay
-            setTimeout(() => {
-                this.autoSubmit();
-            }, 2000);
-        }
-    }
-
-    /**
-     * Performs an automatic submission in timeout scenarios:
-     * - If not answered and game is still active, randomly selects an answer
-     *   and processes it as if the user had chosen it
-     * - If no options are available, simply submits the form
-     */
-    autoSubmit() {
         if (this.answered || this.isGameOver) return;
 
-        // Select a random answer
-        if (this.elements.answerOptions && this.elements.answerOptions.length > 0) {
-            const randomIndex = Math.floor(Math.random() * this.elements.answerOptions.length);
-            this.selectAnswer(randomIndex);
-        } else {
-            // If we can't select, just submit the form
-            this.submitForm();
+        this.answered = true;
+        this.elements.answerOptions.forEach(opt => opt.classList.add("disabled"));
+
+        // lose 2 lives (only here)
+        this.loseLives(2);
+
+        // mark timeout for server
+        const timedOutField = document.getElementById("timedOut");
+        if (timedOutField) timedOutField.value = "1";
+
+        // reveal correct
+        const raw = Number.parseInt(this.elements.quizForm?.dataset.correctAnswer, 10);
+
+        // if server uses 1..N, convert to 0..N-1; if server already uses 0..N-1, keep it
+        let idx = raw;
+        if (Number.isInteger(raw) && raw >= 1 && raw <= this.elements.answerOptions.length) {
+            idx = raw - 1;
+        }
+
+        if (Number.isInteger(idx) && this.elements.answerOptions[idx]) {
+            this.elements.answerOptions[idx].classList.add("correct");
+        }
+
+        this.showFeedback("Time's Up!", false);
+
+        // allow submits even though radios are required in HTML
+        const radios = this.elements.quizForm?.querySelectorAll('input[type="radio"][name="answer"]') || [];
+        radios.forEach(r => r.required = false);
+
+        setTimeout(() => this.submitForm(), 1200);
+    }
+
+    loseLives(n) {
+        for (let i = 0; i < n; i++) {
+            if (this.isGameOver) return;
+            this.loseLife();
         }
     }
 
@@ -284,11 +318,11 @@ class GamifiedQuiz {
      */
     setupAnswerListeners() {
         if (!this.elements.answerOptions || this.elements.answerOptions.length === 0) {
-           // console.log('No answer options found');
+            // console.log('No answer options found');
             return;
         }
 
-       // console.log('Setting up answer listeners for', this.elements.answerOptions.length, 'options');
+        // console.log('Setting up answer listeners for', this.elements.answerOptions.length, 'options');
 
         this.elements.answerOptions.forEach((option, index) => {
             option.addEventListener('click', (e) => {
@@ -447,8 +481,6 @@ class GamifiedQuiz {
                     <a href="learning_hub.php" class="game-button btn-prev">
                     <i class="bi bi-book"></i> Go To Learning Hub
                 </a>
-               
-               
             </div>
         `;
 
@@ -682,22 +714,5 @@ document.addEventListener('DOMContentLoaded', () => {
         window.quizGame = new GamifiedQuiz();
     } else {
         //console.log('Not a quiz question page or already showing results');
-    }
-});
-
-// ----------------------------------------------------------
-// SESSION CLEANUP ON PAGE UNLOAD
-// ----------------------------------------------------------
-//
-// Clears sessionStorage entries related to the quiz when the user leaves
-// the page, *unless* the form is in a valid state (which indicates that
-// the user is likely submitting an answer and transitioning to the next
-// question in the flow).
-
-window.addEventListener('beforeunload', () => {
-    // Don't clear if we're submitting the form
-    if (!document.querySelector('.quiz-form')?.checkValidity()) {
-        sessionStorage.removeItem('quiz_score');
-        sessionStorage.removeItem('quiz_lives');
     }
 });

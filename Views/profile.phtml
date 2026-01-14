@@ -242,13 +242,26 @@
                                         <span class="text-muted small"><?= $module['completed']; ?>%</span>
                                     </div>
                                     <div class="progress progress-lg">
-                                        <div class="progress-bar bg-info"
+                                        <?php
+                                        $percent = (int)$module['completed'];
+
+                                        if ($percent < 40) {
+                                            $colorClass = 'progress-low';
+                                        } elseif ($percent < 75) {
+                                            $colorClass = 'progress-medium';
+                                        } else {
+                                            $colorClass = 'progress-high';
+                                        }
+                                        ?>
+
+                                        <div class="progress-bar <?= $colorClass ?>"
                                              role="progressbar"
-                                             style="width: <?= $module['completed']; ?>%"
-                                             aria-valuenow="<?= $module['completed']; ?>"
+                                             style="width: <?= $percent; ?>%"
+                                             aria-valuenow="<?= $percent; ?>"
                                              aria-valuemin="0"
                                              aria-valuemax="100">
                                         </div>
+
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -258,8 +271,113 @@
                     <?php endif; ?>
                 </div>
             </div>
-        </div>
+            <!-- Quiz Progress Dashboard Section -->
+            <div class="card shadow border-0 mb-4">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-semibold">Your Quiz Progress</h5>
+                        <p class="text-muted small mb-0">Track how far you've completed each quiz and see your test results</p>
+                    </div>
+                    <div class="quiz-stats">
+            <span class="badge bg-primary">
+                <i class="bi bi-check-circle"></i>
+                <?= $view->quizStats['total_quizzes_taken'] ?? 0 ?> / 5 Completed
+            </span>
+                    </div>
+                </div>
 
+                <div class="card-body">
+                    <?php if (!empty($view->quizProgress)): ?>
+                        <div class="vstack gap-3">
+                            <?php foreach ($view->quizProgress as $quiz): ?>
+                                <div class="module-progress-item"> <!-- Same class as modules -->
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-semibold" style="border-left: 3px solid #E41E26; padding-left: 8px;">
+                                <?= htmlspecialchars($quiz['title']); ?>
+                                <?php if ($quiz['completed']): ?>
+                                    <span class="badge bg-success bg-opacity-10 text-success small ms-2">
+                                        <i class="bi bi-check-circle-fill"></i> Completed
+                                    </span>
+                                <?php endif; ?>
+                            </span>
+                                        <span class="text-muted small">
+                                <?php if ($quiz['completed']): ?>
+                                    Score: <span class="fw-bold" style="color: #E41E26;"><?= $quiz['score']; ?>%</span>
+                                <?php else: ?>
+                                    Not Started
+                                <?php endif; ?>
+                            </span>
+                                    </div>
+
+                                    <!-- Progress bar - IDENTICAL to module progress bars -->
+                                    <div class="progress progress-lg">
+                                        <div class="progress-bar bg-info"
+                                             role="progressbar"
+                                             style="width: <?= $quiz['progress']; ?>%"
+                                             aria-valuenow="<?= $quiz['progress']; ?>"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+
+                                    <!-- Results display for completed quizzes -->
+                                    <?php if ($quiz['completed']): ?>
+                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar"></i>
+                                                Completed on <?= date('M j, Y', strtotime($quiz['last_attempt'])); ?>
+                                            </small>
+                                            <div>
+                                                <a href="quiz.php?quiz=<?= urlencode($quiz['id']); ?>"
+                                                   class="btn btn-danger btn-sm ms-2">
+                                                    <i class="bi bi-arrow-repeat"></i> Retake
+                                                </a>
+                                            </div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                            <small class="text-muted">
+                                                <i class="bi bi-info-circle"></i> Click "Take Quiz" to start
+                                            </small>
+                                            <a href="quiz.php?quiz=<?= urlencode($quiz['id']); ?>"
+                                               class="btn btn-danger btn-sm">
+                                                <i class="bi bi-play-circle"></i> Take Quiz
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-muted mb-0">No quiz progress found yet. Start by taking a quiz!</p>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Overall Stats - Matching your style -->
+                <div class="card-footer bg-light border-0">
+                    <div class="row text-center">
+                        <div class="col">
+                            <div class="fw-bold" style="color: #E41E26; font-size: 1.2rem;">
+                                <?= $view->quizStats['total_quizzes_taken'] ?? 0 ?>
+                            </div>
+                            <small class="text-muted">Quizzes Taken</small>
+                        </div>
+                        <div class="col">
+                            <div class="fw-bold" style="color: #E41E26; font-size: 1.2rem;">
+                                <?= $view->quizStats['average_score'] ?? 0 ?>%
+                            </div>
+                            <small class="text-muted">Average Score</small>
+                        </div>
+                        <div class="col">
+                            <div class="fw-bold" style="color: #E41E26; font-size: 1.2rem;">
+                                <?= $view->quizStats['best_score'] ?? 0 ?>%
+                            </div>
+                            <small class="text-muted">Best Score</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script>

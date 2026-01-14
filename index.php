@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = $_POST["password"];
         // Login button pressed from the login form
         if ($view->user->login($username, $password)) {
-            $view->authMessage = "Login successful.";
+            header("Location: learning_hub.php");
+            exit;
         } else {
             // Login failed: set an error message for the view
             $view->authMessage = "Login error with username or password.";
