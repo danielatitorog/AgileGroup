@@ -84,3 +84,8 @@
 .accordion-item {
     animation: fadeIn 0.3s ease-out;
 }
+
+.results-soft-bg {
+    background-color: #f1f8f4;
+    border-radius: 0.5rem;
+}

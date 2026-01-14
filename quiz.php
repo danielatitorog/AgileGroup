@@ -1,5 +1,32 @@
 <?php
-// Load required model classes that encapsulate core business logic
+/**
+ * ==========================================================
+ * QUIZ CONTROLLER (quiz.php)
+ * ==========================================================
+ *
+ * This controller manages the full lifecycle of a gamified
+ * quiz, including:
+ *
+ * - Quiz initialization and validation
+ * - Session-based question progression
+ * - Handling of user answers and timeouts
+ * - Game restart and navigation logic
+ * - Result calculation and persistence
+ * - Rendering summary and detailed results
+ *
+ * KEY DESIGN DECISIONS
+ * -------------------
+ * - Quiz progress (current question, answers) is stored
+ *   in PHP session variables and scoped per quiz.
+ * - Client-side game state (score, lives, timer) is handled
+ *   by JavaScript for responsiveness.
+ * - The `continue=1` query parameter explicitly indicates
+ *   an internal quiz flow (POST → redirect → GET).
+ * - Any fresh GET request without `continue=1` restarts
+ *   the quiz to avoid inconsistent state.
+ *
+ * ==========================================================
+ */
 require_once('Models/UserAuthentication.php');
 require_once('Models/Quiz.php');
 require_once('Models/QuizResult.php');
@@ -70,37 +97,81 @@ if (!isset($_SESSION[$currentQuestionKey])) {
     $_SESSION[$currentQuestionKey] = 1;
 }
 
+// ALWAYS RESTART QUIZ ON FRESH VISIT (GET) UNLESS continue=1
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $isContinue = isset($_GET['continue']) && $_GET['continue'] === '1';
+
+    // if it's NOT an internal flow navigation, restart completely
+    if (!$isContinue && !isset($_GET['prev'])) {
+        $_SESSION[$quizSessionKey] = array();
+        $_SESSION[$currentQuestionKey] = 1;
+
+        $view->showResults = false;
+        $view->showDetailedResults = false;
+    }
+}
+
+
 /**
  * Post request handling for quiz actions
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['answer'])) {
-        // Use quiz-specific session keys
-        $questionId = 'q' . $_SESSION[$currentQuestionKey];
-        $_SESSION[$quizSessionKey][$questionId] = (int)$_POST['answer'];
+    // TIMEOUT: advance even if no answer was submitted
+    if (isset($_POST['timed_out']) && $_POST['timed_out'] == '1') {
 
-        // Move to next question or show results if it is last question
+        // IMPORTANT: do NOT store an answer (leave it "unanswered")
+        // so results can show "Not answered" and no score is awarded.
+
         if ($_SESSION[$currentQuestionKey] < $view->totalQuestions) {
             $_SESSION[$currentQuestionKey]++;
+            // redirect to next question as an internal continuation
+            header('Location: quiz.php?quiz=' . urlencode($quizId) . '&continue=1');
+            exit;
+
         } else {
-            // if user completed the quiz, then show results summary, and process result using "getQuizResults" function from quiz class
             $view->showResults = true;
             $view->quizResults = $view->quiz->getQuizResults($_SESSION[$quizSessionKey]);
             $view->detailedResults = $view->quizResults['detailed_results'];
 
-            // SAVE RESULT TO DATABASE
             if ($view->user->isLoggedIn()) {
                 $userId = $_SESSION['user_id'];
                 $score = $view->quizResults['score'];
                 $total = $view->quizResults['total'];
                 $percentage = $view->quizResults['percentage'];
 
-                // Save quiz result
                 $saved = $view->quizResult->saveResult($userId, $score, $total, $percentage, $quizId);
                 $view->resultSaved = ($saved !== false);
             }
         }
     }
+    elseif (isset($_POST['answer'])) {
+        $questionId = 'q' . $_SESSION[$currentQuestionKey];
+        $_SESSION[$quizSessionKey][$questionId] = (int)$_POST['answer'];
+
+        if ($_SESSION[$currentQuestionKey] < $view->totalQuestions) {
+            $_SESSION[$currentQuestionKey]++;
+            // redirect to next question as an internal continuation
+            header('Location: quiz.php?quiz=' . urlencode($quizId) . '&continue=1');
+            exit;
+
+        } else {
+            $view->showResults = true;
+            $view->quizResults = $view->quiz->getQuizResults($_SESSION[$quizSessionKey]);
+            $view->detailedResults = $view->quizResults['detailed_results'];
+
+            if ($view->user->isLoggedIn()) {
+                $userId = $_SESSION['user_id'];
+                $score = $view->quizResults['score'];
+                $total = $view->quizResults['total'];
+                $percentage = $view->quizResults['percentage'];
+
+                $saved = $view->quizResult->saveResult($userId, $score, $total, $percentage, $quizId);
+                $view->resultSaved = ($saved !== false);
+            }
+        }
+    }
+
+
     // Restart the quiz, but only reset session values for THIS quiz
     elseif (isset($_POST['restart'])) {
         $_SESSION[$quizSessionKey] = array();
