@@ -38,7 +38,6 @@
 
                 <div class="col-md-4">
                     <button class="btn btn-success w-100 mb-2" onclick="dropdownBuy()">Buy Selected</button>
-                    <button class="btn btn-warning w-100" onclick="dropdownSell()">Sell Selected</button>
                 </div>
             </div>
         </div>
@@ -125,6 +124,9 @@
     </div>
 </div>
 
+<script>
+    const hasSeenTutorial = <?= $view->hasSeenTutorial ? 'true' : 'false' ?>;
+</script>
 
 <script src="../js/tutorial.js"></script>
 <script src="../js/virtual_portfolio.js"></script>

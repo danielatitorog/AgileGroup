@@ -167,5 +167,21 @@ class User
         return true; // Passed validation
     }
 
+    public function hasSeenTutorial()
+    {
+        if (!$this->isLoggedIn()) {
+            return false;
+        }
+
+        $sqlQuery = "SELECT has_seen_tutorial FROM users WHERE id = :id LIMIT 1";
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->bindParam(':id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $statement->execute();
+
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return isset($row['has_seen_tutorial']) && $row['has_seen_tutorial'] == 1;
+    }
+
 
 }

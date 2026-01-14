@@ -122,9 +122,16 @@ function endTutorial() {
     if (highlightBox) highlightBox.remove();
     removeBackdrop();
     activeTarget = null;
+
+    // Mark tutorial as completed
+    fetch("mark_tutorial_seen.php");
 }
 
-window.addEventListener("load", () => startTutorial());
+window.addEventListener("load", () => {
+    if (!hasSeenTutorial) {
+        startTutorial();
+    }
+});
 
 
 window.addEventListener("scroll", updatePositions);
