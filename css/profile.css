@@ -111,7 +111,7 @@
 
 /* Progress bar */
 .progress-bar.bg-info {
-    background-color: var(--accent-red) !important;
+    background-color: #198754 !important; /* Bootstrap green */
     border-radius: 20px;
 }
 
