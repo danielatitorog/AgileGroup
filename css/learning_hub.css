@@ -1,0 +1,284 @@
+/* learning_hub_v4.css */
+.slide-text {
+    font-size: 16px;
+    color:#2c3e50;
+    border-color:#dee2e6;
+    background:white;
+}
+
+.roadmap-card {
+    margin: 0 auto 20px;
+}
+
+.learninghub {
+    --lh-bg: #f6f7fb;
+    --lh-card-radius: 18px;
+    --lh-border: rgba(0, 0, 0, 0.08);
+    --lh-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    --lh-shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.05);
+
+    padding-bottom: 1.25rem;
+}
+
+/* Desktop sidebar */
+.learninghub-sidebar {
+    border-radius: var(--lh-card-radius);
+    border: 1px solid var(--lh-border);
+    box-shadow: var(--lh-shadow-soft);
+    overflow: hidden;
+    background: #fff;
+}
+
+.learninghub-sidebar-header {
+    padding: 1rem 1rem 0.75rem 1rem;
+    border-bottom: 1px solid var(--lh-border);
+    background: #ffffff;
+}
+
+.learninghub-title {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-size: 1.6rem;
+}
+
+.learninghub-sidebar-body {
+    padding: 1rem;
+    max-height: calc(100vh - 180px);
+    overflow: auto;
+}
+
+/* Sticky sidebar (desktop) */
+@media (min-width: 992px) {
+    .learninghub-sidebar {
+        position: sticky;
+        top: 84px;
+    }
+}
+
+/* Buttons */
+.learninghub-sidebar .nav-btn,
+.learninghub-offcanvas .nav-btn {
+    border-radius: 12px !important;
+    padding: 0.55rem 0.75rem;
+}
+
+.learninghub-sidebar .nav-btn:hover,
+.learninghub-offcanvas .nav-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+/* Top controls */
+.learninghub-topbar {
+    border-radius: 14px !important;
+    border: 1px solid var(--lh-border);
+    box-shadow: var(--lh-shadow-soft);
+    position: static; /* <-- not sticky */
+    background: #ffffff;
+}
+
+
+.learninghub-topbar-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+}
+
+.learninghub-navbtn {
+    border-radius: 999px;
+    padding: 0.55rem 1rem;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.learninghub-navbtn i {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+/* Progress */
+.learninghub-progress-wrap {
+    flex: 1;
+    min-width: 120px;
+}
+
+.learninghub-progress {
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(108, 117, 125, 0.25);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.learninghub-progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    transition: width 250ms ease;
+    background: #0d6efd;
+}
+
+.learninghub-progress-hint {
+    font-size: 0.8rem;
+    color: rgba(33, 37, 41, 0.6);
+    margin-top: 0.35rem;
+}
+
+
+.learninghub-slides {
+    position: relative;
+    min-height: 520px;
+}
+
+.learninghub .login-card .roadmap-card {
+    border-radius: 18px;
+}
+
+.learninghub img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* OFFCANVAS drawer look */
+.learninghub-offcanvas {
+    width: 92vw;
+    max-width: 360px;
+    background: #ffffff;
+}
+
+.learninghub-offcanvas .offcanvas-header {
+    border-bottom: 1px solid var(--lh-border);
+}
+
+.learninghub-offcanvas .offcanvas-body {
+    padding: 1rem;
+}
+
+/* Small screens */
+@media (max-width: 575.98px) {
+    .learninghub .login-card h1 { font-size: 1.6rem; }
+    .learninghub .login-card h2 { font-size: 1.25rem; }
+
+    .learninghub-topbar-inner { gap: 0.5rem; }
+    .learninghub-navbtn { padding: 0.5rem 0.75rem; }
+
+    .learninghub-slides { min-height: 420px; }
+}
+
+/* ----------------------------------
+   Sidebar / Module nav hover fix
+---------------------------------- */
+
+/* Prevent outline buttons from turning solid on hover */
+.learninghub-sidebar .nav-btn:hover,
+.learninghub-offcanvas .nav-btn:hover {
+    background-color: #ffffff !important;
+    color: inherit !important;
+}
+
+/* Keep outline color per module */
+.learninghub-sidebar .btn-outline-primary:hover {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.learninghub-sidebar .btn-outline-success:hover {
+    border-color: #198754;
+    color: #198754;
+}
+
+.learninghub-sidebar .btn-outline-info:hover {
+    border-color: #0dcaf0;
+    color: #0dcaf0;
+}
+
+.learninghub-sidebar .btn-outline-warning:hover {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.learninghub-sidebar .btn-outline-danger:hover {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+/* Same behavior for mobile drawer */
+.learninghub-offcanvas .btn-outline-primary:hover {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.learninghub-offcanvas .btn-outline-success:hover {
+    border-color: #198754;
+    color: #198754;
+}
+
+.learninghub-offcanvas .btn-outline-info:hover {
+    border-color: #0dcaf0;
+    color: #0dcaf0;
+}
+
+.learninghub-offcanvas .btn-outline-warning:hover {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.learninghub-offcanvas .btn-outline-danger:hover {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+/* ----------------------------------
+   Active slide button (outline only)
+---------------------------------- */
+
+/* Base active style (no fill) */
+.learninghub-sidebar .nav-btn.is-active,
+.learninghub-offcanvas .nav-btn.is-active {
+    background-color: #ffffff !important;
+    font-weight: 700;
+}
+
+/* PRIMARY */
+.learninghub-sidebar .btn-outline-primary.is-active,
+.learninghub-offcanvas .btn-outline-primary.is-active {
+    color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    box-shadow: inset 0 0 0 2px #0d6efd;
+}
+
+/* SUCCESS */
+.learninghub-sidebar .btn-outline-success.is-active,
+.learninghub-offcanvas .btn-outline-success.is-active {
+    color: #198754 !important;
+    border-color: #198754 !important;
+    box-shadow: inset 0 0 0 2px #198754;
+}
+
+/* INFO */
+.learninghub-sidebar .btn-outline-info.is-active,
+.learninghub-offcanvas .btn-outline-info.is-active {
+    color: #0dcaf0 !important;
+    border-color: #0dcaf0 !important;
+    box-shadow: inset 0 0 0 2px #0dcaf0;
+}
+
+/* WARNING */
+.learninghub-sidebar .btn-outline-warning.is-active,
+.learninghub-offcanvas .btn-outline-warning.is-active {
+    color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    box-shadow: inset 0 0 0 2px #ffc107;
+}
+
+/* DANGER */
+.learninghub-sidebar .btn-outline-danger.is-active,
+.learninghub-offcanvas .btn-outline-danger.is-active {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    box-shadow: inset 0 0 0 2px #dc3545;
+}

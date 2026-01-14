@@ -117,7 +117,7 @@
     text-decoration: underline;
 }
 
-/* Ensure footer appears only at the bottom naturally */
+/* Ensures footer at the bottom */
 html, body {
     height: 100%;
 }
@@ -513,7 +513,7 @@ main {
     border-color: rgba(228, 30, 38, 0.2);
 }
 
-/* Add this for the icon styling without circle */
+/* Icon styling */
 .mission-statement .fa-bullseye {
     font-size: 1.5rem;
     transition: transform 0.3s ease;
@@ -590,16 +590,7 @@ main {
 
 .timeline-step:hover .step-number {
     transform: scale(1.15);
-    /* The number will scale with the whole circle */
-}
-
-.mission-statement {
-    border: 1px solid rgba(228, 30, 38, 0.1);
-    transition: all 0.3s ease;
-    background: linear-gradient(135deg, rgba(228, 30, 38, 0.05) 0%, rgba(228, 30, 38, 0.02) 100%);
-    border-radius: 12px;
-    padding: 1rem;
-    margin-top: 1.5rem;
+    /* The number will scale */
 }
 
 /* Timeline hover effects */

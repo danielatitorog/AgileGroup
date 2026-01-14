@@ -11,6 +11,7 @@ class FriendsModel
         $this->db = Database::getInstance()->getdbConnection();
     }
 
+    // Get all friends for a user with progress information
     public function getFriends($userId)
     {
         $sql = "
