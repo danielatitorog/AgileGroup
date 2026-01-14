@@ -867,3 +867,6 @@
     80% { transform: rotate(4deg); }
     85% { transform: rotate(-2deg); }
 }
+    .change-buttons:hover {
+        opacity: 0.9;
+    }
