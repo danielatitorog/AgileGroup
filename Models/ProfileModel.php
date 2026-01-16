@@ -122,6 +122,30 @@ class ProfileModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function saveSlideVisit($userId, $slideIndex)
+    {
+        $sql = "
+        INSERT INTO user_slide_visits (user_id, slide_index, visited_at)
+        VALUES (:uid, :slide, datetime('now'))
+        ON CONFLICT(user_id, slide_index) DO UPDATE SET
+            visited_at = datetime('now')
+    ";
+
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->execute([
+            ':uid' => $userId,
+            ':slide' => $slideIndex
+        ]);
+    }
+
+    public function getVisitedSlides($userId)
+    {
+        $sql = "SELECT slide_index FROM user_slide_visits WHERE user_id = :uid";
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->execute([':uid' => $userId]);
+        return array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
+    }
+
 
     /**
      * Get quiz progress and results for a user

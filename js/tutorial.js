@@ -135,10 +135,16 @@ function endTutorial() {
     if (highlightBox) highlightBox.remove();
     removeBackdrop();
     activeTarget = null;
+
+    // Mark tutorial as completed
+    fetch("mark_tutorial_seen.php");
 }
 
-// Start tutorial automatically when page loads
-window.addEventListener("load", () => startTutorial());
+window.addEventListener("load", () => {
+    if (!hasSeenTutorial) {
+        startTutorial();
+    }
+});
 
 // Update tutorial positions
 window.addEventListener("scroll", updatePositions);

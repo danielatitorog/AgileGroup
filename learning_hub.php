@@ -19,6 +19,7 @@ $view->modules = $view->profileModel->getModules();
 
 // Load the user's last visited page for resuming their progress
 $view->lastPage = $view->profileModel->getLastVisitedPage($_SESSION['user_id']);
+$view->visitedSlides = $view->profileModel->getVisitedSlides($_SESSION['user_id']);
 
 // Load the main learning hub view template
 require_once('Views/learning_hub.phtml');

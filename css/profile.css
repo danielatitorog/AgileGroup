@@ -111,7 +111,7 @@
 
 /* Progress bar */
 .progress-bar.bg-info {
-    background-color: var(--accent-red) !important;
+    background-color: #198754 !important; /* Bootstrap green */
     border-radius: 20px;
 }
 
@@ -158,6 +158,21 @@
 .list-group-item:hover {
     background-color: var(--accent-red-light);
     transition: background-color 0.15s ease;
+}
+
+/* Low progress - Red */
+.progress-low {
+    background-color: #dc3545 !important; /* Bootstrap red */
+}
+
+/* Medium progress - Yellow */
+.progress-medium {
+    background-color: #ffc107 !important; /* Bootstrap yellow */
+}
+
+/* High progress - Green */
+.progress-high {
+    background-color: #198754 !important; /* Bootstrap green */
 }
 /* ===========================
    QUIZ PROGRESS - MATCHING MODULE STYLES
