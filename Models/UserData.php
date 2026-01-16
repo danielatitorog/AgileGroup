@@ -9,7 +9,7 @@ class UserData
 {
 
     //Properties for a user record
-    protected $_userID, $_username, $_email, $_password, $_role;
+    protected $_userID, $_username, $_email, $_password, $_role, $_hasSeenTutorial;
 
     /**
      * Constructor
@@ -23,6 +23,7 @@ class UserData
         $this->_email = $dbRow['email'];
         $this->_password = $dbRow['password_hash'];
         $this->_role = $dbRow['role'];
+        $this->_hasSeenTutorial = $dbRow['has_seen_tutorial'];
     }
 
     /** Returns the userID */
@@ -47,5 +48,10 @@ class UserData
     public function getUserRole()
     {
         return $this->_role;
+    }
+
+    public function getUserHasSeenTutorial()
+    {
+        return $this->_hasSeenTutorial;
     }
 }
