@@ -121,4 +121,98 @@ class ProfileModel
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function saveSlideVisit($userId, $slideIndex)
+    {
+        $sql = "
+        INSERT INTO user_slide_visits (user_id, slide_index, visited_at)
+        VALUES (:uid, :slide, datetime('now'))
+        ON CONFLICT(user_id, slide_index) DO UPDATE SET
+            visited_at = datetime('now')
+    ";
+
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->execute([
+            ':uid' => $userId,
+            ':slide' => $slideIndex
+        ]);
+    }
+
+    public function getVisitedSlides($userId)
+    {
+        $sql = "SELECT slide_index FROM user_slide_visits WHERE user_id = :uid";
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->execute([':uid' => $userId]);
+        return array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
+    }
+
+
+    /**
+     * Get quiz progress and results for a user
+     */
+    public function getQuizProgress($userId)
+    {
+        // Get all available quizzes
+        $availableQuizzes = [
+            'Module1_quiz' => 'Module 1: What is Investing?',
+            'Module2_quiz' => 'Module 2: Benefits of Investing',
+            'Module3_quiz' => 'Module 3: Stock Market Basics',
+            'Module4_quiz' => 'Module 4: Online Safety',
+            'Module5_quiz' => 'Module 5: Impact of Investing'
+        ];
+
+        $quizProgress = [];
+
+        foreach ($availableQuizzes as $quizId => $quizTitle) {
+            // Get best result for this quiz
+            $sql = "SELECT percentage, completed_at 
+                FROM quiz_results 
+                WHERE user_id = :uid AND quiz_id = :quiz_id 
+                ORDER BY percentage DESC, completed_at DESC 
+                LIMIT 1";
+
+            $stmt = $this->_dbHandle->prepare($sql);
+            $stmt->execute([':uid' => $userId, ':quiz_id' => $quizId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $quizProgress[] = [
+                'id' => $quizId,
+                'title' => $quizTitle,
+                'completed' => $result ? true : false,
+                'score' => $result ? round($result['percentage']) : 0,
+                'progress' => $result ? 100 : 0, // 100% if taken, 0% if not
+                'last_attempt' => $result ? $result['completed_at'] : null,
+                'status' => $result ? 'completed' : 'not-started'
+            ];
+        }
+
+        return $quizProgress;
+    }
+
+    /**
+     * Get overall quiz completion statistics
+     */
+    public function getQuizStats($userId)
+    {
+        $sql = "SELECT 
+                COUNT(DISTINCT quiz_id) as total_quizzes_taken,
+                AVG(percentage) as average_score,
+                MAX(percentage) as best_score,
+                COUNT(*) as total_attempts
+            FROM quiz_results 
+            WHERE user_id = :uid";
+
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->execute([':uid' => $userId]);
+
+        $stats = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Add default values if no results
+        return [
+            'total_quizzes_taken' => $stats['total_quizzes_taken'] ?? 0,
+            'average_score' => round($stats['average_score'] ?? 0, 1),
+            'best_score' => $stats['best_score'] ?? 0,
+            'total_attempts' => $stats['total_attempts'] ?? 0
+        ];
+    }
 }

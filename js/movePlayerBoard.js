@@ -10,11 +10,46 @@ const nextBtn = document.getElementById("nextSlide");
 let currentSlide = typeof LAST_PAGE !== "undefined" ? LAST_PAGE : 0;
 let isTransitioning = false;
 
+const visitedSlides = new Set(
+    (typeof VISITED_SLIDES !== "undefined" && Array.isArray(VISITED_SLIDES))
+        ? VISITED_SLIDES
+        : []
+);
+visitedSlides.add(currentSlide);
+
 function updateProgress(index = currentSlide) {
     progressBar.style.width = ((index + 1) / slides.length) * 100 + "%";
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === slides.length - 1;
 }
+
+function updateNavDots(index = currentSlide) {
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        const slideNum = parseInt(btn.dataset.slide, 10);
+        const icon = btn.querySelector("i.bi");
+        if (!icon) return;
+
+        // clear any prior icon state
+        icon.classList.remove(
+            "bi-circle",
+            "bi-circle-fill",
+            "bi-record-circle-fill",
+            "bi-check-circle-fill"
+        );
+
+        if (slideNum === index) {
+            // current
+            icon.classList.add("bi-record-circle-fill");
+        } else if (visitedSlides.has(slideNum)) {
+            // visited (completed)
+            icon.classList.add("bi-check-circle-fill");
+        } else {
+            // not visited
+            icon.classList.add("bi-circle");
+        }
+    });
+}
+
 
 function getModuleForSlide(slideIndex) {
     let accumulated = 0;
@@ -58,6 +93,22 @@ function saveProgress(slideIndex) {
     }).catch(err => console.error("Progress save failed:", err));
 }
 
+function saveSlideVisit(slideIndex) {
+    fetch("saveSlideVisit.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `slide=${slideIndex}`
+    }).catch(err => console.error("Slide visit save failed:", err));
+}
+
+function updateActiveNavButton(index = currentSlide) {
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        const slideNum = parseInt(btn.dataset.slide, 10);
+        btn.classList.toggle("is-active", slideNum === index);
+    });
+}
+
+
 function showSlide(index) {
     if (isTransitioning || index === currentSlide || index < 0 || index >= slides.length) return;
     isTransitioning = true;
@@ -72,7 +123,12 @@ function showSlide(index) {
         next.classList.add("active", "fade-in");
 
         currentSlide = index;
+        visitedSlides.add(currentSlide);
+        saveSlideVisit(currentSlide);
+
         updateProgress();
+        updateNavDots(currentSlide);
+        updateActiveNavButton(currentSlide);
 
         setTimeout(() => {
             next.classList.remove("fade-in");
@@ -98,9 +154,12 @@ slides[currentSlide].classList.add("active");
 
 // Update progress bar immediately
 updateProgress(currentSlide);
+updateNavDots(currentSlide);
+updateActiveNavButton(currentSlide);
 
 // Sync database (keeps last page consistent)
 saveProgress(currentSlide);
+saveSlideVisit(currentSlide);
 
 
 document.querySelectorAll(".nav-btn").forEach(btn => {

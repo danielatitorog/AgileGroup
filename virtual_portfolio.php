@@ -13,4 +13,6 @@ if (!$view->user->isLoggedIn()) {
     exit;
 }
 
+$view->hasSeenTutorial = $view->user->hasSeenTutorial();
+
 require_once('Views/virtual_portfolio.phtml');

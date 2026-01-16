@@ -1,6 +1,5 @@
 /* ===========================
-   REFINED RED ACCENT THEME
-   Modern • Clean • Balanced
+              THEME
    =========================== */
 
 :root {
@@ -16,7 +15,7 @@
     border-radius: 14px;
 }
 
-/* Avatar red glow effect — toned down */
+/* Avatar red glow effect */
 .profile-avatar {
     width: 80px;
     height: 80px;
@@ -31,7 +30,7 @@
     margin-bottom: 1rem !important;
 }
 
-/* Stat chips – more neutral, red value highlight only */
+/* Stat chips */
 .profile-stat-chip {
     background: #fff;
     border: 1px solid #ececec;
@@ -49,7 +48,7 @@
     font-weight: 600;
 }
 
-/* Tabs – cleaner red underline, minimalist style */
+/* Tabs */
 .card-header-tabs .nav-link {
     border-bottom: 2px solid transparent;
     color: #555;
@@ -72,7 +71,7 @@
     border-radius: 14px;
 }
 
-/* Friend avatars – balanced palette */
+/* Friend avatars */
 .friends-avatar-placeholder {
     width: 38px;
     height: 38px;
@@ -91,28 +90,28 @@
     color: var(--accent-red-dark) !important;
 }
 
-/* Sent request avatar (soft neutral red) */
+/* Sent request avatar  */
 .friends-sent {
     background: #fae8e9 !important;
     color: var(--accent-red-dark) !important;
 }
 
-/* Friends list hover – subtle */
+/* Friends list hover */
 .friends-list-item:hover {
     background-color: var(--accent-red-light);
     border-radius: 10px;
 }
 
-/* Pending badge – refined */
+/* Pending badge */
 .badge.bg-light.text-muted {
     background-color: #f8e7e8 !important;
     color: var(--accent-red-dark) !important;
     border: 1px solid #f1c5c7 !important;
 }
 
-/* Progress bar – more refined red */
+/* Progress bar */
 .progress-bar.bg-info {
-    background-color: var(--accent-red) !important;
+    background-color: #198754 !important; /* Bootstrap green */
     border-radius: 20px;
 }
 
@@ -124,7 +123,7 @@
     overflow: hidden;
 }
 
-/* Buttons – elegant red accents */
+/* Buttons */
 .btn-outline-danger {
     border-color: var(--accent-red);
     color: var(--accent-red);
@@ -159,4 +158,91 @@
 .list-group-item:hover {
     background-color: var(--accent-red-light);
     transition: background-color 0.15s ease;
+}
+
+/* Low progress - Red */
+.progress-low {
+    background-color: #dc3545 !important; /* Bootstrap red */
+}
+
+/* Medium progress - Yellow */
+.progress-medium {
+    background-color: #ffc107 !important; /* Bootstrap yellow */
+}
+
+/* High progress - Green */
+.progress-high {
+    background-color: #198754 !important; /* Bootstrap green */
+}
+/* ===========================
+   QUIZ PROGRESS - MATCHING MODULE STYLES
+   =========================== */
+
+/* Make quiz items identical to module items */
+.quiz-progress-item {
+    /* Inherits from .module-progress-item */
+}
+
+/* Ensure progress bars are identical */
+.quiz-progress-item .progress.progress-lg {
+    height: 12px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.quiz-progress-item .progress-bar.bg-info {
+    background-color: var(--accent-red) !important;
+    border-radius: 20px;
+}
+
+/* Quiz item titles match module titles */
+.quiz-progress-item .fw-semibold {
+    border-left: 3px solid var(--accent-red);
+    padding-left: 8px;
+}
+
+/* Button styling to match your red theme */
+.quiz-progress-item .btn-danger {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+.quiz-progress-item .btn-outline-danger {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.quiz-progress-item .btn-outline-danger:hover {
+    background-color: var(--accent-red-light);
+    border-color: var(--accent-red);
+    color: var(--accent-red-dark);
+}
+
+/* Stats in footer */
+.card-footer .col {
+    padding: 0.75rem;
+    border-right: 1px solid #dee2e6;
+}
+
+.card-footer .col:last-child {
+    border-right: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card-footer .col {
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0.75rem 0;
+    }
+
+    .card-footer .col:last-child {
+        border-bottom: none;
+    }
+
+    .quiz-progress-item .btn {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
 }

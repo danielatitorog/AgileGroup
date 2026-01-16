@@ -43,15 +43,27 @@
     top: 0;
     left: 0;
     width: 100%;
+
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    z-index: 0;
+
+    transition:
+            opacity 0.5s ease,
+            visibility 0s linear 0.5s;
 }
 
 .slide.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
     position: relative;
+    z-index: 2;
+
+    transition:
+            opacity 0.5s ease,
+            visibility 0s;
 }
 
 .fade-in {
@@ -60,16 +72,25 @@
 
 .fade-out {
     animation: fadeOut 0.5s forwards;
+    pointer-events: none;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 .roadmap-wrapper {
@@ -105,7 +126,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    background-color: rgba(0,255,0,0.5);
+    background-color: rgba(0, 255, 0, 0.5);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: pulseAnimation 1.5s ease-out infinite;
@@ -113,8 +134,14 @@
 }
 
 @keyframes pulseAnimation {
-    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
-    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
 }
 
 #board {
@@ -189,7 +216,7 @@
             #fde1b0 58%,
             #f4b775 100%
     );
-    box-shadow: 0 28px 60px rgba(15,23,42,0.26);
+    box-shadow: 0 28px 60px rgba(15, 23, 42, 0.26);
     overflow: hidden;
 }
 
@@ -202,7 +229,7 @@
     transform: translateX(-50%);
     border-radius: 999px;
     background: linear-gradient(90deg, #60a5fa, #2563eb);
-    box-shadow: 0 10px 24px rgba(37,99,235,0.4);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.4);
 }
 
 .intro-coin {
@@ -219,7 +246,7 @@
     font-weight: 700;
     font-size: 0.95rem;
     color: #6d4c41;
-    box-shadow: 0 10px 22px rgba(248,181,0,0.45);
+    box-shadow: 0 10px 22px rgba(248, 181, 0, 0.45);
     transform: translateX(-50%) scale(0.9);
     transition: left 0.4s ease, transform 0.4s ease;
 }
@@ -272,7 +299,7 @@
     width: 26px;
     border-radius: 10px 10px 4px 4px;
     background: linear-gradient(180deg, #6fb1ff, #2765d8);
-    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     transform-origin: center bottom;
     animation: barPulse 2.2s ease-in-out infinite;
 }
@@ -302,8 +329,8 @@
     border-radius: 6px;
     background: repeating-linear-gradient(
             to bottom,
-            rgba(255,255,255,0.65) 0,
-            rgba(255,255,255,0.65) 2px,
+            rgba(255, 255, 255, 0.65) 0,
+            rgba(255, 255, 255, 0.65) 2px,
             transparent 2px,
             transparent 6px
     );
@@ -311,10 +338,18 @@
 }
 
 @keyframes barPulse {
-    0%   { transform: translateY(0) scaleY(0.95); }
-    40%  { transform: translateY(-4px) scaleY(1.05); }
-    70%  { transform: translateY(0) scaleY(1.0); }
-    100% { transform: translateY(0) scaleY(0.97); }
+    0% {
+        transform: translateY(0) scaleY(0.95);
+    }
+    40% {
+        transform: translateY(-4px) scaleY(1.05);
+    }
+    70% {
+        transform: translateY(0) scaleY(1.0);
+    }
+    100% {
+        transform: translateY(0) scaleY(0.97);
+    }
 }
 
 /* risk vs reward */
@@ -411,7 +446,7 @@
     color: #4b5563;
 }
 
-/* Module 5 milestone planner styles (updated) */
+/* Module 5 milestone planner styles */
 .milestone-planner {
     max-width: 900px;
     margin: 0 auto 1.5rem;
@@ -463,12 +498,12 @@
     background: #ffffff;
     border-radius: 999px;
     padding: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
     margin-bottom: 4px;
 }
 
 .milestone-step.active .milestone-icon {
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.18), 0 10px 24px rgba(37,99,235,0.35);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18), 0 10px 24px rgba(37, 99, 235, 0.35);
     transform: scale(1.05);
 }
 
@@ -476,7 +511,7 @@
     border-radius: 18px;
     background: #ffffff;
     padding: 16px 18px;
-    box-shadow: 0 14px 30px rgba(15,23,42,0.16);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
 }
 
 .milestone-jars {
@@ -499,7 +534,7 @@
     border-radius: 18px 18px 10px 10px;
     border: 2px solid #c4d4ff;
     background: linear-gradient(to top, #eef2ff, #ffffff);
-    box-shadow: inset 0 0 0 1px rgba(148,163,184,0.35);
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
     overflow: hidden;
     display: flex;
     align-items: flex-end;
@@ -512,13 +547,13 @@
     height: 20%;
     border-radius: 14px 14px 6px 6px;
     background: linear-gradient(180deg, #93c5fd, #2563eb);
-    box-shadow: 0 6px 12px rgba(37,99,235,0.35);
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.35);
     transition: height 0.35s ease;
 }
 
 .milestone-jar-fill.jar-invest {
     background: linear-gradient(180deg, #6ee7b7, #16a34a);
-    box-shadow: 0 6px 12px rgba(34,197,94,0.35);
+    box-shadow: 0 6px 12px rgba(34, 197, 94, 0.35);
 }
 
 .milestone-jar-caption {
@@ -572,65 +607,282 @@
     }
 }
 
-    .calculator {
-        background: white;
-        width: 100%;
-        max-width: 520px;
-        padding: 32px;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e5e9f0;
-        margin: 0 auto;
+/* Calculator container */
+.calculator {
+    background: white;
+    width: 100%;
+    max-width: 520px;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e9f0;
+    margin: 0 auto;
+}
+
+/* Heading */
+.calculator h3 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* smaller labels */
+.calculator label {
+    font-size: 1rem;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+/* Inputs */
+.calc-input {
+    border-radius: 6px !important;
+    border: 1px solid #ccc;
+    padding: 10px 12px;
+}
+
+/* Button styling */
+.calc-btn {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+/* Results container */
+.results-clean {
+    margin-top: 22px;
+    border-top: 1px solid #e5e9f0;
+    padding-top: 14px;
+}
+
+/* Result rows */
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 2px;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+.result-row strong {
+    font-size: 1.05rem;
+    color: #111827;
+}
+
+/* Highlight row */
+.result-row.highlight {
+    margin-top: 6px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #f4f8ff;
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.12);
+}
+
+.investor {
+    background: white;
+    width: 100%;
+    max-width: 520px;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e9f0;
+    margin: 0 auto;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0;
+    font-size: 18px;
+}
+
+.change-buttons {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #007bff;
+    color: white;
+}
+
+.change-buttons:hover {
+    opacity: 0.9;
+}
+
+/* Share Simulator */
+
+.simulator-card {
+    background: linear-gradient(180deg, #ffffff, #f8fbff);
+}
+
+.sim-title {
+    text-align: center;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+/* Stats layout refinement */
+.stats {
+    background: #f4f8ff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-size: 17px;
+    box-shadow: inset 0 0 0 1px rgba(0, 123, 255, 0.08);
+}
+
+.stats div span {
+    font-weight: 600;
+}
+
+/* Buttons row */
+.change-buttons-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Secondary button (Sell) */
+.change-buttons.secondary {
+    background: #e5e9f0;
+    color: #1f2937;
+}
+
+/* Outline button */
+.change-buttons.outline {
+    background: white;
+    color: #007bff;
+    border: 1px solid #cfe1ff;
+    margin-top: 6px;
+}
+
+.change-buttons.outline:hover {
+    background: #f2f7ff;
+}
+
+/* Portfolio area */
+.portfolio {
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e9f0;
+    text-align: center;
+}
+
+.portfolio-label {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+}
+
+
+/* ==========================================================
+   Module 2 – "Financial freedom" layered visual
+   Money.png  = background (clouds + notes)
+   bell_character.png = animated bell (idle + hover)
+   ========================================================== */
+
+.freedom-visual {
+    position: relative;
+    max-width: 620px;
+    /* pulled slightly upwards so the bell sits closer to the text */
+    margin: -0.75rem auto 0;
+}
+
+.freedom-money-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+.freedom-bell-layer {
+    position: absolute;
+    top: -20%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+    animation: freedomBellFloat 4s ease-in-out infinite;
+    transform-origin: 50% 100%;
+}
+
+.freedom-bell-img {
+    width: 80%;
+    max-width: 380px;
+    height: auto;
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
+    transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.slide.active .freedom-visual .freedom-bell-img {
+    pointer-events: auto;
+}
+
+.freedom-bell-img:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 16px 32px rgba(15, 23, 42, 0.35));
+}
+
+@keyframes freedomBellFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    35% {
+        transform: translateY(-10px);
+    }
+    55% {
+        transform: translateY(-6px);
+    }
+}
+
+@media (max-width: 576px) {
+    .freedom-visual {
+        max-width: 420px;
     }
 
-    .input-group {
-        margin-bottom: 20px;
+    .freedom-bell-img {
+        width: 88%;
+        max-width: 360px;
     }
+}
 
-    .input-group label {
-        font-weight: 500;
-    }
+/* ==========================================================
+   Animated bell/profile icon in top navbar
+   ========================================================== */
 
-    .input-group input {
-        padding: 10px 12px;
-        font-size: 1rem;
-        border-radius: 6px;
-        flex-direction: column;
-        align-items: center;
-        border: 1px solid #ccc;
-        width: 100%;
-        max-width: 350px;
-    }
+#bell-avatar {
+    animation: bellIdle 3s ease-in-out infinite;
+    transform-origin: 50% 12%;
+    will-change: transform;
+}
 
-    .investor {
-        background: white;
-        width: 100%;
-        max-width: 520px;
-        padding: 32px;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e5e9f0;
-        margin: 0 auto;
-    }
-
-    .stats {
-        display: flex;
-        justify-content: space-between;
-        margin: 12px 0;
-        font-size: 18px;
-    }
-
-    .change-buttons {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        background: #007bff;
-        color: white;
-    }
-
+@keyframes bellIdle {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    65% { transform: rotate(-10deg); }
+    70% { transform: rotate(8deg); }
+    75% { transform: rotate(-6deg); }
+    80% { transform: rotate(4deg); }
+    85% { transform: rotate(-2deg); }
+}
     .change-buttons:hover {
         opacity: 0.9;
     }
